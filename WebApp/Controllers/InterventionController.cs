@@ -98,6 +98,13 @@ namespace WebApp.Controllers
                     IsLoanPaid = viewModel.IsLoanPaid
                 };
 
+                var newInterventionSolution = new InterventionSolutionsBOL
+                {
+                    //A REVOIR
+                    IdIntervention = newIntervention.Id,
+                    IdInterventionSolution = viewModel.IdInterventionSolution,
+                };
+
                 base.bll.CreateIntervention(newIntervention);
                 TempData["success"] = "Intervention créee avec succès";
                 return RedirectToAction(nameof(Index));
@@ -209,6 +216,7 @@ namespace WebApp.Controllers
             var mdStatusType = mdBLL.GetAllMdInterventionStatusTypes();
             var mdLoanReason = mdBLL.GetAllMdLoanReasons();
             var mdInterventionType = mdBLL.GetAllMdInterventionTypes();
+            var mdInterventionSolution = mdBLL.GetAllMdInterventionSolutions();
 
             ViewBag.MdReferenceSource = mdReferenceSource.ElementList.Select(b => new SelectListItem
             {
@@ -229,6 +237,12 @@ namespace WebApp.Controllers
             });
 
             ViewBag.MdInterventionType = mdInterventionType.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+
+            ViewBag.MdInterventionSolution = mdInterventionSolution.ElementList.Select(b => new SelectListItem
             {
                 Value = b.Id.ToString(),
                 Text = b.Name

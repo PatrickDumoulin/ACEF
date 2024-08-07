@@ -4,6 +4,7 @@ using DataAccess.BOL.MdEmploymentSituation;
 using DataAccess.BOL.MdFamilySituation;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.BOL.MdHabitationType;
+using DataAccess.BOL.MdInterventionSolution;
 using DataAccess.BOL.MdInterventionStatusType;
 using DataAccess.BOL.MdInterventionType;
 using DataAccess.BOL.MdLoanReason;
@@ -20,6 +21,7 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
@@ -168,6 +170,18 @@ namespace DataAccess.Providers.Entity
         {
             List<IRecord> records = Db.MdInterventionType.ToList<IRecord>();
             return MapperWrapper.NewBols<MdInterventionTypeBOL>(records).ToList<IMdInterventionTypeBOL>();
+        }
+
+        public IMdInterventionSolutionBOL GetMdInterventionSolution(int id)
+        {
+            MdInterventionSolution record = Db.MdInterventionSolution.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdInterventionSolutionBOL>(record);
+        }
+
+        public List<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions()
+        {
+            List<IRecord> records = Db.MdInterventionSolution.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdInterventionSolutionBOL>(records).ToList<IMdInterventionSolutionBOL>();
         }
     }
 

@@ -29,6 +29,7 @@ namespace BusinessLayer.Core.Mappings
             BindBll<IEmployeePermissionsBLL, EmployeePermissionsBLL>();
             BindBll<IEmployeeBLL, EmployeeBLL>();
             BindBll<IInterventionBLL, InterventionBLL>();
+            BindBll<IInterventionsInterventionSolutionsBLL, InterventionsInterventionSolutionsBLL>();
 
             #endregion
 
@@ -45,6 +46,7 @@ namespace BusinessLayer.Core.Mappings
             BindDal<IEmployeePermissionsDAL, EmployeePermissionsEntityDAL>();
             BindDal<IEmployeeDAL, EmployeeEntityDAL>();
             BindDal<IInterventionDAL, InterventionEntityDAL>();
+            BindDal<IInterventionsInterventionSolutionsDAL,  InterventionsInterventionSolutionsEntityDAL>();
 
             #endregion
 

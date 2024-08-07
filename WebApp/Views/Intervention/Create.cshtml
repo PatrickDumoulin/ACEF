@@ -64,6 +64,10 @@
         .btn-secondary:hover {
             background-color: #f0f0f0;
         }
+
+    .hidden {
+        display: none;
+    }
 </style>
 
 <form asp-action="Create" method="post">
@@ -81,7 +85,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-
                 <div class="mb-3">
                     <label asp-for="DateIntervention" class="form-label"></label>
                     <input asp-for="DateIntervention" type="date" class="form-control" />
@@ -123,27 +126,27 @@
                     <input asp-for="DebtAmount" class="form-control" />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <label asp-for="IdLoanReason" class="form-label"></label>
-                    <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReason)">
-                        <option value="">--Sélectionnez le but d'emprunt--</option>
-                    </select>
-                    <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Petit prêt remboursé</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
-                        <label class="form-check-label" for="isLoanPaidYes">Oui</label>
+                <div class="mb-3 hidden" id="loanFields">
+                    <div>
+                        <label asp-for="IdLoanReason" class="form-label"></label>
+                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReason)">
+                            <option value="">--Sélectionnez le but d'emprunt--</option>
+                        </select>
+                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
-                        <label class="form-check-label" for="isLoanPaidNo">Non</label>
+                    <div>
+                        <label class="form-label">Petit prêt remboursé</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
+                            <label class="form-check-label" for="isLoanPaidYes">Oui</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
+                            <label class="form-check-label" for="isLoanPaidNo">Non</label>
+                        </div>
+                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
                 </div>
-
-
             </div>
         </div>
         <div class="row">
@@ -156,6 +159,29 @@
 </form>
 
 @section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var interventionTypeDropdown = document.querySelector('[name="IdInterventionType"]');
+            var loanFields = document.getElementById('loanFields');
+
+            function toggleLoanFields() {
+                var selectedValue = interventionTypeDropdown.options[interventionTypeDropdown.selectedIndex].text;
+                if (selectedValue === 'petit prêt') {
+                    loanFields.classList.remove('hidden');
+                } else {
+                    loanFields.classList.add('hidden');
+                    // Set the fields to null if "petit prêt" is not selected
+                    document.querySelector('[name="IdLoanReason"]').value = '';
+                    document.querySelectorAll('[name="IsLoanPaid"]').forEach(radio => radio.checked = false);
+                }
+            }
+
+            interventionTypeDropdown.addEventListener('change', toggleLoanFields);
+
+            // Initial check
+            toggleLoanFields();
+        });
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

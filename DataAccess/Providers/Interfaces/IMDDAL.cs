@@ -6,6 +6,7 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
@@ -52,5 +53,8 @@ namespace DataAccess.Providers.Interfaces
 
         IMdInterventionTypeBOL GetMdInterventionType(int id);
         List<IMdInterventionTypeBOL> GetAllMdInterventionTypes();
+
+        IMdInterventionSolutionBOL GetMdInterventionSolution(int id);
+        List<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions();
     }
 }

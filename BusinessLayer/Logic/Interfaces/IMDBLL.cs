@@ -7,6 +7,7 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
@@ -53,6 +54,9 @@ namespace BusinessLayer.Logic.Interfaces
 
         GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id);
         GetListResponse<IMdInterventionTypeBOL> GetAllMdInterventionTypes();
+
+        GetItemResponse<IMdInterventionSolutionBOL> GetMdInterventionSolution(int id);
+        GetListResponse<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions();
 
     }
 }

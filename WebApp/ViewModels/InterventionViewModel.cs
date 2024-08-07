@@ -37,6 +37,12 @@ namespace WebApp.ViewModels
         [Display(Name = "Petit prêt remboursé")]
         public bool? IsLoanPaid { get; set; }
 
+        [Display(Name = "Petit prêt remboursé")]
+        public int? IdInterventionSolution { get; set; }
+
+
+
+
         public IEnumerable<SelectListItem> Employees { get; set; }
     }
 }

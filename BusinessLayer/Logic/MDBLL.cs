@@ -3,6 +3,7 @@ using BusinessLayer.Core.Definitions;
 using BusinessLayer.Logic.Interfaces;
 using CoreLib.Definitions;
 using DataAccess.BOL.MdGenderDenomination;
+using DataAccess.BOL.MdInterventionSolution;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
 using DataModels.BOL.IMdInterventionStatusType;
@@ -12,6 +13,7 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
@@ -171,6 +173,19 @@ namespace BusinessLayer.Logic
             List<IMdInterventionTypeBOL> mdInterventionTypeBOL = base.dal.
                 GetAllMdInterventionTypes();
             return new GetListResponse<IMdInterventionTypeBOL>(mdInterventionTypeBOL);
+        }
+
+        public GetItemResponse<IMdInterventionSolutionBOL> GetMdInterventionSolution(int id)
+        {
+            IMdInterventionSolutionBOL mdInterventionSolutionBOL = base.dal.GetMdInterventionSolution(id);
+            return new GetItemResponse<IMdInterventionSolutionBOL>(mdInterventionSolutionBOL);
+        }
+
+        public GetListResponse<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions()
+        {
+            List<IMdInterventionSolutionBOL> mdInterventionSolutionBOL = base.dal.
+                GetAllMdInterventionSolutions();
+            return new GetListResponse<IMdInterventionSolutionBOL>(mdInterventionSolutionBOL);
         }
     }
 }
