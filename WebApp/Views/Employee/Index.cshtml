@@ -1,0 +1,55 @@
+﻿@model IEnumerable<WebApp.ViewModels.EmployeeViewModel>
+
+@{
+    ViewData["Title"] = "Employees";
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - ACEF</title>
+    <link rel="stylesheet" href="~/css/employees.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Liste des Employés</h1>
+        <div class="create-button">
+            <a asp-action="Create" class="btn btn-primary">Créer un Nouvel Employé</a>
+        </div>
+
+        <table class="table">
+            <thead class="table-header">
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Actif</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@employee.FirstName</td>
+                        <td>@employee.LastName</td>
+                        <td>@employee.UserName</td>
+                        <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-warning">Modifier</a>
+                            <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @section Scripts {
+        <script src="~/js/your-custom-scripts.js"></script>
+    }
+</body>
+</html>

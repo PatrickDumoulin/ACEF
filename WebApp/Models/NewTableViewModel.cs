@@ -1,0 +1,8 @@
+﻿namespace WebApp.Models
+{
+    public class NewTableViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}

@@ -1,0 +1,178 @@
+﻿@model WebApp.ViewModels.ClientViewModel
+
+@{
+    ViewData["Title"] = "Client Details";
+}
+
+<style>
+    .details-container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px 10px rgba(0, 0, 0, 0.15);
+        margin-top: 30px;
+    }
+
+    .details-header {
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+        .details-header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .details-header h4 {
+            font-size: 18px;
+            color: #666;
+        }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+        .details-grid .label,
+        .details-grid .value {
+            padding: 10px 0;
+        }
+
+        .details-grid .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .details-grid .value {
+            color: #333;
+            border-bottom: 1px solid #e0e0e0; /* Ligne de séparation */
+        }
+
+    .btn-primary,
+    .btn-secondary {
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: bold;
+        margin-right: 10px;
+        border: 1px solid black;
+    }
+
+        .btn-primary:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+    .btn-container {
+        margin-top: 30px;
+    }
+
+        .btn-container a {
+            text-decoration: none;
+        }
+</style>
+
+<div class="container">
+    <div class="details-container">
+        <div class="details-header">
+            <h1 class="text-center pb-2">Détails du Client</h1>
+            <h4 class="text-center">@Model.FirstName @Model.LastName</h4><br />
+            <div class="text-center">
+                <div class="btn-group" role="group" aria-label="Client Actions">
+                    <a asp-controller="Intervention" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-danger">Interventions</a>
+                    <a asp-controller="Intervention" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-warning">Atelier</a>
+                    <a asp-controller="Note" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-success">Notes (@ViewBag.NoteCount)</a>
+                    <a asp-controller="ClientsAttachments" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-danger">Pièces jointes (@ViewBag.AttachmentCount)</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="details-grid">
+            <div>
+                <div class="label">Numéro de Dossier</div>
+                <div class="value">@Model.Id</div>
+            </div>
+            <div>
+                <div class="label">Est membre?</div>
+                <div class="value">@(Model.IsMember ? "Oui" : "Non")</div>
+            </div>
+            <div>
+                <div class="label">Nom</div>
+                <div class="value">@Model.LastName</div>
+            </div>
+            <div>
+                <div class="label">Prénom</div>
+                <div class="value">@Model.FirstName</div>
+            </div>
+            <div>
+                <div class="label">Date de Naissance</div>
+                <div class="value">@Model.Birthdate?.ToString("d")</div>
+            </div>
+            <div>
+                <div class="label">Téléphone</div>
+                <div class="value">@Model.PhoneNumber</div>
+            </div>
+            <div>
+                <div class="label">Adresse Email</div>
+                <div class="value">@Model.Email</div>
+            </div>
+            <div>
+                <div class="label">Sexe</div>
+                <div class="value">@ViewBag.MdGenderDenomination</div>
+            </div>
+            <div>
+                <div class="label">Adresse de Résidence</div>
+                <div class="value">@Model.Address</div>
+            </div>
+            <div>
+                <div class="label">Code Postal</div>
+                <div class="value">@Model.ZipCode</div>
+            </div>
+            <div>
+                <div class="label">Statut Matrimonial</div>
+                <div class="value">@ViewBag.MdMaritalStatus</div>
+            </div>
+            <div>
+                <div class="label">Situation Familiale</div>
+                <div class="value">@ViewBag.MdFamilySituation</div>
+            </div>
+            <div>
+                <div class="label">Nombre d'adultes à la maison</div>
+                <div class="value">@Model.AdultsAtHome</div>
+            </div>
+            <div>
+                <div class="label">Nombre d'enfants à la maison</div>
+                <div class="value">@Model.ChildsAtHome</div>
+            </div>
+            <div>
+                <div class="label">Type de résidence</div>
+                <div class="value">@ViewBag.MdHabitationType</div>
+            </div>
+            <div>
+                <div class="label">Banque</div>
+                <div class="value">@ViewBag.MdBank</div>
+            </div>
+            <div>
+                <div class="label">Situation d'emploi</div>
+                <div class="value">@ViewBag.MdEmploymentSituation</div>
+            </div>
+            <div>
+                <div class="label">Type d'études</div>
+                <div class="value">@ViewBag.MdScholarshipType</div>
+            </div>
+            <div>
+                <div class="label">Salaire</div>
+                <div class="value">@Model.Income</div>
+            </div>
+        </div>
+
+        <div class="btn-container text-center">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier le client</a>
+            <a asp-action="Index" class="btn btn-secondary">Retour</a>
+        </div>
+    </div>
+</div>

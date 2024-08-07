@@ -1,0 +1,41 @@
+﻿@model DataAccess.BOL.Seminar.SeminarBOL
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_Layout";
+}
+<head>
+    <link rel="stylesheet" href="~/css/seminar.css">
+</head>
+
+
+<h1> Visualiser un atelier</h1>
+
+<div>
+    <h4>Seminar</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Date Seminar
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DateSeminar
+        </dd>
+        <dt class="col-sm-2">
+            Id Seminar Theme
+        </dt>
+        <dd class="col-sm-10">
+            @Model.IdSeminarTheme
+        </dd>
+        <dt class="col-sm-2">
+            Notes
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Notes
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,162 @@
+﻿@model WebApp.ViewModels.InterventionViewModel
+
+@{
+    ViewData["Title"] = "Create Intervention";
+}
+
+<style>
+    .form-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 28px;
+        color: #000000;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: none;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #495057;
+            box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-primary, .btn-secondary {
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: white;
+            color: black;
+            border: solid 1px;
+            border-color: black
+        }
+
+    .btn-secondary {
+        background-color: #ffffff;
+        color: #000000;
+        border: 1px solid #000000;
+    }
+
+        .btn-secondary:hover {
+            background-color: #f0f0f0;
+        }
+</style>
+
+<form asp-action="Create" method="post">
+    <div class="form-container border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="form-title text-center text-wh">Créer une Nouvelle Intervention</h2>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label asp-for="IsVirtual" class="form-label"></label>
+                <div class="form-check">
+                    <input asp-for="IsVirtual" class="form-check-input" type="checkbox" />
+                    <span asp-validation-for="IsVirtual" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+                <div class="mb-3">
+                    <label asp-for="DateIntervention" class="form-label"></label>
+                    <input asp-for="DateIntervention" type="date" class="form-control" />
+                    <span asp-validation-for="DateIntervention" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdEmployee" class="form-label"></label>
+                    <select asp-for="IdEmployee" class="form-control" asp-items="@(ViewBag.Employees)"></select>
+                    <span asp-validation-for="IdEmployee" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdClient" class="form-label"></label>
+                    <input asp-for="IdClient" type="text" class="form-control" />
+                    <span asp-validation-for="IdClient" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdReferenceType" class="form-label"></label>
+                    <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.MdReferenceSource)">
+                        <option value="">--Sélectionnez la réference--</option>
+                    </select>
+                    <span asp-validation-for="IdReferenceType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdStatusType" class="form-label"></label>
+                    <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.MdInterventionStatusType)">
+                        <option value="">--Sélectionnez le Statut--</option>
+                    </select>
+                    <span asp-validation-for="IdStatusType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdInterventionType" class="form-label"></label>
+                    <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.MdInterventionType)">
+                        <option value="">--Sélectionnez la Raison de Consultation--</option>
+                    </select>
+                    <span asp-validation-for="IdInterventionType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DebtAmount" class="form-label"></label>
+                    <input asp-for="DebtAmount" class="form-control" />
+                    <span asp-validation-for="DebtAmount" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdLoanReason" class="form-label"></label>
+                    <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReason)">
+                        <option value="">--Sélectionnez le but d'emprunt--</option>
+                    </select>
+                    <span asp-validation-for="IdLoanReason" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Petit prêt remboursé</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
+                        <label class="form-check-label" for="isLoanPaidYes">Oui</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
+                        <label class="form-check-label" for="isLoanPaidNo">Non</label>
+                    </div>
+                    <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary" style="width:150px">Créer</button>
+                <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary" style="width:150px">Retour</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

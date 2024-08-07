@@ -1,0 +1,55 @@
+﻿@model IEnumerable<WebApp.ViewModels.InterventionViewModel>
+
+@{
+    ViewData["Title"] = "Interventions";
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - ACEF</title>
+    <link rel="stylesheet" href="~/css/employees.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Liste des Interventions</h1>
+        <div class="create-button">
+            <a asp-action="Create" class="btn btn-primary">Créer une Nouvelle Intervention</a>
+        </div>
+
+        <table class="table">
+            <thead class="table-header">
+                <tr>
+                    <th>Date de l'intervention'</th>
+                    <th>Intervenant</th>
+                    <th>#dossier client</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var intervention in Model)
+                {
+                    <tr>
+                        <td>@intervention.DateIntervention</td>
+                        <td>@intervention.IdEmployee</td>
+                        <td>@intervention.IdClient</td>
+                        <td>@intervention.IdStatusType</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@intervention.Id" class="btn btn-warning">Détails</a>
+                            <a asp-action="Edit" asp-route-id="@intervention.Id" class="btn btn-danger">Modifier</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @section Scripts {
+        <script src="~/js/your-custom-scripts.js"></script>
+    }
+</body>
+</html>

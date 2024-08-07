@@ -1,0 +1,38 @@
+﻿@model WebApp.ViewModels.SeminarViewModel
+
+@{
+    ViewData["Title"] = "Edit Seminar";
+    Layout = "_Layout";
+}
+<head>
+    <link rel="stylesheet" href="~/css/seminar.css">
+</head>
+
+
+<h1>Edit Seminar</h1>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="DateSeminar" class="control-label"></label>
+        <input asp-for="DateSeminar" class="form-control" />
+        <span asp-validation-for="DateSeminar" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdSeminarTheme" class="control-label"></label>
+        <input asp-for="IdSeminarTheme" class="form-control" />
+        <span asp-validation-for="IdSeminarTheme" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes" class="control-label"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

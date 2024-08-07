@@ -1,0 +1,37 @@
+﻿@model WebApp.ViewModels.ClientNotesViewModel
+
+@{
+    ViewBag.Title = "Notes";
+    var client = Model.Client;
+}
+
+<h2 class="notes-card-header">Notes pour le client : @client.FirstName @client.LastName</h2>
+
+<div class="notes-card-body">
+    <a asp-action="Create" asp-route-clientId="@client.Id" class="btn btn-primary custom-btn custom-btn-create">Ajouter une note</a>
+    <a asp-action="Details" asp-controller="Client" asp-route-id="@client.Id" class="btn btn-primary custom-btn custom-btn-create">Retour Detail du client</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Commentaire</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in Model.Notes)
+            {
+                <tr>
+                    <td>@note.IdEmployee @note.Comment</td>
+                    <td>@note.CreatedDate?.ToString("g")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@note.Id" class="btn btn-secondary custom-btn custom-btn-edit">Modifier</a>
+                        <a asp-action="Delete" asp-route-id="@note.Id" class="btn btn-danger custom-btn custom-btn-delete">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

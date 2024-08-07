@@ -1,0 +1,219 @@
+﻿@model WebApp.ViewModels.SeminarViewModel
+
+@{
+    ViewData["Title"] = "Créer un Atelier";
+    Layout = "_Layout";
+}
+
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        margin-right: 0.5rem;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .list-group-item .remove-participant {
+            color: red;
+            cursor: pointer;
+        }
+
+            .list-group-item .remove-participant:hover {
+                color: darkred;
+            }
+
+    #participantInput {
+        margin-bottom: 0.5rem;
+    }
+
+    #addParticipantButton {
+        margin-top: 0.5rem;
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-title {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-footer {
+        padding: 0.5rem;
+        border-top: 1px solid #dee2e6;
+    }
+</style>
+
+<h1>Ajouter un atelier</h1>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="DateSeminar" class="control-label"></label>
+        <input asp-for="DateSeminar" class="form-control" />
+        <span asp-validation-for="DateSeminar" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdSeminarTheme" class="control-label">Thème de l'atelier</label>
+        <select asp-for="IdSeminarTheme" class="form-control" asp-items="ViewBag.SeminarThemes"></select>
+        <span asp-validation-for="IdSeminarTheme" class="text-danger"></span>
+    </div><br>
+    <div class="form-group">
+        <label asp-for="SelectedParticipants" class="control-label">Participants</label>
+        <input type="text" class="form-control" id="participantInput" placeholder="Rechercher des participants" />
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#participantModal">
+            <i class="bi bi-search"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" id="addParticipantButton">
+            <i class="bi bi-plus"></i>
+        </button>
+        <ul id="selectedParticipantsList" class="list-group mt-2">
+            @{
+                var participants = ViewBag.Participants as IEnumerable<SelectListItem>;
+                foreach (var participantId in Model.SelectedParticipants)
+                {
+                    var participant = participants?.FirstOrDefault(p => p.Value == participantId.ToString());
+                    if (participant != null)
+                    {
+                        <li class="list-group-item" data-id="@participantId">
+                            <a href="/Client/Details/@participantId" target="_blank">@participant.Text (#@participantId)</a>
+                            <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a>
+                            <input type="hidden" name="SelectedParticipants" value="@participantId" />
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    </div><br>
+    <div class="form-group">
+        <label asp-for="Notes" class="control-label">Commentaire</label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div><br>
+    <div class="form-group">
+        <input type="submit" value="Sauvegarder" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Retour au détail des Ateliers</a>
+</div>
+
+<!-- Modal pour la recherche de participants -->
+<div class="modal fade" id="participantModal" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="participantModalLabel">Rechercher des Participants</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchParticipantInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <ul id="participantSearchResults" class="list-group mt-2">
+                    <!-- Les résultats de la recherche seront ajoutés ici -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchParticipantInput').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm.length > 2) {
+                    $.ajax({
+                        url: '@Url.Action("SearchParticipants", "Seminars")',
+                        data: { searchTerm: searchTerm },
+                        success: function (data) {
+                            $('#participantSearchResults').empty();
+                            data.forEach(function (participant) {
+                                $('#participantSearchResults').append('<li class="list-group-item" data-id="' + participant.id + '">' + participant.fullName + ' (#' + participant.id + ')</li>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Erreur lors de la recherche des participants:", status, error);
+                        }
+                    });
+                }
+            });
+
+            $('#participantSearchResults').on('click', 'li', function () {
+                var participantId = $(this).data('id');
+                var participantName = $(this).text();
+                $('#selectedParticipantsList').append('<li class="list-group-item" data-id="' + participantId + '"><a href="/Client/Details/' + participantId + '" target="_blank">' + participantName + '</a> <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a><input type="hidden" name="SelectedParticipants" value="' + participantId + '" /></li>');
+                $('#participantModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+
+            $('#addParticipantButton').on('click', function () {
+                var participantName = $('#participantInput').val();
+                if (participantName) {
+                    $('#selectedParticipantsList').append('<li class="list-group-item">' + participantName + ' <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a></li>');
+                    $('#participantInput').val('');
+                }
+            });
+
+            $('#selectedParticipantsList').on('click', '.remove-participant', function (e) {
+                e.preventDefault();
+                $(this).parent().remove();
+            });
+
+            $('#participantModal').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+        });
+    </script>
+}
+
+

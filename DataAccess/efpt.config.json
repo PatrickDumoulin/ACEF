@@ -1,0 +1,194 @@
+﻿{
+   "CodeGenerationMode": 3,
+   "ContextClassName": "Projet_CLContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "DataAccess",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Clients]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Clients_Attachments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Clients_IncomeTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Clients_Notes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CowMilkIngredientPriceListMonths]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CowMilkIngredientPriceLists]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CowMilkIngredients]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CowMilkProductionTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CowMilkSalesGeneralInfoProductions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CowMilkSalesGeneralInfos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmployeePermissions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Employees]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Interventions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Interventions_Attachments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Interventions_InterventionSolutions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Interventions_Notes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdBank]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdEmploymentSituation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdFamilySituation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdGenderDenomination]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdHabitationType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdIncomeType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdInterventionSolution]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdInterventionStatusTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdInterventionType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdLoanReason]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdMaritalStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdReferenceSource]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdScholarshipType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MdSeminarThemes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductionTypeDepartments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductionTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Seminars]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Seminars_Employees]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Seminars_Participants]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DecryptData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EncryptData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GenerateNewID]",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": false,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}
