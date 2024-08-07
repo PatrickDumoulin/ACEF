@@ -122,6 +122,13 @@
                     <span asp-validation-for="IdInterventionType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="IdInterventionSolution" class="form-label"></label>
+                    <select asp-for="IdInterventionSolution" class="form-control" asp-items="@(ViewBag.MdInterventionSolution)">
+                        <option value="">--Sélectionnez la Solution--</option>
+                    </select>
+                    <span asp-validation-for="IdInterventionSolution" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <label asp-for="DebtAmount" class="form-label"></label>
                     <input asp-for="DebtAmount" class="form-control" />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
@@ -159,7 +166,8 @@
 </form>
 
 @section Scripts {
-    <script>
+    @* FIELDS QUI APPARRAISSENT EN FONCTION DU CHOIX DE INTERVENTIONSOLUTION
+        <script>
         document.addEventListener('DOMContentLoaded', function () {
             var interventionTypeDropdown = document.querySelector('[name="IdInterventionType"]');
             var loanFields = document.getElementById('loanFields');
@@ -181,7 +189,7 @@
             // Initial check
             toggleLoanFields();
         });
-    </script>
+    </script> *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

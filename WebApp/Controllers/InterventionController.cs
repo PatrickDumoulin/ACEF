@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Logic.Interfaces;
 using CoreLib.Injection;
 using DataAccess.BOL.Intervention;
+using DataAccess.BOL.InterventionsInterventionSolutions;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -98,9 +99,8 @@ namespace WebApp.Controllers
                     IsLoanPaid = viewModel.IsLoanPaid
                 };
 
-                var newInterventionSolution = new InterventionSolutionsBOL
+                var newInterventionSolution = new InterventionsInterventionSolutionsBOL
                 {
-                    //A REVOIR
                     IdIntervention = newIntervention.Id,
                     IdInterventionSolution = viewModel.IdInterventionSolution,
                 };

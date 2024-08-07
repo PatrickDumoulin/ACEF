@@ -37,7 +37,7 @@ namespace WebApp.ViewModels
         [Display(Name = "Petit prêt remboursé")]
         public bool? IsLoanPaid { get; set; }
 
-        [Display(Name = "Petit prêt remboursé")]
+        [Display(Name = "Solution")]
         public int? IdInterventionSolution { get; set; }
 
 
