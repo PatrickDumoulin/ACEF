@@ -1,11 +1,15 @@
 ﻿using CoreLib.Definitions;
+using DataModels.BOL.IMdInterventionStatusType;
 using DataModels.BOL.IMdScholarshipType;
 using DataModels.BOL.MdBank;
 using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionType;
+using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
+using DataModels.BOL.MdReferenceSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +40,17 @@ namespace DataAccess.Providers.Interfaces
 
         IMdScholarshipTypeBOL GetMdScholarshipType(int id);
         List<IMdScholarshipTypeBOL> GetAllMdScholarshipTypes();
+
+        IMdReferenceSourceBOL GetMdReferenceSource(int id);
+        List<IMdReferenceSourceBOL> GetAllMdReferenceSources();
+
+        IMdInterventionStatusTypeBOL GetMdInterventionStatusType(int id);
+        List<IMdInterventionStatusTypeBOL> GetAllMdInterventionStatusTypes();
+
+        IMdLoanReasonBOL GetMdLoanReason(int id);
+        List<IMdLoanReasonBOL> GetAllMdLoanReasons();
+
+        IMdInterventionTypeBOL GetMdInterventionType(int id);
+        List<IMdInterventionTypeBOL> GetAllMdInterventionTypes();
     }
 }

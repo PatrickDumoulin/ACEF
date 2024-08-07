@@ -9,7 +9,7 @@ public partial class Interventions
 {
     public int Id { get; set; }
 
-    public bool? IsVirtual { get; set; }
+    public bool IsVirtual { get; set; }
 
     public DateTime? DateIntervention { get; set; }
 

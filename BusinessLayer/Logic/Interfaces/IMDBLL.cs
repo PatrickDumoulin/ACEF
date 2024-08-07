@@ -1,12 +1,16 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using CoreLib.Definitions;
+using DataModels.BOL.IMdInterventionStatusType;
 using DataModels.BOL.IMdScholarshipType;
 using DataModels.BOL.MdBank;
 using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionType;
+using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
+using DataModels.BOL.MdReferenceSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +41,18 @@ namespace BusinessLayer.Logic.Interfaces
 
         GetItemResponse<IMdScholarshipTypeBOL> GetMdScholarshipType(int id);
         GetListResponse<IMdScholarshipTypeBOL> GetAllMdScholarshipTypes();
+
+        GetItemResponse<IMdReferenceSourceBOL> GetMdReferenceSource(int id);
+        GetListResponse<IMdReferenceSourceBOL> GetAllMdReferenceSources();
+
+        GetItemResponse<IMdInterventionStatusTypeBOL> GetMdInterventionStatusType(int id);
+        GetListResponse<IMdInterventionStatusTypeBOL> GetAllMdInterventionStatusTypes();
+
+        GetItemResponse<IMdLoanReasonBOL> GetMdLoanReason(int id);
+        GetListResponse<IMdLoanReasonBOL> GetAllMdLoanReasons();
+
+        GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id);
+        GetListResponse<IMdInterventionTypeBOL> GetAllMdInterventionTypes();
 
     }
 }

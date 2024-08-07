@@ -79,6 +79,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[MD_InterventionStatusTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MD_SeminarThemes]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[MdBank]",
          "ObjectType": 0
       },
@@ -107,10 +115,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[MdInterventionStatusTypes]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[MdInterventionType]",
          "ObjectType": 0
       },
@@ -128,10 +132,6 @@
       },
       {
          "Name": "[dbo].[MdScholarshipType]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[MdSeminarThemes]",
          "ObjectType": 0
       },
       {

@@ -5,13 +5,17 @@ using CoreLib.Definitions;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
+using DataModels.BOL.IMdInterventionStatusType;
 using DataModels.BOL.IMdScholarshipType;
 using DataModels.BOL.MdBank;
 using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionType;
+using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
+using DataModels.BOL.MdReferenceSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,6 +119,58 @@ namespace BusinessLayer.Logic
             List<IMdScholarshipTypeBOL> mdScholarshipTypeBOL = base.dal.
                 GetAllMdScholarshipTypes();
             return new GetListResponse<IMdScholarshipTypeBOL>(mdScholarshipTypeBOL);
+        }
+
+        public GetItemResponse<IMdReferenceSourceBOL> GetMdReferenceSource(int id)
+        {
+            IMdReferenceSourceBOL mdReferenceSourceBOL = base.dal.GetMdReferenceSource(id);
+            return new GetItemResponse<IMdReferenceSourceBOL>(mdReferenceSourceBOL);
+        }
+
+        public GetListResponse<IMdReferenceSourceBOL> GetAllMdReferenceSources()
+        {
+            List<IMdReferenceSourceBOL> mdReferenceSourceBOL = base.dal.
+                GetAllMdReferenceSources();
+            return new GetListResponse<IMdReferenceSourceBOL>(mdReferenceSourceBOL);
+        }
+
+        public GetItemResponse<IMdInterventionStatusTypeBOL> GetMdInterventionStatusType(int id)
+        {
+            IMdInterventionStatusTypeBOL mdInterventionStatusTypeBOL = base.dal.GetMdInterventionStatusType(id);
+            return new GetItemResponse<IMdInterventionStatusTypeBOL>(mdInterventionStatusTypeBOL);
+        }
+
+        public GetListResponse<IMdInterventionStatusTypeBOL> GetAllMdInterventionStatusTypes()
+        {
+            List<IMdInterventionStatusTypeBOL> mdInterventionStatusTypeBOL = base.dal.
+                GetAllMdInterventionStatusTypes();
+            return new GetListResponse<IMdInterventionStatusTypeBOL>(mdInterventionStatusTypeBOL);
+        }
+
+        public GetItemResponse<IMdLoanReasonBOL> GetMdLoanReason(int id)
+        {
+            IMdLoanReasonBOL mdLoanReasonBOL = base.dal.GetMdLoanReason(id);
+            return new GetItemResponse<IMdLoanReasonBOL>(mdLoanReasonBOL);
+        }
+
+        public GetListResponse<IMdLoanReasonBOL> GetAllMdLoanReasons()
+        {
+            List<IMdLoanReasonBOL> mdLoanReasonBOL = base.dal.
+                GetAllMdLoanReasons();
+            return new GetListResponse<IMdLoanReasonBOL>(mdLoanReasonBOL);
+        }
+
+        public GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id)
+        {
+            IMdInterventionTypeBOL mdInterventionTypeBOL = base.dal.GetMdInterventionType(id);
+            return new GetItemResponse<IMdInterventionTypeBOL>(mdInterventionTypeBOL);
+        }
+
+        public GetListResponse<IMdInterventionTypeBOL> GetAllMdInterventionTypes()
+        {
+            List<IMdInterventionTypeBOL> mdInterventionTypeBOL = base.dal.
+                GetAllMdInterventionTypes();
+            return new GetListResponse<IMdInterventionTypeBOL>(mdInterventionTypeBOL);
         }
     }
 }

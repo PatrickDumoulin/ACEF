@@ -16,7 +16,7 @@ namespace DataAccess.BOL.Intervention
 
         public int Id { get { return base.Record.Id; } }
 
-        public bool IsVirtual { get { return base.Record.IsVirtual ?? false; } set { base.Record.IsVirtual = value; } }
+        public bool IsVirtual { get { return base.Record.IsVirtual;/* ?? false; */} set { base.Record.IsVirtual = value; } }
 
         public DateTime? DateIntervention { get { return base.Record.DateIntervention; } set { base.Record.DateIntervention = value; } }
 

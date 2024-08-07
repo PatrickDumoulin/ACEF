@@ -4,18 +4,26 @@ using DataAccess.BOL.MdEmploymentSituation;
 using DataAccess.BOL.MdFamilySituation;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.BOL.MdHabitationType;
+using DataAccess.BOL.MdInterventionStatusType;
+using DataAccess.BOL.MdInterventionType;
+using DataAccess.BOL.MdLoanReason;
 using DataAccess.BOL.MdMaritalStatus;
+using DataAccess.BOL.MdReferenceSource;
 using DataAccess.BOL.MdScholarshipType;
 using DataAccess.Core.Definitions;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
+using DataModels.BOL.IMdInterventionStatusType;
 using DataModels.BOL.IMdScholarshipType;
 using DataModels.BOL.MdBank;
 using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdInterventionType;
+using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
+using DataModels.BOL.MdReferenceSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,6 +120,54 @@ namespace DataAccess.Providers.Entity
         {
             List<IRecord> records = Db.MdScholarshipType.ToList<IRecord>();
             return MapperWrapper.NewBols<MdScholarshipTypeBOL>(records).ToList<IMdScholarshipTypeBOL>();
+        }
+
+        public IMdReferenceSourceBOL GetMdReferenceSource(int id)
+        {
+            MdReferenceSource record = Db.MdReferenceSource.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdReferenceSourceBOL>(record);
+        }
+
+        public List<IMdReferenceSourceBOL> GetAllMdReferenceSources()
+        {
+            List<IRecord> records = Db.MdReferenceSource.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdReferenceSourceBOL>(records).ToList<IMdReferenceSourceBOL>();
+        }
+
+        public IMdInterventionStatusTypeBOL GetMdInterventionStatusType(int id)
+        {
+            MdInterventionStatusTypes record = Db.MdInterventionStatusTypes.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdInterventionStatusTypeBOL>(record);
+        }
+
+        public List<IMdInterventionStatusTypeBOL> GetAllMdInterventionStatusTypes()
+        {
+            List<IRecord> records = Db.MdInterventionStatusTypes.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdInterventionStatusTypeBOL>(records).ToList<IMdInterventionStatusTypeBOL>();
+        }
+
+        public IMdLoanReasonBOL GetMdLoanReason(int id)
+        {
+            MdLoanReason record = Db.MdLoanReason.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdLoanReasonBOL>(record);
+        }
+
+        public List<IMdLoanReasonBOL> GetAllMdLoanReasons()
+        {
+            List<IRecord> records = Db.MdLoanReason.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdLoanReasonBOL>(records).ToList<IMdLoanReasonBOL>();
+        }
+
+        public IMdInterventionTypeBOL GetMdInterventionType(int id)
+        {
+            MdInterventionType record = Db.MdInterventionType.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdInterventionTypeBOL>(record);
+        }
+
+        public List<IMdInterventionTypeBOL> GetAllMdInterventionTypes()
+        {
+            List<IRecord> records = Db.MdInterventionType.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdInterventionTypeBOL>(records).ToList<IMdInterventionTypeBOL>();
         }
     }
 

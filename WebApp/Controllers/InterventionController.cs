@@ -71,8 +71,8 @@ namespace WebApp.Controllers
         // GET: InterventionController/Create
         public ActionResult Create()
         {
-            //IMDBLL mdBLL = base.GetBLL<IMDBLL>();
-            //PopulateMdViewBags(mdBLL);
+            IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+            PopulateMdViewBags(mdBLL);
 
             ViewBag.Employees = GetEmployeesSelectList();
             return View();
@@ -103,8 +103,8 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            //IMDBLL mdBLL = base.GetBLL<IMDBLL>();
-            //PopulateMdViewBags(mdBLL);
+            IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+            PopulateMdViewBags(mdBLL);
             ViewBag.Employees = GetEmployeesSelectList();
 
             return View(viewModel);
@@ -130,8 +130,8 @@ namespace WebApp.Controllers
                     IsLoanPaid = response.Element.IsLoanPaid
                 };
 
-                //IMDBLL mdBLL = base.GetBLL<IMDBLL>();
-                //PopulateMdViewBags(mdBLL);
+                IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+                PopulateMdViewBags(mdBLL);
                 ViewBag.Employees = GetEmployeesSelectList();
 
                 return View(viewModel);
@@ -164,8 +164,8 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            //IMDBLL mdBLL = base.GetBLL<IMDBLL>();
-            //PopulateMdViewBags(mdBLL);
+            IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+            PopulateMdViewBags(mdBLL);
             ViewBag.Employees = GetEmployeesSelectList();
 
             return View(viewModel);
@@ -203,37 +203,37 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //private void PopulateMdViewBags(IMDBLL mdBLL)
-        //{
-        //    var mdReferenceSource = mdBLL.GetAllMdReferenceSources();
-        //    var mdStatusType = mdBLL.GetAllMdInterventionStatusTypes();
-        //    var mdLoanReason = mdBLL.GetAllMdLoanReasons();
-        //    var mdInterventionType = mdBLL.GetAllMdInterventionTypes();
+        private void PopulateMdViewBags(IMDBLL mdBLL)
+        {
+            var mdReferenceSource = mdBLL.GetAllMdReferenceSources();
+            var mdStatusType = mdBLL.GetAllMdInterventionStatusTypes();
+            var mdLoanReason = mdBLL.GetAllMdLoanReasons();
+            var mdInterventionType = mdBLL.GetAllMdInterventionTypes();
 
-        //    ViewBag.MdReferenceSource = mdReferenceSource.ElementList.Select(b => new SelectListItem
-        //    {
-        //        Value = b.Id.ToString(),
-        //        Text = b.Name
-        //    });
+            ViewBag.MdReferenceSource = mdReferenceSource.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
 
-        //    ViewBag.MdInterventionStatusType = mdStatusType.ElementList.Select(b => new SelectListItem
-        //    {
-        //        Value = b.Id.ToString(),
-        //        Text = b.Name
-        //    });
+            ViewBag.MdInterventionStatusType = mdStatusType.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
 
-        //    ViewBag.MdLoanReason = mdLoanReason.ElementList.Select(b => new SelectListItem
-        //    {
-        //        Value = b.Id.ToString(),
-        //        Text = b.Name
-        //    });
+            ViewBag.MdLoanReason = mdLoanReason.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
 
-        //    ViewBag.MdInterventionType = mdInterventionType.ElementList.Select(b => new SelectListItem
-        //    {
-        //        Value = b.Id.ToString(),
-        //        Text = b.Name
-        //    });
-        //}
+            ViewBag.MdInterventionType = mdInterventionType.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+        }
 
         private SelectList GetEmployeesSelectList()
         {
