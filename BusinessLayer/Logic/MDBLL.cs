@@ -13,11 +13,13 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdIncomeType;
 using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
 using DataModels.BOL.MdReferenceSource;
+using DataModels.BOL.MdSeminarThemes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -187,5 +189,30 @@ namespace BusinessLayer.Logic
                 GetAllMdInterventionSolutions();
             return new GetListResponse<IMdInterventionSolutionBOL>(mdInterventionSolutionBOL);
         }
+
+        public GetItemResponse<IMdIncomeTypeBOL> GetMdIncomeType(int id)
+        {
+            IMdIncomeTypeBOL mdIncomeTypeBOL = base.dal.GetMdIncomeType(id);
+            return new GetItemResponse<IMdIncomeTypeBOL>(mdIncomeTypeBOL);
+        }
+
+        public GetListResponse<IMdIncomeTypeBOL> GetAllMdIncomeTypes()
+        {
+            List<IMdIncomeTypeBOL> mdIncomeTypeBOL = base.dal.GetAllMdIncomeTypes();
+            return new GetListResponse<IMdIncomeTypeBOL>(mdIncomeTypeBOL);
+        }
+
+        public GetItemResponse<IMdSeminarThemesBOL> GetMdSeminarTheme(int id)
+        {
+            IMdSeminarThemesBOL mdSeminarThemeBOL = base.dal.GetMdSeminarTheme(id);
+            return new GetItemResponse<IMdSeminarThemesBOL>(mdSeminarThemeBOL);
+        }
+
+        public GetListResponse<IMdSeminarThemesBOL> GetAllMdSeminarThemes()
+        {
+            List<IMdSeminarThemesBOL> mdSeminarThemeBOL = base.dal.GetAllMdSeminarThemes();
+            return new GetListResponse<IMdSeminarThemesBOL>(mdSeminarThemeBOL);
+        }
+
     }
 }

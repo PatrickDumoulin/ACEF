@@ -526,9 +526,7 @@ public partial class Projet_CLContext : DbContext
 
         modelBuilder.Entity<MdInterventionStatusTypes>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MD_Inter__3214EC07617924BF");
-
-            entity.ToTable("MD_InterventionStatusTypes");
+            entity.HasKey(e => e.Id).HasName("PK__MdInterv__3214EC0796F54C51");
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -587,10 +585,9 @@ public partial class Projet_CLContext : DbContext
 
         modelBuilder.Entity<MdSeminarThemes>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MD_Semin__3214EC0766069C35");
+            entity.HasKey(e => e.Id).HasName("PK__MdSemina__3214EC07E9400C23");
 
-            entity.ToTable("MD_SeminarThemes");
-
+            entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255);

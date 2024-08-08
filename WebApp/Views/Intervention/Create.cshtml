@@ -1,7 +1,8 @@
 ﻿@model WebApp.ViewModels.InterventionViewModel
 
 @{
-    ViewData["Title"] = "Create Intervention";
+    ViewData["Title"] = "Créer une Intervention";
+    Layout = "_Layout";
 }
 
 <style>
@@ -97,33 +98,39 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdClient" class="form-label"></label>
-                    <input asp-for="IdClient" type="text" class="form-control" />
+                    <div class="input-group">
+                        <input asp-for="IdClient" type="hidden" id="IdClient" /> <!-- Hidden input to store client ID -->
+                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="background-color: #e9ecef; cursor: not-allowed;" /> <!-- Display client name -->
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#clientModal">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
                     <span asp-validation-for="IdClient" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdReferenceType" class="form-label"></label>
-                    <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.MdReferenceSource)">
+                    <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.ReferenceTypes)">
                         <option value="">--Sélectionnez la réference--</option>
                     </select>
                     <span asp-validation-for="IdReferenceType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdStatusType" class="form-label"></label>
-                    <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.MdInterventionStatusType)">
+                    <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.StatusTypes)">
                         <option value="">--Sélectionnez le Statut--</option>
                     </select>
                     <span asp-validation-for="IdStatusType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdInterventionType" class="form-label"></label>
-                    <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.MdInterventionType)">
+                    <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.InterventionTypes)">
                         <option value="">--Sélectionnez la Raison de Consultation--</option>
                     </select>
                     <span asp-validation-for="IdInterventionType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdInterventionSolution" class="form-label"></label>
-                    <select asp-for="IdInterventionSolution" class="form-control" asp-items="@(ViewBag.MdInterventionSolution)">
+                    <select asp-for="IdInterventionSolution" class="form-control" asp-items="@(ViewBag.Solutions)">
                         <option value="">--Sélectionnez la Solution--</option>
                     </select>
                     <span asp-validation-for="IdInterventionSolution" class="text-danger"></span>
@@ -136,7 +143,7 @@
                 <div class="mb-3 hidden" id="loanFields">
                     <div>
                         <label asp-for="IdLoanReason" class="form-label"></label>
-                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReason)">
+                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.LoanReasons)">
                             <option value="">--Sélectionnez le but d'emprunt--</option>
                         </select>
                         <span asp-validation-for="IdLoanReason" class="text-danger"></span>
@@ -165,32 +172,78 @@
     </div>
 </form>
 
+<!-- Modal pour la recherche de clients -->
+<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="clientModalLabel">Rechercher des Clients</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchClientInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <ul id="clientSearchResults" class="list-group mt-2">
+                    <!-- Les résultats de la recherche seront ajoutés ici -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
-    @* FIELDS QUI APPARRAISSENT EN FONCTION DU CHOIX DE INTERVENTIONSOLUTION
-        <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var interventionTypeDropdown = document.querySelector('[name="IdInterventionType"]');
-            var loanFields = document.getElementById('loanFields');
-
-            function toggleLoanFields() {
-                var selectedValue = interventionTypeDropdown.options[interventionTypeDropdown.selectedIndex].text;
-                if (selectedValue === 'petit prêt') {
-                    loanFields.classList.remove('hidden');
-                } else {
-                    loanFields.classList.add('hidden');
-                    // Set the fields to null if "petit prêt" is not selected
-                    document.querySelector('[name="IdLoanReason"]').value = '';
-                    document.querySelectorAll('[name="IsLoanPaid"]').forEach(radio => radio.checked = false);
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchClientInput').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm.length > 2) {
+                    $.ajax({
+                        url: '@Url.Action("SearchClients", "Intervention")',
+                        data: { searchTerm: searchTerm },
+                        success: function (data) {
+                            $('#clientSearchResults').empty();
+                            data.forEach(function (client) {
+                                $('#clientSearchResults').append('<li class="list-group-item" data-id="' + client.id + '">' + client.fullName + ' (#' + client.id + ')</li>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Erreur lors de la recherche des clients:", status, error);
+                        }
+                    });
                 }
-            }
+            });
 
-            interventionTypeDropdown.addEventListener('change', toggleLoanFields);
+            $('#clientSearchResults').on('click', 'li', function () {
+                var clientId = $(this).data('id');
+                var clientName = $(this).text();
+                $('#IdClient').val(clientId);
+                $('#clientNameDisplay').val(clientName); // Use val() instead of text()
+                $('#clientModal').modal('hide');
+            });
 
-            // Initial check
-            toggleLoanFields();
+            $('#addParticipantButton').on('click', function () {
+                var participantName = $('#participantInput').val();
+                if (participantName) {
+                    $('#selectedParticipantsList').append('<li class="list-group-item">' + participantName + ' <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a></li>');
+                    $('#participantInput').val('');
+                }
+            });
+
+            $('#selectedParticipantsList').on('click', '.remove-participant', function (e) {
+                e.preventDefault();
+                $(this).parent().remove();
+            });
+
+            $('#clientModal').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
         });
-    </script> *@
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    </script>
 }

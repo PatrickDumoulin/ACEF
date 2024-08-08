@@ -6,11 +6,13 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdIncomeType;
 using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
 using DataModels.BOL.MdReferenceSource;
+using DataModels.BOL.MdSeminarThemes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,5 +58,11 @@ namespace DataAccess.Providers.Interfaces
 
         IMdInterventionSolutionBOL GetMdInterventionSolution(int id);
         List<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions();
+
+        IMdIncomeTypeBOL GetMdIncomeType(int id);
+        List<IMdIncomeTypeBOL> GetAllMdIncomeTypes();
+
+        IMdSeminarThemesBOL GetMdSeminarTheme(int id);
+        List<IMdSeminarThemesBOL> GetAllMdSeminarThemes();
     }
 }

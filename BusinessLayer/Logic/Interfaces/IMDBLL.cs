@@ -7,11 +7,13 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdIncomeType;
 using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
 using DataModels.BOL.MdReferenceSource;
+using DataModels.BOL.MdSeminarThemes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +59,13 @@ namespace BusinessLayer.Logic.Interfaces
 
         GetItemResponse<IMdInterventionSolutionBOL> GetMdInterventionSolution(int id);
         GetListResponse<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions();
+
+        GetItemResponse<IMdIncomeTypeBOL> GetMdIncomeType(int id);
+        GetListResponse<IMdIncomeTypeBOL> GetAllMdIncomeTypes();
+
+        GetItemResponse<IMdSeminarThemesBOL> GetMdSeminarTheme(int id);
+        GetListResponse<IMdSeminarThemesBOL> GetAllMdSeminarThemes();
+
 
     }
 }

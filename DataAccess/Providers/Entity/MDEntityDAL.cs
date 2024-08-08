@@ -4,6 +4,7 @@ using DataAccess.BOL.MdEmploymentSituation;
 using DataAccess.BOL.MdFamilySituation;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.BOL.MdHabitationType;
+using DataAccess.BOL.MdIncomeType;
 using DataAccess.BOL.MdInterventionSolution;
 using DataAccess.BOL.MdInterventionStatusType;
 using DataAccess.BOL.MdInterventionType;
@@ -11,6 +12,7 @@ using DataAccess.BOL.MdLoanReason;
 using DataAccess.BOL.MdMaritalStatus;
 using DataAccess.BOL.MdReferenceSource;
 using DataAccess.BOL.MdScholarshipType;
+using DataAccess.BOL.MdSeminarThemes;
 using DataAccess.Core.Definitions;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
@@ -21,11 +23,13 @@ using DataModels.BOL.MdEmploymentSituation;
 using DataModels.BOL.MdFamilySituation;
 using DataModels.BOL.MdGenderDenomination;
 using DataModels.BOL.MdHabitationType;
+using DataModels.BOL.MdIncomeType;
 using DataModels.BOL.MdInterventionSolution;
 using DataModels.BOL.MdInterventionType;
 using DataModels.BOL.MdLoanReason;
 using DataModels.BOL.MdMaritalStatus;
 using DataModels.BOL.MdReferenceSource;
+using DataModels.BOL.MdSeminarThemes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -182,6 +186,28 @@ namespace DataAccess.Providers.Entity
         {
             List<IRecord> records = Db.MdInterventionSolution.ToList<IRecord>();
             return MapperWrapper.NewBols<MdInterventionSolutionBOL>(records).ToList<IMdInterventionSolutionBOL>();
+        }
+        public IMdIncomeTypeBOL GetMdIncomeType(int id)
+        {
+            MdIncomeType record = Db.MdIncomeType.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdIncomeTypeBOL>(record);
+        }
+
+        public List<IMdIncomeTypeBOL> GetAllMdIncomeTypes()
+        {
+            List<IRecord> records = Db.MdIncomeType.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdIncomeTypeBOL>(records).ToList<IMdIncomeTypeBOL>();
+        }
+        public IMdSeminarThemesBOL GetMdSeminarTheme(int id)
+        {
+            MdSeminarThemes record = Db.MdSeminarThemes.FirstOrDefault(x => x.Id == id);
+            return MapperWrapper.NewBol<MdSeminarThemesBOL>(record);
+        }
+
+        public List<IMdSeminarThemesBOL> GetAllMdSeminarThemes()
+        {
+            List<IRecord> records = Db.MdSeminarThemes.ToList<IRecord>();
+            return MapperWrapper.NewBols<MdSeminarThemesBOL>(records).ToList<IMdSeminarThemesBOL>();
         }
     }
 
