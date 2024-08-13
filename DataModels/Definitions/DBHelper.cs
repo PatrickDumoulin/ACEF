@@ -12,7 +12,7 @@ namespace DataModels.Definitions
         private static object sync_root = new object();
 
         private const string username = "Patrick";
-        private const string password = "Superadmin@1234";
+        private const string password = "@Aa123456";
 
         public static string ResolveConnectionString(string serverName, string databaseName)
         {

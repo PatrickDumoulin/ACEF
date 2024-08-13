@@ -14,17 +14,19 @@ namespace BusinessLayer.Logic
         public ClientAttachmentBLL(ProviderDALTypes dalType) : base(dalType) { }
         public ClientAttachmentBLL(IDAL externalDAL) : base(externalDAL) { }
 
+        public GetItemResponse<ClientAttachmentBOL> GetAttachmentById(int id)
+        {
+            var attachment = base.dal.GetClientAttachmentById(id);
+            return new GetItemResponse<ClientAttachmentBOL>(attachment);
+        }
+
         public GetListResponse<ClientAttachmentBOL> GetAttachmentsByClientId(int clientId)
         {
             var attachments = base.dal.GetClientAttachmentsByClientId(clientId);
             return new GetListResponse<ClientAttachmentBOL>(attachments);
         }
 
-        public GetItemResponse<ClientAttachmentBOL> GetAttachmentById(int id)
-        {
-            var attachment = base.dal.GetClientAttachmentById(id);
-            return new GetItemResponse<ClientAttachmentBOL>(attachment);
-        }
+        
 
         public void CreateAttachment(ClientAttachmentBOL attachment)
         {
