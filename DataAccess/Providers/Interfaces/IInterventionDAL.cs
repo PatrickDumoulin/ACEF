@@ -1,5 +1,4 @@
 ﻿using CoreLib.Definitions;
-using DataAccess.BOL.Intervention;
 using DataModels.BOL.Client;
 using DataModels.BOL.Intervention;
 using System;

@@ -1,7 +1,7 @@
 ﻿@model WebApp.ViewModels.InterventionViewModel
 
 @{
-    ViewData["Title"] = "Créer une Intervention";
+    ViewData["Title"] = "Ajouter une Intervention";
     Layout = "_Layout";
 }
 
@@ -53,7 +53,7 @@
             background-color: white;
             color: black;
             border: solid 1px;
-            border-color: black
+            border-color: black;
         }
 
     .btn-secondary {
@@ -71,36 +71,44 @@
     }
 </style>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        Il y a des erreurs dans le formulaire. Veuillez les corriger avant de soumettre.
+    </div>
+}
+
 <form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-container border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="form-title text-center text-wh">Créer une Nouvelle Intervention</h2>
+            <h2 class="form-title text-center">Ajouter une Nouvelle Intervention</h2>
             <hr />
         </div>
         <div class="row">
-            <div class="mb-3">
-                <label asp-for="IsVirtual" class="form-label"></label>
-                <div class="form-check">
-                    <input asp-for="IsVirtual" class="form-check-input" type="checkbox" />
-                    <span asp-validation-for="IsVirtual" class="text-danger"></span>
-                </div>
-            </div>
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label asp-for="DateIntervention" class="form-label"></label>
-                    <input asp-for="DateIntervention" type="date" class="form-control" />
+                    <label asp-for="IsVirtual" class="form-label">Est virtuel</label>
+                    <div class="form-check">
+                        <input asp-for="IsVirtual" class="form-check-input" type="checkbox" />
+                        <span asp-validation-for="IsVirtual" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DateIntervention" class="form-label">Date de l'intervention</label>
+                    <input asp-for="DateIntervention" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="DateIntervention" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="IdEmployee" class="form-label"></label>
+                    <label asp-for="IdEmployee" class="form-label">Intervenant</label>
                     <select asp-for="IdEmployee" class="form-control" asp-items="@(ViewBag.Employees)"></select>
                     <span asp-validation-for="IdEmployee" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="IdClient" class="form-label"></label>
+                    <label asp-for="IdClient" class="form-label"># Dossier client</label>
                     <div class="input-group">
-                        <input asp-for="IdClient" type="hidden" id="IdClient" /> <!-- Hidden input to store client ID -->
-                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="background-color: #e9ecef; cursor: not-allowed;" /> <!-- Display client name -->
+                        <input asp-for="IdClient" type="hidden" id="IdClient" value="@Model.IdClient" />
+                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="background-color: #e9ecef; cursor: not-allowed;" value="@Model.ClientName" />
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#clientModal">
                             <i class="bi bi-search"></i>
                         </button>
@@ -108,41 +116,76 @@
                     <span asp-validation-for="IdClient" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="IdReferenceType" class="form-label"></label>
+                    <label asp-for="IdReferenceType" class="form-label">Référence</label>
                     <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.ReferenceTypes)">
                         <option value="">--Sélectionnez la réference--</option>
                     </select>
                     <span asp-validation-for="IdReferenceType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="IdStatusType" class="form-label"></label>
+                    <label asp-for="IdStatusType" class="form-label">Statut</label>
                     <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.StatusTypes)">
                         <option value="">--Sélectionnez le Statut--</option>
                     </select>
                     <span asp-validation-for="IdStatusType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="IdInterventionType" class="form-label"></label>
+                    <label asp-for="IdInterventionType" class="form-label">Raison consultation</label>
                     <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.InterventionTypes)">
                         <option value="">--Sélectionnez la Raison de Consultation--</option>
                     </select>
                     <span asp-validation-for="IdInterventionType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="IdInterventionSolution" class="form-label"></label>
-                    <select asp-for="IdInterventionSolution" class="form-control" asp-items="@(ViewBag.Solutions)">
-                        <option value="">--Sélectionnez la Solution--</option>
-                    </select>
-                    <span asp-validation-for="IdInterventionSolution" class="text-danger"></span>
+                    <label class="form-label">Solutions proposées</label>
+                    <ul id="selectedSolutionsList" class="list-group">
+                        @if (Model.Solutions != null && Model.Solutions.Any())
+                        {
+                            @foreach (var solution in Model.SelectedSolutions)
+                            {
+                                var solutionText = Model.Solutions.FirstOrDefault(s => s.Value == solution.ToString())?.Text;
+                                <li class="list-group-item" data-value="@solution">
+                                    @solutionText
+                                    <button type="button" class="btn btn-sm btn-danger float-right remove-solution">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <input type="hidden" name="SelectedSolutions" value="@solution" />
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item text-danger">Aucune solution disponible.</li>
+                        }
+                    </ul>
+                    <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SelectedSolutions" class="form-label">Solution</label>
+                    <div class="input-group">
+                        <select id="AvailableSolutions" class="form-control">
+                            <option value="">--Sélectionnez la Solution--</option>
+                            @if (Model.Solutions != null)
+                            {
+                                @foreach (var solution in Model.Solutions)
+                                {
+                                    <option value="@solution.Value">@solution.Text</option>
+                                }
+                            }
+                        </select>
+                        <button type="button" id="addSolutionButton" class="btn btn-primary ml-2">Ajouter</button>
+                    </div>
+                    <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="DebtAmount" class="form-label"></label>
+                    <label asp-for="DebtAmount" class="form-label">Montant de la dette</label>
                     <input asp-for="DebtAmount" class="form-control" />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>
                 <div class="mb-3 hidden" id="loanFields">
                     <div>
-                        <label asp-for="IdLoanReason" class="form-label"></label>
+                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
                         <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.LoanReasons)">
                             <option value="">--Sélectionnez le but d'emprunt--</option>
                         </select>
@@ -165,7 +208,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary" style="width:150px">Créer</button>
+                <button type="submit" class="btn btn-primary" style="width:150px">Ajouter</button>
                 <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary" style="width:150px">Retour</a>
             </div>
         </div>
@@ -193,18 +236,79 @@
     </div>
 </div>
 
+
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <script>
         $(document).ready(function () {
+            // Ajouter une solution à la liste des solutions proposées
+            $('#addSolutionButton').on('click', function () {
+                var selectedOption = $('#AvailableSolutions option:selected');
+                var solutionText = selectedOption.text();
+                var solutionValue = selectedOption.val();
+
+                console.log("Adding solution:", solutionValue, solutionText);
+
+                if (solutionValue && solutionText) {
+                    // Ajouter la solution à la liste des solutions proposées
+                    $('#selectedSolutionsList').append('<li class="list-group-item" data-value="' + solutionValue + '">' +
+                        solutionText + ' <button type="button" class="btn btn-sm btn-danger float-right remove-solution"><i class="bi bi-trash"></i></button>' +
+                        '<input type="hidden" name="SelectedSolutions" value="' + solutionValue + '" />' +
+                        '</li>');
+
+                    // Retirer l'option sélectionnée de la liste déroulante
+                    selectedOption.remove();
+
+                    // Réinitialiser la sélection dans la liste déroulante
+                    $('#AvailableSolutions').val('');
+                }
+            });
+
+            // Supprimer une solution de la liste sélectionnée et la réajouter à la liste déroulante
+            $('#selectedSolutionsList').on('click', '.remove-solution', function () {
+                var listItem = $(this).closest('li');
+                var solutionValue = listItem.data('value');
+                var solutionText = listItem.contents().get(0).nodeValue.trim(); // Récupérer le texte sans l'icône de suppression
+
+                if (solutionValue && solutionText) {
+                    // Réajouter l'option supprimée dans la liste déroulante
+                    $('#AvailableSolutions').append('<option value="' + solutionValue + '">' + solutionText + '</option>');
+
+                    // Supprimer l'élément de la liste des solutions proposées
+                    listItem.remove();
+                }
+            });
+
+            // Validation côté client pour vérifier que IdClient est défini et qu'au moins une solution est sélectionnée
+            $('form').on('submit', function (event) {
+                var clientId = $('#IdClient').val();
+                var selectedSolutions = $('#selectedSolutionsList li').length;
+
+                if (!clientId) {
+                    event.preventDefault();
+                    alert("Veuillez sélectionner un dossier client.");
+                    return false;
+                }
+
+                if (selectedSolutions === 0) {
+                    event.preventDefault();
+                    alert("Veuillez sélectionner au moins une solution.");
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Recherche et sélection d'un client
             $('#searchClientInput').on('input', function () {
                 var searchTerm = $(this).val().toLowerCase();
                 if (searchTerm.length > 2) {
                     $.ajax({
-                        url: '@Url.Action("SearchClients", "Intervention")',
+                        url: '/Intervention/SearchClients',
                         data: { searchTerm: searchTerm },
                         success: function (data) {
                             $('#clientSearchResults').empty();
@@ -223,27 +327,23 @@
                 var clientId = $(this).data('id');
                 var clientName = $(this).text();
                 $('#IdClient').val(clientId);
-                $('#clientNameDisplay').val(clientName); // Use val() instead of text()
+                $('#clientNameDisplay').val(clientName);
                 $('#clientModal').modal('hide');
             });
 
-            $('#addParticipantButton').on('click', function () {
-                var participantName = $('#participantInput').val();
-                if (participantName) {
-                    $('#selectedParticipantsList').append('<li class="list-group-item">' + participantName + ' <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a></li>');
-                    $('#participantInput').val('');
-                }
-            });
-
-            $('#selectedParticipantsList').on('click', '.remove-participant', function (e) {
-                e.preventDefault();
-                $(this).parent().remove();
-            });
-
+            // Nettoyage du modal de recherche de client
             $('#clientModal').on('hidden.bs.modal', function () {
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
+                $('#clientSearchResults').empty();
+                $('#clientSearchResults').empty();
             });
         });
     </script>
 }
+
+
+
+
+
+

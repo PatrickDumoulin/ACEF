@@ -1,0 +1,58 @@
+﻿@model WebApp.ViewModels.InterventionViewModel
+
+@{
+    ViewData["Title"] = "Supprimer l'intervention";
+}
+
+<h2>Supprimer l'intervention</h2>
+
+<h3>Êtes-vous sûr de vouloir supprimer cette intervention ?</h3>
+<div>
+    <h4>Intervention</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Date de l'intervention
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DateIntervention
+        </dd>
+        <dt class="col-sm-2">
+            Employé
+        </dt>
+        <dd class="col-sm-10">
+            @Model.EmployeeName
+        </dd>
+        <dt class="col-sm-2">
+            # Dossier
+        </dt>
+        <dd class="col-sm-10">
+            @Model.IdClient
+        </dd>
+        <dt class="col-sm-2">
+            Client
+        </dt>
+        <dd class="col-sm-10">
+            @Model.ClientName
+        </dd>
+        <dt class="col-sm-2">
+            Référence
+        </dt>
+        <dd class="col-sm-10">
+            @Model.ReferenceTypeName
+        </dd>
+        <dt class="col-sm-2">
+            Statut
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StatusName
+        </dd>
+        <!-- Ajoutez d'autres champs si nécessaire -->
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>

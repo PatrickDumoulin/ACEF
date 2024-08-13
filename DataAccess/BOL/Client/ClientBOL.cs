@@ -37,5 +37,7 @@ namespace DataAccess.BOL.Client
         public byte[] Income { get { return base.Record.Income; } set { base.Record.Income = value; } }
         public DateTime? CreatedDate { get { return base.Record.CreatedDate; } }
         public DateTime? LastModifiedDate { get { return base.Record.LastModifiedDate; } }
+
+        
     }
 }

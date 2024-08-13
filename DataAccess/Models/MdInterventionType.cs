@@ -13,9 +13,7 @@ public partial class MdInterventionType
 
     public bool? Active { get; set; }
 
-    public virtual ICollection<Interventions> InterventionsIdInterventionTypeNavigation { get; set; } = new List<Interventions>();
-
-    public virtual ICollection<Interventions> InterventionsIdStatusTypeNavigation { get; set; } = new List<Interventions>();
+    public virtual ICollection<Interventions> Interventions { get; set; } = new List<Interventions>();
 
     public virtual ICollection<Seminars> Seminars { get; set; } = new List<Seminars>();
 }

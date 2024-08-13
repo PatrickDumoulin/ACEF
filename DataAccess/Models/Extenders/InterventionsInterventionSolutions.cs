@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public partial class InterventionsInterventionSolutions : AbstractEntity
+    public partial class InterventionsInterventionSolutions : IRecord
     {
-        public string SequenceName { get { return "Interventions_InterventionSolutions_Seq"; } }
+        public ICollection<IRecord> LoadedRecords { get; } = new List<IRecord>();
     }
 }

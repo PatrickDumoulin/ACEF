@@ -1,5 +1,4 @@
-﻿using DataAccess.BOL.Intervention;
-using DataAccess.BOL.InterventionsInterventionSolutions;
+﻿using DataAccess.BOL.InterventionsInterventionSolutions;
 using DataAccess.Core.Definitions;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;

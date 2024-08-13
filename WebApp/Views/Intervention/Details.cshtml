@@ -1,0 +1,140 @@
+﻿@model WebApp.ViewModels.InterventionViewModel
+
+@{
+    ViewData["Title"] = "Détails de l'Intervention";
+    Layout = "_Layout";
+}
+
+<style>
+    .details-container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px 10px rgba(0, 0, 0, 0.15);
+        margin-top: 30px;
+    }
+
+    .details-header {
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+        .details-header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .details-header h4 {
+            font-size: 18px;
+            color: #666;
+        }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+        .details-grid .label,
+        .details-grid .value {
+            padding: 10px 0;
+        }
+
+        .details-grid .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .details-grid .value {
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+    .btn-primary,
+    .btn-secondary {
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: bold;
+        margin-right: 10px;
+        border: 1px solid black;
+    }
+
+        .btn-primary:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+    .btn-container {
+        margin-top: 30px;
+    }
+
+        .btn-container a {
+            text-decoration: none;
+        }
+</style>
+
+<div class="container">
+    <div class="details-container">
+        <div class="details-header">
+            <h1 class="text-center pb-2">Détails de l'Intervention</h1>
+            <h4 class="text-center"># @Model.IdClient - @Model.ClientName</h4><br />
+        </div>
+
+        <div class="details-grid">
+            <div>
+                <div class="label">Est virtuel</div>
+                <div class="value">@Model.IsVirtual ? "Oui" : "Non"</div>
+            </div>
+            <div>
+                <div class="label">Date de l'intervention :</div>
+                <div class="value">@Model.DateIntervention?.ToString("dd/MM/yyyy")</div>
+            </div>
+            <div>
+                <div class="label">Intervenant :</div>
+                <div class="value">@Model.EmployeeName</div>
+            </div>           
+            <div>
+                <div class="label">Référence :</div>
+                <div class="value">@Model.ReferenceTypeName</div>
+            </div>
+            <div>
+                <div class="label">Statut :</div>
+                <div class="value">@Model.StatusName</div>
+            </div>
+            <div>
+                <div class="label">Raison consultation :</div>
+                <div class="value">@Model.InterventionTypeName</div>
+            </div>
+            <div>
+                <div class="label">Montant de la dette : </div>
+                <div class="value">@Model.DebtAmount?.ToString("C")</div>
+            </div>
+            @if (Model.IdLoanReason.HasValue)
+            {
+                <div>
+                    <div class="label">Petit prêt remboursé :</div>
+                    <div class="value">@Model.IsLoanPaid ? "Oui" : "Non"</div>
+                </div>
+            }
+            <div>
+                <div class="label">Solutions proposées :</div>
+                <div class="value">
+                    <ul class="list-group">
+                        @foreach (var solutionName in Model.SolutionNames)
+                        {
+                            <li class="list-group-item">@solutionName</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container text-center">
+            <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary">Retour</a>
+            <a asp-controller="Intervention" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier</a>
+        </div>
+    </div>
+</div>

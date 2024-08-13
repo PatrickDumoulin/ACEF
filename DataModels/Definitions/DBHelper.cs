@@ -11,8 +11,8 @@ namespace DataModels.Definitions
     {
         private static object sync_root = new object();
 
-        private const string username = "sa";
-        private const string password = "Cegep2024";
+        private const string username = "Patrick";
+        private const string password = "Superadmin@1234";
 
         public static string ResolveConnectionString(string serverName, string databaseName)
         {
@@ -23,6 +23,7 @@ namespace DataModels.Definitions
                     if (EnvironmentHelper.IsDebug())
                         return string.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Encrypt=False;TrustServerCertificate=True;", serverName, databaseName);
                     else //Integrated for Prod if possible?
+                        serverName = "172.20.45.78";
                         return string.Format(@"Data Source={0};Initial Catalog={1};user id={2};password={3};Encrypt=false;TrustServerCertificate=True", serverName, databaseName, username, password);
                 }
                 catch (Exception)

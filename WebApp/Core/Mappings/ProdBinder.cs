@@ -9,7 +9,9 @@ namespace WebApp.Core.Mappings
         public override void Load()
         {
             BindItem<IEntityConnectionProvider, AcefEntityConnectionProvider>();
-            BindItem<IEnvironmentProvider, LocalEnvironmentProvider>();
+            //BindItem<IEnvironmentProvider, LocalEnvironmentProvider>();
+
+            BindItem<IEnvironmentProvider, ProdEnvironmentProvider>();
         }
     }
 }

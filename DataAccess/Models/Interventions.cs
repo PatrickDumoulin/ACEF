@@ -39,7 +39,7 @@ public partial class Interventions
 
     public virtual MdReferenceSource IdReferenceTypeNavigation { get; set; }
 
-    public virtual MdInterventionType IdStatusTypeNavigation { get; set; }
+    public virtual MdInterventionStatusTypes IdStatusTypeNavigation { get; set; }
 
     public virtual ICollection<InterventionsAttachments> InterventionsAttachments { get; set; } = new List<InterventionsAttachments>();
 

@@ -10,5 +10,6 @@ namespace DataAccess.Models
     public partial class Interventions: IRecord
     {
         public ICollection<IRecord> LoadedRecords { get; } = new List<IRecord>();
+       
     }
 }

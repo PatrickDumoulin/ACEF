@@ -50,5 +50,7 @@ namespace DataModels.BOL.Client
 		public DateTime? CreatedDate { get; }
 
 		public DateTime? LastModifiedDate { get; }
-	}
+        public string FullName => $"{FirstName} {LastName}";
+    }
 }
+

@@ -2,7 +2,6 @@
 using BusinessLayer.Core.Definitions;
 using BusinessLayer.Logic.Interfaces;
 using CoreLib.Definitions;
-using DataAccess.BOL.Intervention;
 using DataAccess.BOL.InterventionsInterventionSolutions;
 using DataAccess.Providers.Interfaces;
 using DataModels.BOL.Intervention;

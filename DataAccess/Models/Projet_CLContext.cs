@@ -379,7 +379,7 @@ public partial class Projet_CLContext : DbContext
                 .HasForeignKey(d => d.IdEmployee)
                 .HasConstraintName("FK__Intervent__IdEmp__4F12BBB9");
 
-            entity.HasOne(d => d.IdInterventionTypeNavigation).WithMany(p => p.InterventionsIdInterventionTypeNavigation)
+            entity.HasOne(d => d.IdInterventionTypeNavigation).WithMany(p => p.Interventions)
                 .HasForeignKey(d => d.IdInterventionType)
                 .HasConstraintName("FK__Intervent__IdInt__52E34C9D");
 
@@ -391,9 +391,9 @@ public partial class Projet_CLContext : DbContext
                 .HasForeignKey(d => d.IdReferenceType)
                 .HasConstraintName("FK__Intervent__IdRef__50FB042B");
 
-            entity.HasOne(d => d.IdStatusTypeNavigation).WithMany(p => p.InterventionsIdStatusTypeNavigation)
+            entity.HasOne(d => d.IdStatusTypeNavigation).WithMany(p => p.Interventions)
                 .HasForeignKey(d => d.IdStatusType)
-                .HasConstraintName("FK__Intervent__IdSta__51EF2864");
+                .HasConstraintName("FK_Intervent_IdSta_51EF2864");
         });
 
         modelBuilder.Entity<InterventionsAttachments>(entity =>
@@ -427,10 +427,12 @@ public partial class Projet_CLContext : DbContext
 
             entity.HasOne(d => d.IdInterventionNavigation).WithMany(p => p.InterventionsInterventionSolutions)
                 .HasForeignKey(d => d.IdIntervention)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Intervent__IdInt__6225902D");
 
             entity.HasOne(d => d.IdInterventionSolutionNavigation).WithMany(p => p.InterventionsInterventionSolutions)
                 .HasForeignKey(d => d.IdInterventionSolution)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Intervent__IdInt__6319B466");
         });
 
@@ -526,11 +528,12 @@ public partial class Projet_CLContext : DbContext
 
         modelBuilder.Entity<MdInterventionStatusTypes>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MdInterv__3214EC0796F54C51");
+            entity.HasKey(e => e.Id).HasName("PK__MdInterv__3214EC27F8D9CDF6");
 
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(255);
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(NEXT VALUE FOR [dbo].[seqMasterData])")
+                .HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(200);
         });
 
         modelBuilder.Entity<MdInterventionType>(entity =>
@@ -585,12 +588,12 @@ public partial class Projet_CLContext : DbContext
 
         modelBuilder.Entity<MdSeminarThemes>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MdSemina__3214EC07E9400C23");
+            entity.HasKey(e => e.Id).HasName("PK__MdSemina__3214EC27BDA44CB0");
 
-            entity.Property(e => e.Active).HasDefaultValueSql("((1))");
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(255);
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(NEXT VALUE FOR [dbo].[seqMasterData])")
+                .HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(200);
         });
 
         modelBuilder.Entity<ProductionTypeDepartments>(entity =>

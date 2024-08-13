@@ -10,4 +10,8 @@ public partial class MdInterventionStatusTypes
     public int Id { get; set; }
 
     public string Name { get; set; }
+
+    public bool? Active { get; set; }
+
+    public virtual ICollection<Interventions> Interventions { get; set; } = new List<Interventions>();
 }

@@ -1,6 +1,5 @@
 ﻿using CoreLib.Definitions;
 using DataAccess.BOL.Client;
-using DataAccess.BOL.Intervention;
 using DataAccess.BOL.Seminar;
 using DataAccess.Core.Definitions;
 using DataAccess.Models;
@@ -32,7 +31,7 @@ namespace DataAccess.Providers.Entity
         {
             var records = Db.Interventions.ToList();
             return records.Select(x => new InterventionBOL(x)).ToList();
-        }        
+        }
 
         public void CreateIntervention(InterventionBOL interventionBOL)
         {
@@ -41,23 +40,52 @@ namespace DataAccess.Providers.Entity
                 throw new ArgumentNullException(nameof(interventionBOL), "InterventionBOL cannot be null");
             }
 
-            var newIntervention = new Interventions
+            using (var transaction = Db.Database.BeginTransaction())
             {
-                IsVirtual = interventionBOL.IsVirtual,
-                DateIntervention = interventionBOL.DateIntervention,
-                IdEmployee = interventionBOL.IdEmployee,
-                IdClient = interventionBOL.IdClient,
-                IdReferenceType = interventionBOL.IdReferenceType,
-                IdStatusType = interventionBOL.IdStatusType,
-                IdInterventionType = interventionBOL.IdInterventionType,
-                DebtAmount = interventionBOL.DebtAmount,
-                IdLoanReason = interventionBOL.IdLoanReason,
-                IsLoanPaid = interventionBOL.IsLoanPaid,
-            };
+                try
+                {
+                    var newIntervention = new Interventions
+                    {
+                        IsVirtual = interventionBOL.IsVirtual,
+                        DateIntervention = interventionBOL.DateIntervention,
+                        IdEmployee = interventionBOL.IdEmployee,
+                        IdClient = interventionBOL.IdClient,
+                        IdReferenceType = interventionBOL.IdReferenceType,
+                        IdStatusType = interventionBOL.IdStatusType,
+                        IdInterventionType = interventionBOL.IdInterventionType,
+                        DebtAmount = interventionBOL.DebtAmount,
+                        IdLoanReason = interventionBOL.IdLoanReason,
+                        IsLoanPaid = interventionBOL.IsLoanPaid,
+                    };
 
-            Db.Interventions.Add(newIntervention);
-            Db.SaveChanges();
+                    Db.Interventions.Add(newIntervention);
+                    Db.SaveChanges();
+
+                    // Mettre à jour l'ID de l'objet BOL après l'insertion
+                    interventionBOL.Id = newIntervention.Id;
+
+                    // Ajouter les solutions associées
+                    foreach (var solution in interventionBOL.InterventionsInterventionSolutions)
+                    {
+                        var interventionSolution = new InterventionsInterventionSolutions
+                        {
+                            IdIntervention = newIntervention.Id,
+                            IdInterventionSolution = solution.IdInterventionSolution
+                        };
+                        Db.InterventionsInterventionSolutions.Add(interventionSolution);
+                    }
+
+                    Db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
+
 
         public void UpdateIntervention(InterventionBOL interventionBOL)
         {

@@ -9,9 +9,9 @@ public partial class InterventionsInterventionSolutions
 {
     public int Id { get; set; }
 
-    public int? IdIntervention { get; set; }
+    public int IdIntervention { get; set; }
 
-    public int? IdInterventionSolution { get; set; }
+    public int IdInterventionSolution { get; set; }
 
     public virtual Interventions IdInterventionNavigation { get; set; }
 

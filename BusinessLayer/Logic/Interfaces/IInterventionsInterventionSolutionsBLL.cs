@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using CoreLib.Definitions;
-using DataAccess.BOL.Intervention;
 using DataAccess.BOL.InterventionsInterventionSolutions;
 using System;
 using System.Collections.Generic;

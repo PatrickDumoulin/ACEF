@@ -11,8 +11,8 @@ namespace DataModels.BOL.InterventionsInterventionSolutions
     {
         public int Id { get; }
 
-        public int? IdIntervention { get; set; }
+        public int IdIntervention { get; set; }
 
-        public int? IdInterventionSolution { get; set; }
+        public int IdInterventionSolution { get; set; }
     }
 }

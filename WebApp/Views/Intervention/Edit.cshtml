@@ -1,0 +1,86 @@
+﻿@model WebApp.ViewModels.InterventionViewModel
+
+@{
+    ViewData["Title"] = "Modifier l'intervention";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label asp-for="IsVirtual" class="control-label">Est virtuel</label>
+            <input asp-for="IsVirtual" class="form-control" />
+            <span asp-validation-for="IsVirtual" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DateIntervention" class="control-label">Date de l'intervention</label>
+            <input asp-for="DateIntervention" class="form-control" />
+            <span asp-validation-for="DateIntervention" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdEmployee" class="control-label">Intervenant</label>
+            <select asp-for="IdEmployee" class="form-control" asp-items="ViewBag.Employees"></select>
+            <span asp-validation-for="IdEmployee" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdClient" class="control-label">Client</label>
+            <select asp-for="IdClient" class="form-control" asp-items="ViewBag.Clients"></select>
+            <span asp-validation-for="IdClient" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdReferenceType" class="control-label">Référence</label>
+            <select asp-for="IdReferenceType" class="form-control" asp-items="ViewBag.ReferenceTypes"></select>
+            <span asp-validation-for="IdReferenceType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdStatusType" class="control-label">Statut</label>
+            <select asp-for="IdStatusType" class="form-control" asp-items="ViewBag.StatusTypes"></select>
+            <span asp-validation-for="IdStatusType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdInterventionType" class="control-label">Type d'intervention</label>
+            <select asp-for="IdInterventionType" class="form-control" asp-items="ViewBag.InterventionTypes"></select>
+            <span asp-validation-for="IdInterventionType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DebtAmount" class="control-label">Montant de la dette</label>
+            <input asp-for="DebtAmount" class="form-control" />
+            <span asp-validation-for="DebtAmount" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdLoanReason" class="control-label">Raison de la consultation</label>
+            <select asp-for="IdLoanReason" class="form-control" asp-items="ViewBag.LoanReasons"></select>
+            <span asp-validation-for="IdLoanReason" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IsLoanPaid" class="control-label">Petit prêt remboursé</label>
+            <input asp-for="IsLoanPaid" class="form-control" />
+            <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SelectedSolutions" class="control-label">Solutions proposées</label>
+            <select asp-for="SelectedSolutions" class="form-control" asp-items="Model.Solutions" multiple="multiple"></select>
+            <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
+        </div>
+
+        <div class="form-group text-center">
+            <input type="submit" value="Enregistrer les modifications" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>

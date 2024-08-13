@@ -1,4 +1,5 @@
 ﻿using CoreLib.Definitions;
+using DataModels.BOL.InterventionsInterventionSolutions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,5 +31,8 @@ namespace DataModels.BOL.Intervention
         public int? IdLoanReason { get; set; }
 
         public bool? IsLoanPaid { get; set; }
+        IEnumerable<int> InterventionSolutionsIds { get; }
+
+        ICollection<IInterventionsInterventionSolutionsBOL> InterventionsInterventionSolutions { get; }
     }
 }
