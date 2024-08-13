@@ -6,7 +6,7 @@ namespace WebApp.ViewModels
     {
         public int Id { get; set; }
 
-        public string FullName { get; set; }
+        //public string FullName { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
         [Display(Name = "First Name")]
