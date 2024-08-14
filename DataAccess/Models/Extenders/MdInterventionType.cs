@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public partial class MdInterventionType : AbstractEntity
+    public partial class MdInterventionType : AbstractEntity, ISequenced
     {
         public string SequenceName { get { return "seqMasterData"; } }
     }

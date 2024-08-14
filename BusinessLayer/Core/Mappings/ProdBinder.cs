@@ -33,6 +33,7 @@ namespace BusinessLayer.Core.Mappings
             BindBll<IClientIncomeTypeBLL, ClientIncomeTypeBLL>();
             BindBll<IInterventionAttachmentBLL, InterventionAttachmentBLL>();
             BindBll<IInterventionNoteBLL, InterventionNoteBLL>();
+            BindBll<ISeminarEmployeeBLL, SeminarEmployeeBLL>();
 
             #endregion
 
@@ -53,6 +54,7 @@ namespace BusinessLayer.Core.Mappings
             BindDal<IClientIncomeTypeDAL, ClientIncomeTypeEntityDAL>();
             BindDal<IInterventionAttachmentDAL, InterventionAttachmentEntityDAL>();
             BindDal<IInterventionNoteDAL, InterventionNoteEntityDAL>();
+            BindDal<ISeminarEmployeeDAL, SeminarEmployeeEntityDAL>();
 
             #endregion
 

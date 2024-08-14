@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public partial class MdBank : AbstractEntity
+    public partial class MdBank : AbstractEntity, ISequenced
     {
         public string SequenceName { get { return "seqMasterData"; } }
     }

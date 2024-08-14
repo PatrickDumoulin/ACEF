@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public partial class MdGenderDenomination: AbstractEntity
+    public partial class MdGenderDenomination: AbstractEntity, ISequenced
     {
         public string SequenceName { get { return "seqMasterData"; } }
     }
