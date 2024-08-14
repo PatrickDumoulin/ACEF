@@ -1,6 +1,7 @@
 ﻿using CoreLib.Definitions;
 using DataAccess.BOL.InterventionAttachment;
 using DataAccess.BOL.SeminarEmployee;
+using DataAccess.BOL.SeminarParticipant;
 using DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,8 @@ namespace DataAccess.Providers.Interfaces
     {
         SeminarEmployeeBOL GetSeminarEmployeeById(int id);
         List<SeminarEmployeeBOL> GetSeminarEmployeesBySeminarId(int seminarId);
+
+        void CreateSeminarEmployee(SeminarEmployeeBOL seminarEmployee);
+        void DeleteSeminarEmployee(int id);
     }
 }

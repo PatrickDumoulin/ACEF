@@ -21,6 +21,8 @@ namespace DataAccess.Providers.Entity
 
         public SeminarEmployeeEntityDAL(AcefEntityDAL externalDal) : base(externalDal) { }
 
+        
+
         public SeminarEmployeeBOL GetSeminarEmployeeById(int id)
         {
             SeminarsEmployees record = Db.SeminarsEmployees.FirstOrDefault(x => x.Id == id);
@@ -33,6 +35,27 @@ namespace DataAccess.Providers.Entity
                 .Where(x => x.IdSeminar == seminarId)
                 .ToList();
             return records.Select(record => new SeminarEmployeeBOL(record)).ToList();
+        }
+
+        public void CreateSeminarEmployee(SeminarEmployeeBOL seminarEmployee)
+        {
+            var entity = new SeminarsEmployees
+            {
+                IdSeminar = seminarEmployee.IdSeminar,
+                IdEmployee = seminarEmployee.IdEmployee,
+            };
+            Db.SeminarsEmployees.Add(entity);
+            Db.SaveChanges();
+        }
+
+        public void DeleteSeminarEmployee(int id)
+        {
+            var seminarEmployee = Db.SeminarsEmployees.FirstOrDefault(x => x.Id == id);
+            if (seminarEmployee != null)
+            {
+                Db.SeminarsEmployees.Remove(seminarEmployee);
+                Db.SaveChanges();
+            }
         }
     }
 }

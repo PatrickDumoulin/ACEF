@@ -2,6 +2,7 @@
 using CoreLib.Definitions;
 using DataAccess.BOL.InterventionAttachment;
 using DataAccess.BOL.SeminarEmployee;
+using DataAccess.BOL.SeminarParticipant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace BusinessLayer.Logic.Interfaces
     {
         GetItemResponse<SeminarEmployeeBOL> GetSeminarEmployeeById(int id);
         GetListResponse<SeminarEmployeeBOL> GetSeminarEmployeesBySeminarId(int seminarId);
+        void CreateSeminarEmployee(SeminarEmployeeBOL seminarEmployee);
+        void DeleteSeminarEmployee(int id);
     }
 }

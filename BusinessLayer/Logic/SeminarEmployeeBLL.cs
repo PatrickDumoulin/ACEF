@@ -4,6 +4,7 @@ using BusinessLayer.Logic.Interfaces;
 using CoreLib.Definitions;
 using DataAccess.BOL.InterventionAttachment;
 using DataAccess.BOL.SeminarEmployee;
+using DataAccess.BOL.SeminarParticipant;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
 using System;
@@ -30,6 +31,16 @@ namespace BusinessLayer.Logic
         {
             var seminarEmployees = base.dal.GetSeminarEmployeesBySeminarId(seminarId);
             return new GetListResponse<SeminarEmployeeBOL>(seminarEmployees);
+        }
+
+        public void CreateSeminarEmployee(SeminarEmployeeBOL seminarEmployee)
+        {
+            base.dal.CreateSeminarEmployee(seminarEmployee);
+        }
+
+        public void DeleteSeminarEmployee(int id)
+        {
+            base.dal.DeleteSeminarEmployee(id);
         }
     }
 }
