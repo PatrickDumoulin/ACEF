@@ -34,17 +34,126 @@ namespace WebApp.Controllers
             _mdbBLL = Injector.ImplementBll<IMDBLL>();
         }
 
-        // GET: InterventionController
-        public IActionResult Index()
+
+        // GET: ClientController
+        public IActionResult Index(InterventionSearchViewModel searchModel, string sortOrder, int page = 1, int pageSize = 6)
         {
-            var response = bll.GetInterventions();
-            if (response.Succeeded)
+            // Récupérez les interventions de la BLL
+            var interventionsBOL = base.bll.GetInterventions().ElementList;
+
+            // Convertir les BOL en ViewModel
+            var interventions = interventionsBOL.Select(bol => MapToViewModel(bol)).ToList();
+
+            // Filtrer par date
+            DateTime now = DateTime.Now;
+            if (searchModel.DateFilter == "Semaine en cours")
             {
-                var viewModelList = response.ElementList.Select(e => MapToViewModel(e)).ToList();
-                return View(viewModelList);
+                DateTime startOfWeek = StartOfWeek(now, DayOfWeek.Monday);
+                DateTime endOfWeek = startOfWeek.AddDays(6);
+                interventions = interventions.Where(i => i.DateIntervention >= startOfWeek && i.DateIntervention <= endOfWeek).ToList();
             }
-            return NotFound();
+            else if (searchModel.DateFilter == "Mois en cours")
+            {
+                DateTime startOfMonth = new DateTime(now.Year, now.Month, 1);
+                DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+                interventions = interventions.Where(i => i.DateIntervention >= startOfMonth && i.DateIntervention <= endOfMonth).ToList();
+            }
+            else if (searchModel.DateFilter == "Intervalle" && searchModel.StartDate.HasValue && searchModel.EndDate.HasValue)
+            {
+                interventions = interventions.Where(i => i.DateIntervention >= searchModel.StartDate && i.DateIntervention <= searchModel.EndDate).ToList();
+            }
+
+            // Populate the Employees and InterventionTypes lists
+            var employees = _employeeBLL.GetAllEmployees().ElementList.Select(e => new SelectListItem
+            {
+                Value = e.Id.ToString(),
+                Text = $"{e.FirstName} {e.LastName}"
+            }).ToList();
+
+            var interventionTypes = _mdbBLL.GetAllMdInterventionTypes().ElementList.Select(it => new SelectListItem
+            {
+                Value = it.Id.ToString(),
+                Text = it.Name
+            }).ToList();
+
+            // Appliquer les filtres de recherche sur les ViewModel
+            if (searchModel.Id.HasValue)
+            {
+                interventions = interventions.Where(c => c.Id == searchModel.Id.Value).ToList();
+            }
+            if (searchModel.IdClient.HasValue)
+            {
+                interventions = interventions.Where(c => c.IdClient == searchModel.IdClient.Value).ToList();
+            }
+            if (searchModel.IdEmployee.HasValue)
+            {
+                interventions = interventions.Where(c => c.IdEmployee == searchModel.IdEmployee.Value).ToList();
+            }
+            if (searchModel.IdInterventionType.HasValue)
+            {
+                interventions = interventions.Where(c => c.IdInterventionType == searchModel.IdInterventionType.Value).ToList();
+            }
+            if (searchModel.IsLoanUnpaid.HasValue)
+            {
+                interventions = interventions.Where(c => c.IsLoanPaid == !searchModel.IsLoanUnpaid.Value).ToList();
+            }
+
+            // Apply sorting
+            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewBag.ClientIdSortParm = sortOrder == "IdClient" ? "clientId_desc" : "IdClient";
+            ViewBag.EmployeeIdSortParm = sortOrder == "IdEmployee" ? "employeeId_desc" : "IdEmployee";
+            ViewBag.InterventionTypeSortParm = sortOrder == "IdInterventionType" ? "interventionType_desc" : "IdInterventionType";
+
+            switch (sortOrder)
+            {
+                case "id_desc":
+                    interventions = interventions.OrderByDescending(c => c.Id).ToList();
+                    break;
+                case "IdClient":
+                    interventions = interventions.OrderBy(c => c.IdClient).ToList();
+                    break;
+                case "clientId_desc":
+                    interventions = interventions.OrderByDescending(c => c.IdClient).ToList();
+                    break;
+                case "IdEmployee":
+                    interventions = interventions.OrderBy(c => c.IdEmployee).ToList();
+                    break;
+                case "employeeId_desc":
+                    interventions = interventions.OrderByDescending(c => c.IdEmployee).ToList();
+                    break;
+                case "IdInterventionType":
+                    interventions = interventions.OrderBy(c => c.IdInterventionType).ToList();
+                    break;
+                case "interventionType_desc":
+                    interventions = interventions.OrderByDescending(c => c.IdInterventionType).ToList();
+                    break;
+                default:
+                    interventions = interventions.OrderBy(c => c.Id).ToList();
+                    break;
+            }
+
+            var totalcount = interventions.Count;
+            var totalPages = (int)Math.Ceiling((decimal)totalcount / pageSize);
+            var pagedInterventions = interventions.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var viewModel = new InterventionSearchViewModel
+            {
+                Id = searchModel.Id,
+                IdClient = searchModel.IdClient,
+                IdEmployee = searchModel.IdEmployee,
+                IdInterventionType = searchModel.IdInterventionType,
+                IsLoanUnpaid = searchModel.IsLoanUnpaid,
+                Employees = employees,
+                InterventionTypes = interventionTypes,
+                Interventions = pagedInterventions // Assign the filtered, sorted, and paginated interventions
+            };
+
+            return View(viewModel);
         }
+
+        
+
+
 
         // GET: InterventionController/Details/5
         public ActionResult Details(int id)
@@ -217,38 +326,29 @@ namespace WebApp.Controllers
             }
         }
 
-        private InterventionViewModel MapToViewModel(IInterventionBOL intervention)
+        private InterventionViewModel MapToViewModel(InterventionBOL bol)
         {
-            var employeeName = intervention.IdEmployee.HasValue ? GetEmployeeName(intervention.IdEmployee.Value) : "Inconnu";
-            var clientName = intervention.IdClient.HasValue ? GetClientName(intervention.IdClient.Value) : "Inconnu";
-            var statusName = intervention.IdStatusType.HasValue ? GetStatusName(intervention.IdStatusType.Value) : "Inconnu";
-            var referenceTypeName = intervention.IdReferenceType.HasValue ? GetReferenceTypeName(intervention.IdReferenceType.Value) : "Inconnu";
-            var interventionTypeName = intervention.IdInterventionType.HasValue ? GetInterventionTypeName(intervention.IdInterventionType.Value) : "Inconnu";
-            var solutionNames = intervention.InterventionSolutionsIds.Select(GetSolutionName).ToList();
+            var employeeName = bol.IdEmployee.HasValue ? GetEmployeeName(bol.IdEmployee.Value) : "Inconnu";
+            var clientName = bol.IdClient.HasValue ? GetClientName(bol.IdClient.Value) : "Inconnu";
+            var statusName = bol.IdStatusType.HasValue ? GetStatusName(bol.IdStatusType.Value) : "Inconnu";
+            var interventionTypeName = bol.IdInterventionType.HasValue ? GetInterventionTypeName(bol.IdInterventionType.Value) : "Inconnu";
 
             return new InterventionViewModel
             {
-                Id = intervention.Id,
-                IsVirtual = intervention.IsVirtual,
-                DateIntervention = intervention.DateIntervention,
-                EmployeeName = employeeName,
-                IdEmployee = intervention.IdEmployee,
-                IdClient = intervention.IdClient,
+                Id = bol.Id,
+                IdClient = bol.IdClient,
+                IdEmployee = bol.IdEmployee,
+                IdInterventionType = bol.IdInterventionType,
+                DateIntervention = bol.DateIntervention,
                 ClientName = clientName,
-                IdReferenceType = intervention.IdReferenceType,
-                ReferenceTypeName = referenceTypeName,
-                IdStatusType = intervention.IdStatusType,
+                EmployeeName = employeeName,
                 StatusName = statusName,
-                IdInterventionType = intervention.IdInterventionType,
                 InterventionTypeName = interventionTypeName,
-                DebtAmount = intervention.DebtAmount != null ? DecryptDebtAmount(intervention.DebtAmount) : (decimal?)null,
-                IdLoanReason = intervention.IdLoanReason,
-                IsLoanPaid = intervention.IsLoanPaid,
-                SelectedSolutions = intervention.InterventionSolutionsIds.ToList(),
-                Solutions = new SelectList(ViewBag.Solutions ?? Enumerable.Empty<SelectListItem>(), "Value", "Text"),
-                SolutionNames = solutionNames
+                IsLoanPaid = bol.IsLoanPaid
+                // Ajoutez d'autres propriétés ici selon les besoins
             };
         }
+
 
         private InterventionBOL MapToBOL(InterventionViewModel viewModel)
         {
@@ -326,6 +426,14 @@ namespace WebApp.Controllers
             }
             return new List<ClientViewModel>();
         }
+
+        private DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
+
+        }
+
 
         // Méthodes de chiffrement et déchiffrement
         private byte[] EncryptDebtAmount(decimal amount)
