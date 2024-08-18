@@ -14,6 +14,8 @@ using DataModels.BOL.InterventionsInterventionSolutions;
 using BusinessLayer.Logic;
 using System;
 using System.Collections.Generic;
+using DataAccess.BOL.Client;
+using System.Net.Sockets;
 
 namespace WebApp.Controllers
 {
@@ -170,11 +172,14 @@ namespace WebApp.Controllers
         // GET: InterventionController/Create
         public ActionResult Create()
         {
-            PopulateMdViewBags();
-            ViewBag.Employees = GetEmployeesSelectList();
+            IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+            PopulateMdViewBags(mdBLL);
+            //ViewBag.Employees = GetEmployeesSelectList();
             var model = new InterventionViewModel
             {
-                Solutions = new SelectList(ViewBag.Solutions, "Value", "Text"),
+                Solutions = ViewBag.MdInterventionSolutions != null
+                ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
+                : new SelectList(Enumerable.Empty<SelectListItem>()),
                 SelectedSolutions = new List<int>()
             };
             return View(model);
@@ -230,8 +235,9 @@ namespace WebApp.Controllers
                 }
             }
 
-            PopulateMdViewBags();
-            ViewBag.Employees = GetEmployeesSelectList();
+            IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+            PopulateMdViewBags(mdBLL);
+            //ViewBag.Employees = GetEmployeesSelectList();
             viewModel.Solutions = ViewBag.Solutions ?? new SelectList(Enumerable.Empty<SelectListItem>());
             return View(viewModel);
         }
@@ -243,9 +249,16 @@ namespace WebApp.Controllers
             if (response.Succeeded && response.Element != null)
             {
                 var viewModel = MapToViewModel(response.Element);
-                PopulateMdViewBags();
+                IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+                PopulateMdViewBags(mdBLL);
+
                 ViewBag.Employees = GetEmployeesSelectList();
-                viewModel.Solutions = new SelectList(ViewBag.Solutions, "Value", "Text");
+                //ViewBag.StatusTypes = new SelectList(ViewBag.MdInterventionStatusTypes, "Value", "Text", viewModel.IdStatusType);
+                //ViewBag.ReferenceTypes = new SelectList(ViewBag.MdReferenceSources, "Value", "Text", viewModel.IdReferenceType);
+                //ViewBag.InterventionTypes = new SelectList(ViewBag.MdInterventionTypes, "Value", "Text", viewModel.IdInterventionType);
+                viewModel.Solutions = ViewBag.MdInterventionSolutions != null
+                    ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
+                    : new SelectList(Enumerable.Empty<SelectListItem>());
                 return View(viewModel);
             }
             return NotFound();
@@ -255,34 +268,63 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, InterventionViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (id != viewModel.Id)
             {
-                var intervention = MapToBOL(viewModel);
-
-                // Mettre à jour les solutions d'intervention
-                if (viewModel.SelectedSolutions != null)
-                {
-                    // Suppression des anciennes solutions
-                    intervention.InterventionsInterventionSolutions.Clear();
-                    foreach (var solutionId in viewModel.SelectedSolutions)
-                    {
-                        intervention.InterventionsInterventionSolutions.Add(new InterventionsInterventionSolutionsBOL
-                        {
-                            IdInterventionSolution = solutionId
-                        });
-                    }
-                }
-
-                bll.UpdateIntervention(intervention);
-                TempData["success"] = "Intervention modifiée avec succès";
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
 
-            PopulateMdViewBags();
+            if (ModelState.IsValid)
+            {
+                var response = base.bll.GetIntervention(id);
+                if (response.Succeeded && response.Element != null)
+                {
+                    var existingIntervention = response.Element;
+
+                    if (existingIntervention == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var intervention = MapToBOL(viewModel);
+
+                    //Mettre à jour les solutions d'intervention
+                    if (viewModel.SelectedSolutions != null)
+                    {
+                        // Suppression des anciennes solutions
+                        intervention.InterventionsInterventionSolutions.Clear();
+                        foreach (var solutionId in viewModel.SelectedSolutions)
+                        {
+                            intervention.InterventionsInterventionSolutions.Add(new InterventionsInterventionSolutionsBOL
+                            {
+                                IdInterventionSolution = solutionId
+                            });
+                        }
+                    }
+
+                    existingIntervention.IsVirtual = viewModel.IsVirtual;
+                    existingIntervention.DateIntervention = viewModel.DateIntervention;
+                    existingIntervention.IdEmployee = viewModel.IdEmployee;
+                    existingIntervention.IdClient = viewModel.IdClient;
+                    existingIntervention.IdReferenceType = viewModel.IdReferenceType;
+                    existingIntervention.IdStatusType = viewModel.IdStatusType;
+                    existingIntervention.IdInterventionType = viewModel.IdInterventionType;
+                    existingIntervention.DebtAmount = viewModel.DebtAmount.HasValue ? EncryptDebtAmount(viewModel.DebtAmount.Value) : null;
+                    existingIntervention.IdLoanReason = viewModel.IdLoanReason;
+                    existingIntervention.IsLoanPaid = viewModel.IsLoanPaid;
+
+                    base.bll.UpdateIntervention(existingIntervention);
+                    TempData["success"] = "Intervention modifié avec succès";
+                    return RedirectToAction(nameof(Index));
+                }
+                return NotFound();
+            }
+            IMDBLL mdBLL = base.GetBLL<IMDBLL>();
+            PopulateMdViewBags(mdBLL);
             ViewBag.Employees = GetEmployeesSelectList();
             viewModel.Solutions = new SelectList(ViewBag.Solutions, "Value", "Text");
             return View(viewModel);
         }
+
 
         // GET: InterventionController/Delete/5
         public ActionResult Delete(int id)
@@ -330,22 +372,29 @@ namespace WebApp.Controllers
         {
             var employeeName = bol.IdEmployee.HasValue ? GetEmployeeName(bol.IdEmployee.Value) : "Inconnu";
             var clientName = bol.IdClient.HasValue ? GetClientName(bol.IdClient.Value) : "Inconnu";
-            var statusName = bol.IdStatusType.HasValue ? GetStatusName(bol.IdStatusType.Value) : "Inconnu";
+            var statusName = bol.IdStatusType.HasValue ? GetStatusName(bol.IdStatusType.Value) : "Inconnu";         
             var interventionTypeName = bol.IdInterventionType.HasValue ? GetInterventionTypeName(bol.IdInterventionType.Value) : "Inconnu";
-
+            
             return new InterventionViewModel
             {
                 Id = bol.Id,
-                IdClient = bol.IdClient,
-                IdEmployee = bol.IdEmployee,
-                IdInterventionType = bol.IdInterventionType,
+                IsVirtual = bol.IsVirtual,
                 DateIntervention = bol.DateIntervention,
-                ClientName = clientName,
+                IdEmployee = bol.IdEmployee,
                 EmployeeName = employeeName,
+                IdClient = bol.IdClient,
+                ClientName = clientName,
+                IdReferenceType = bol.IdReferenceType,
+                IdStatusType = bol.IdStatusType,
                 StatusName = statusName,
+                IdInterventionType = bol.IdInterventionType,
                 InterventionTypeName = interventionTypeName,
-                IsLoanPaid = bol.IsLoanPaid
-                // Ajoutez d'autres propriétés ici selon les besoins
+                DebtAmount = bol.DebtAmount != null ? DecryptDebtAmount(bol.DebtAmount) : (decimal?)null,
+                IdLoanReason = bol.IdLoanReason,
+                IsLoanPaid = bol.IsLoanPaid,
+                SelectedSolutions = bol.InterventionsInterventionSolutions?.Select(s => s.IdInterventionSolution).ToList(),
+                
+                  
             };
         }
 
@@ -380,14 +429,52 @@ namespace WebApp.Controllers
             return interventionBOL;
         }
 
-        private void PopulateMdViewBags()
+        private void PopulateMdViewBags(IMDBLL mdBLL)
         {
-            ViewBag.ReferenceTypes = new SelectList(_mdbBLL.GetAllMdReferenceSources().ElementList, "Id", "Name");
-            ViewBag.StatusTypes = new SelectList(_mdbBLL.GetAllMdInterventionStatusTypes().ElementList, "Id", "Name");
-            ViewBag.InterventionTypes = new SelectList(_mdbBLL.GetAllMdInterventionTypes().ElementList, "Id", "Name");
-            ViewBag.LoanReasons = new SelectList(_mdbBLL.GetAllMdLoanReasons().ElementList, "Id", "Name");
-            ViewBag.Solutions = new SelectList(_mdbBLL.GetAllMdInterventionSolutions().ElementList, "Id", "Name");
+            var mdReferenceSources = mdBLL.GetAllMdReferenceSources();
+            var mdInterventionStatusTypes = mdBLL.GetAllMdInterventionStatusTypes();
+            var mdInterventionTypes = mdBLL.GetAllMdInterventionTypes();
+            var mdLoanReasons = mdBLL.GetAllMdLoanReasons();
+            var mdInterventionSolutions= mdBLL.GetAllMdInterventionSolutions();
+            var employees = GetEmployeesSelectList();
+
+
+
+            ViewBag.MdReferenceSources = mdReferenceSources.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+
+            ViewBag.MdInterventionStatusTypes = mdInterventionStatusTypes.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+
+            ViewBag.MdInterventionTypes = mdInterventionTypes.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+
+            ViewBag.MdLoanReasons = mdLoanReasons.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+
+            ViewBag.MdInterventionSolutions = mdInterventionSolutions.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            });
+
+            ViewBag.Employees = employees;
         }
+    
+
+        
 
         private SelectList GetEmployeesSelectList()
         {

@@ -117,21 +117,21 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdReferenceType" class="form-label">Référence</label>
-                    <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.ReferenceTypes)">
+                    <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.MdReferenceSources)">
                         <option value="">--Sélectionnez la réference--</option>
                     </select>
                     <span asp-validation-for="IdReferenceType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdStatusType" class="form-label">Statut</label>
-                    <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.StatusTypes)">
+                    <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.MdInterventionStatusTypes)">
                         <option value="">--Sélectionnez le Statut--</option>
                     </select>
                     <span asp-validation-for="IdStatusType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="IdInterventionType" class="form-label">Raison consultation</label>
-                    <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.InterventionTypes)">
+                    <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.MdInterventionTypes)">
                         <option value="">--Sélectionnez la Raison de Consultation--</option>
                     </select>
                     <span asp-validation-for="IdInterventionType" class="text-danger"></span>
@@ -186,7 +186,7 @@
                 <div class="mb-3 hidden" id="loanFields">
                     <div>
                         <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
-                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.LoanReasons)">
+                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
                             <option value="">--Sélectionnez le but d'emprunt--</option>
                         </select>
                         <span asp-validation-for="IdLoanReason" class="text-danger"></span>

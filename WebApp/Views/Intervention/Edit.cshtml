@@ -1,86 +1,367 @@
 ﻿@model WebApp.ViewModels.InterventionViewModel
 
 @{
-    ViewData["Title"] = "Modifier l'intervention";
+    ViewData["Title"] = "Modifier une Intervention";
     Layout = "_Layout";
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
-    <hr />
+<style>
+    .form-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.1);
+    }
 
-    <form asp-action="Edit" method="post">
-        @Html.AntiForgeryToken()
+    .form-title {
+        font-size: 28px;
+        color: #000000;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
 
-        <div class="form-group">
-            <label asp-for="IsVirtual" class="control-label">Est virtuel</label>
-            <input asp-for="IsVirtual" class="form-control" />
-            <span asp-validation-for="IsVirtual" class="text-danger"></span>
+    .form-label {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: none;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #495057;
+            box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-primary, .btn-secondary {
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: white;
+            color: black;
+            border: solid 1px;
+            border-color: black;
+        }
+
+    .btn-secondary {
+        background-color: #ffffff;
+        color: #000000;
+        border: 1px solid #000000;
+    }
+
+        .btn-secondary:hover {
+            background-color: #f0f0f0;
+        }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        Il y a des erreurs dans le formulaire. Veuillez les corriger avant de soumettre.
+    </div>
+}
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-container border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="form-title text-center">Modifier une Intervention</h2>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label asp-for="IsVirtual" class="form-label">Est virtuel</label>
+                <div class="form-check">
+                    <input asp-for="IsVirtual" class="form-check-input" type="checkbox" />
+                    <span asp-validation-for="IsVirtual" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Première colonne -->
+                
+                <div class="mb-3">
+                    <label asp-for="DateIntervention" class="form-label">Date de l'intervention</label>
+                    <input asp-for="DateIntervention" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="DateIntervention" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdEmployee" class="form-label">Intervenant</label>
+                    <select asp-for="IdEmployee" class="form-control" asp-items="@(ViewBag.Employees)"></select>
+                    <span asp-validation-for="IdEmployee" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdClient" class="form-label"># Dossier client</label>
+                    <div class="input-group">
+                        <input asp-for="IdClient" type="hidden" id="IdClient" value="@Model.IdClient" />
+                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="background-color: #e9ecef; cursor: not-allowed;" value="@Model.ClientName" />
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#clientModal">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="IdClient" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SelectedSolutions" class="form-label">Solution</label>
+                    <div class="input-group">
+                        <select id="AvailableSolutions" class="form-control">
+                            <option value="">--Sélectionnez la Solution--</option>
+                            @if (Model.Solutions != null)
+                            {
+                                @foreach (var solution in Model.Solutions)
+                                {
+                                    <option value="@solution.Value">@solution.Text</option>
+                                }
+                            }
+                        </select>
+                        <button type="button" id="addSolutionButton" class="btn btn-primary ml-2">Ajouter</button>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Deuxième colonne -->
+                <div class="mb-3">
+                    <label asp-for="IdReferenceType" class="form-label">Référence</label>
+                    <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.MdReferenceSources)">
+                        <option value="">--Sélectionnez la réference--</option>
+                    </select>
+                    <span asp-validation-for="IdReferenceType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdStatusType" class="form-label">Statut</label>
+                    <select asp-for="IdStatusType" class="form-control" asp-items="@(ViewBag.MdInterventionStatusTypes)">
+                        <option value="">--Sélectionnez le Statut--</option>
+                    </select>
+                    <span asp-validation-for="IdStatusType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IdInterventionType" class="form-label">Raison consultation</label>
+                    <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.MdInterventionTypes)">
+                        <option value="">--Sélectionnez la Raison de Consultation--</option>
+                    </select>
+                    <span asp-validation-for="IdInterventionType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DebtAmount" class="form-label">Montant de la dette</label>
+                    <input asp-for="DebtAmount" class="form-control" />
+                    <span asp-validation-for="DebtAmount" class="text-danger"></span>
+                </div>
+                <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
+
+            </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="DateIntervention" class="control-label">Date de l'intervention</label>
-            <input asp-for="DateIntervention" class="form-control" />
-            <span asp-validation-for="DateIntervention" class="text-danger"></span>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Solutions proposées -->
+                <div class="mb-3">
+                    <label class="form-label">Solutions proposées</label>
+                    <ul id="selectedSolutionsList" class="list-group">
+                        @if (Model.Solutions != null && Model.Solutions.Any())
+                        {
+                            @foreach (var solution in Model.SelectedSolutions)
+                            {
+                                var solutionText = Model.Solutions.FirstOrDefault(s => s.Value == solution.ToString())?.Text;
+                                <li class="list-group-item" data-value="@solution">
+                                    @solutionText
+                                    <button type="button" class="btn btn-sm btn-danger float-right remove-solution">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <input type="hidden" name="SelectedSolutions" value="@solution" />
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item text-danger">Aucune solution disponible.</li>
+                        }
+                    </ul>
+                    <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
+                </div>
+
+                
+
+                <div class="mb-3 hidden" id="loanFields">
+                    <div>
+                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
+                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
+                            <option value="">--Sélectionnez le but d'emprunt--</option>
+                        </select>
+                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label class="form-label">Petit prêt remboursé</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
+                            <label class="form-check-label" for="isLoanPaidYes">Oui</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
+                            <label class="form-check-label" for="isLoanPaidNo">Non</label>
+                        </div>
+                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="IdEmployee" class="control-label">Intervenant</label>
-            <select asp-for="IdEmployee" class="form-control" asp-items="ViewBag.Employees"></select>
-            <span asp-validation-for="IdEmployee" class="text-danger"></span>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary" style="width:150px">Modifier</button>
+                <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary" style="width:150px">Retour</a>
+            </div>
         </div>
+    </div>
+</form>
 
-        <div class="form-group">
-            <label asp-for="IdClient" class="control-label">Client</label>
-            <select asp-for="IdClient" class="form-control" asp-items="ViewBag.Clients"></select>
-            <span asp-validation-for="IdClient" class="text-danger"></span>
-        </div>
 
-        <div class="form-group">
-            <label asp-for="IdReferenceType" class="control-label">Référence</label>
-            <select asp-for="IdReferenceType" class="form-control" asp-items="ViewBag.ReferenceTypes"></select>
-            <span asp-validation-for="IdReferenceType" class="text-danger"></span>
+<!-- Modal pour la recherche de clients -->
+<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="clientModalLabel">Rechercher des Clients</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchClientInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <ul id="clientSearchResults" class="list-group mt-2">
+                    <!-- Les résultats de la recherche seront ajoutés ici -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label asp-for="IdStatusType" class="control-label">Statut</label>
-            <select asp-for="IdStatusType" class="form-control" asp-items="ViewBag.StatusTypes"></select>
-            <span asp-validation-for="IdStatusType" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="IdInterventionType" class="control-label">Type d'intervention</label>
-            <select asp-for="IdInterventionType" class="form-control" asp-items="ViewBag.InterventionTypes"></select>
-            <span asp-validation-for="IdInterventionType" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="DebtAmount" class="control-label">Montant de la dette</label>
-            <input asp-for="DebtAmount" class="form-control" />
-            <span asp-validation-for="DebtAmount" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="IdLoanReason" class="control-label">Raison de la consultation</label>
-            <select asp-for="IdLoanReason" class="form-control" asp-items="ViewBag.LoanReasons"></select>
-            <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="IsLoanPaid" class="control-label">Petit prêt remboursé</label>
-            <input asp-for="IsLoanPaid" class="form-control" />
-            <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="SelectedSolutions" class="control-label">Solutions proposées</label>
-            <select asp-for="SelectedSolutions" class="form-control" asp-items="Model.Solutions" multiple="multiple"></select>
-            <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
-        </div>
-
-        <div class="form-group text-center">
-            <input type="submit" value="Enregistrer les modifications" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
-        </div>
-    </form>
+    </div>
 </div>
+
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Ajouter une solution à la liste des solutions proposées
+            $('#addSolutionButton').on('click', function () {
+                var selectedOption = $('#AvailableSolutions option:selected');
+                var solutionText = selectedOption.text();
+                var solutionValue = selectedOption.val();
+
+                console.log("Adding solution:", solutionValue, solutionText);
+
+                if (solutionValue && solutionText) {
+                    // Ajouter la solution à la liste des solutions proposées
+                    $('#selectedSolutionsList').append('<li class="list-group-item" data-value="' + solutionValue + '">' +
+                        solutionText + ' <button type="button" class="btn btn-sm btn-danger float-right remove-solution"><i class="bi bi-trash"></i></button>' +
+                        '<input type="hidden" name="SelectedSolutions" value="' + solutionValue + '" />' +
+                        '</li>');
+
+                    // Retirer l'option sélectionnée de la liste déroulante
+                    selectedOption.remove();
+
+                    // Réinitialiser la sélection dans la liste déroulante
+                    $('#AvailableSolutions').val('');
+                }
+            });
+
+            // Supprimer une solution de la liste sélectionnée et la réajouter à la liste déroulante
+            $('#selectedSolutionsList').on('click', '.remove-solution', function () {
+                var listItem = $(this).closest('li');
+                var solutionValue = listItem.data('value');
+                var solutionText = listItem.contents().get(0).nodeValue.trim(); // Récupérer le texte sans l'icône de suppression
+
+                if (solutionValue && solutionText) {
+                    // Réajouter l'option supprimée dans la liste déroulante
+                    $('#AvailableSolutions').append('<option value="' + solutionValue + '">' + solutionText + '</option>');
+
+                    // Supprimer l'élément de la liste des solutions proposées
+                    listItem.remove();
+                }
+            });
+
+            // Validation côté client pour vérifier que IdClient est défini et qu'au moins une solution est sélectionnée
+            $('form').on('submit', function (event) {
+                var clientId = $('#IdClient').val();
+                var selectedSolutions = $('#selectedSolutionsList li').length;
+
+                if (!clientId) {
+                    event.preventDefault();
+                    alert("Veuillez sélectionner un dossier client.");
+                    return false;
+                }
+
+                if (selectedSolutions === 0) {
+                    event.preventDefault();
+                    alert("Veuillez sélectionner au moins une solution.");
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Recherche et sélection d'un client
+            $('#searchClientInput').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm.length > 2) {
+                    $.ajax({
+                        url: '/Intervention/SearchClients',
+                        data: { searchTerm: searchTerm },
+                        success: function (data) {
+                            $('#clientSearchResults').empty();
+                            data.forEach(function (client) {
+                                $('#clientSearchResults').append('<li class="list-group-item" data-id="' + client.id + '">' + client.fullName + ' (#' + client.id + ')</li>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Erreur lors de la recherche des clients:", status, error);
+                        }
+                    });
+                }
+            });
+
+            $('#clientSearchResults').on('click', 'li', function () {
+                var clientId = $(this).data('id');
+                var clientName = $(this).text();
+                $('#IdClient').val(clientId);
+                $('#clientNameDisplay').val(clientName);
+                $('#clientModal').modal('hide');
+            });
+
+            // Nettoyage du modal de recherche de client
+            $('#clientModal').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#clientSearchResults').empty();
+                $('#clientSearchResults').empty();
+            });
+        });
+    </script>
+}
+
+
+
+
+
+

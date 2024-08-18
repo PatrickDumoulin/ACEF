@@ -47,7 +47,7 @@ namespace WebApp.ViewModels
 
         public int? IdLoanReason { get; set; }
 
-        public string LoanReasonName { get; set; } = string.Empty; // Ajouté pour afficher le nom de la raison de prêt
+        //public string LoanReasonName { get; set; } = string.Empty; // Ajouté pour afficher le nom de la raison de prêt
 
         public bool? IsLoanPaid { get; set; }
 
