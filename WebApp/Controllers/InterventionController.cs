@@ -252,10 +252,6 @@ namespace WebApp.Controllers
                 IMDBLL mdBLL = base.GetBLL<IMDBLL>();
                 PopulateMdViewBags(mdBLL);
 
-                ViewBag.Employees = GetEmployeesSelectList();
-                //ViewBag.StatusTypes = new SelectList(ViewBag.MdInterventionStatusTypes, "Value", "Text", viewModel.IdStatusType);
-                //ViewBag.ReferenceTypes = new SelectList(ViewBag.MdReferenceSources, "Value", "Text", viewModel.IdReferenceType);
-                //ViewBag.InterventionTypes = new SelectList(ViewBag.MdInterventionTypes, "Value", "Text", viewModel.IdInterventionType);
                 viewModel.Solutions = ViewBag.MdInterventionSolutions != null
                     ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
                     : new SelectList(Enumerable.Empty<SelectListItem>());
@@ -374,7 +370,13 @@ namespace WebApp.Controllers
             var clientName = bol.IdClient.HasValue ? GetClientName(bol.IdClient.Value) : "Inconnu";
             var statusName = bol.IdStatusType.HasValue ? GetStatusName(bol.IdStatusType.Value) : "Inconnu";         
             var interventionTypeName = bol.IdInterventionType.HasValue ? GetInterventionTypeName(bol.IdInterventionType.Value) : "Inconnu";
-            
+            var referenceTypeName = bol.IdReferenceType.HasValue ? GetReferenceTypeName(bol.IdReferenceType.Value) : "Inconnu";
+
+            var solutionNames = bol.InterventionsInterventionSolutions != null
+                ? bol.InterventionsInterventionSolutions.Select(s => GetSolutionName(s.IdInterventionSolution)).ToList()
+                : new List<string>();
+
+
             return new InterventionViewModel
             {
                 Id = bol.Id,
@@ -385,6 +387,7 @@ namespace WebApp.Controllers
                 IdClient = bol.IdClient,
                 ClientName = clientName,
                 IdReferenceType = bol.IdReferenceType,
+                ReferenceTypeName = referenceTypeName,
                 IdStatusType = bol.IdStatusType,
                 StatusName = statusName,
                 IdInterventionType = bol.IdInterventionType,
@@ -393,6 +396,7 @@ namespace WebApp.Controllers
                 IdLoanReason = bol.IdLoanReason,
                 IsLoanPaid = bol.IsLoanPaid,
                 SelectedSolutions = bol.InterventionsInterventionSolutions?.Select(s => s.IdInterventionSolution).ToList(),
+                SolutionNames = solutionNames,
                 
                   
             };

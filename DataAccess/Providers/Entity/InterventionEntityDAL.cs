@@ -6,6 +6,7 @@ using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
 using DataModels.BOL.Client;
 using DataModels.BOL.Intervention;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,20 @@ namespace DataAccess.Providers.Entity
         public InterventionEntityDAL() { }
         public InterventionEntityDAL(AcefEntityDAL externalDal) : base(externalDal) { }
 
-        
+
 
         public InterventionBOL GetIntervention(int id)
         {
-            Interventions record = Db.Interventions.FirstOrDefault(x => x.Id == id);
+            var record = Db.Interventions
+                           .Include(i => i.InterventionsInterventionSolutions) // Inclure les solutions d'intervention
+                           .FirstOrDefault(x => x.Id == id);
             return MapperWrapper.NewBol<InterventionBOL>(record);
         }
 
+
         public List<InterventionBOL> GetInterventions()
         {
-            var records = Db.Interventions.ToList();
+            var records = Db.Interventions.Include(i=>i.InterventionsInterventionSolutions).ToList();
             return records.Select(x => new InterventionBOL(x)).ToList();
         }
 
