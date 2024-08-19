@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using CoreLib.Definitions;
+using System.Web.Mvc;
+
 
 
 namespace BusinessLayer.Logic.Interfaces
@@ -15,5 +17,20 @@ namespace BusinessLayer.Logic.Interfaces
         void UpdateIntervention(InterventionBOL interventionBOL);
 
         void DeleteIntervention(int id);
+
+        DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek);
+
+        byte[] EncryptDebtAmount(decimal amount);
+
+        public decimal DecryptDebtAmount(byte[] encryptedAmount);
+
+        
+
+
+
+
+
+
+
     }
 }

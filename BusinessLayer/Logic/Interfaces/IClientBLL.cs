@@ -16,6 +16,8 @@ namespace BusinessLayer.Logic.Interfaces
         void CreateClient(IClientBOL clientBOL);
         void UpdateClient(IClientBOL clientBOL);
 
+        string GetClientName(int clientId);
+
 
 
     }

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace BusinessLayer.Logic
 {
@@ -34,7 +35,15 @@ namespace BusinessLayer.Logic
         public MDBLL(ProviderDALTypes dalType) : base(dalType) { }
         public MDBLL(IDAL externalDAL) : base(externalDAL) { }
 
-        
+        public void PopulateMdViewBags(dynamic viewBag)
+        {
+            viewBag.ReferenceTypes = new SelectList(GetAllMdReferenceSources().ElementList, "Id", "Name");
+            viewBag.StatusTypes = new SelectList(GetAllMdInterventionStatusTypes().ElementList, "Id", "Name");
+            viewBag.InterventionTypes = new SelectList(GetAllMdInterventionTypes().ElementList, "Id", "Name");
+            viewBag.LoanReasons = new SelectList(GetAllMdLoanReasons().ElementList, "Id", "Name");
+            viewBag.Solutions = new SelectList(GetAllMdInterventionSolutions().ElementList, "Id", "Name");
+        }
+
         public GetItemResponse<IMdBankBOL> GetMdBank(int id)
         {
             IMdBankBOL mdBankBOL = base.dal.GetMdBank(id);
@@ -138,6 +147,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdReferenceSourceBOL>(mdReferenceSourceBOL);
         }
 
+        public string GetReferenceTypeName(int referenceTypeId)
+        {
+            var referenceResponse = GetMdReferenceSource(referenceTypeId);
+            return referenceResponse.Succeeded && referenceResponse.Element != null
+                ? referenceResponse.Element.Name
+                : "Inconnu";
+        }
+
         public GetItemResponse<IMdInterventionStatusTypeBOL> GetMdInterventionStatusType(int id)
         {
             IMdInterventionStatusTypeBOL mdInterventionStatusTypeBOL = base.dal.GetMdInterventionStatusType(id);
@@ -149,6 +166,14 @@ namespace BusinessLayer.Logic
             List<IMdInterventionStatusTypeBOL> mdInterventionStatusTypeBOL = base.dal.
                 GetAllMdInterventionStatusTypes();
             return new GetListResponse<IMdInterventionStatusTypeBOL>(mdInterventionStatusTypeBOL);
+        }
+
+        public string GetMdInterventionStatusTypeName(int statusId)
+        {
+            var statusResponse = GetMdInterventionStatusType(statusId);
+            return statusResponse.Succeeded && statusResponse.Element != null
+                ? statusResponse.Element.Name
+                : "Inconnu";
         }
 
         public GetItemResponse<IMdLoanReasonBOL> GetMdLoanReason(int id)
@@ -170,6 +195,7 @@ namespace BusinessLayer.Logic
             return new GetItemResponse<IMdInterventionTypeBOL>(mdInterventionTypeBOL);
         }
 
+
         public GetListResponse<IMdInterventionTypeBOL> GetAllMdInterventionTypes()
         {
             List<IMdInterventionTypeBOL> mdInterventionTypeBOL = base.dal.
@@ -188,6 +214,14 @@ namespace BusinessLayer.Logic
             List<IMdInterventionSolutionBOL> mdInterventionSolutionBOL = base.dal.
                 GetAllMdInterventionSolutions();
             return new GetListResponse<IMdInterventionSolutionBOL>(mdInterventionSolutionBOL);
+        }
+
+        public string GetSolutionName(int solutionId)
+        {
+            var solutionResponse = GetMdInterventionSolution(solutionId);
+            return solutionResponse.Succeeded && solutionResponse.Element != null
+                ? solutionResponse.Element.Name
+                : "Inconnu";
         }
 
         public GetItemResponse<IMdIncomeTypeBOL> GetMdIncomeType(int id)
@@ -214,5 +248,12 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdSeminarThemesBOL>(mdSeminarThemeBOL);
         }
 
+        public string GetMdInterventionTypeName(int interventionTypeId)
+        {
+            var interventionResponse = GetMdInterventionType(interventionTypeId);
+            return interventionResponse.Succeeded && interventionResponse.Element != null
+                ? interventionResponse.Element.Name
+                : "Inconnu";
+        }
     }
 }

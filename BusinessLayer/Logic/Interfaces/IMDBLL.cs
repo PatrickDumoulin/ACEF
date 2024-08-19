@@ -24,6 +24,7 @@ namespace BusinessLayer.Logic.Interfaces
 {
     public interface IMDBLL : IBLL
     {
+        void PopulateMdViewBags(dynamic viewBag);
         GetItemResponse<IMdBankBOL> GetMdBank(int id);
         GetListResponse<IMdBankBOL> GetAllMdBanks();
 
@@ -47,18 +48,23 @@ namespace BusinessLayer.Logic.Interfaces
 
         GetItemResponse<IMdReferenceSourceBOL> GetMdReferenceSource(int id);
         GetListResponse<IMdReferenceSourceBOL> GetAllMdReferenceSources();
+        string GetReferenceTypeName(int referenceTypeId);
 
         GetItemResponse<IMdInterventionStatusTypeBOL> GetMdInterventionStatusType(int id);
         GetListResponse<IMdInterventionStatusTypeBOL> GetAllMdInterventionStatusTypes();
+        string GetMdInterventionStatusTypeName(int statusId);
 
         GetItemResponse<IMdLoanReasonBOL> GetMdLoanReason(int id);
         GetListResponse<IMdLoanReasonBOL> GetAllMdLoanReasons();
 
         GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id);
         GetListResponse<IMdInterventionTypeBOL> GetAllMdInterventionTypes();
+        string GetMdInterventionTypeName(int interventionTypeId);
 
         GetItemResponse<IMdInterventionSolutionBOL> GetMdInterventionSolution(int id);
         GetListResponse<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions();
+
+        string GetSolutionName(int solutionId);
 
         GetItemResponse<IMdIncomeTypeBOL> GetMdIncomeType(int id);
         GetListResponse<IMdIncomeTypeBOL> GetAllMdIncomeTypes();

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace BusinessLayer.Logic
 {
@@ -43,6 +44,30 @@ namespace BusinessLayer.Logic
         public void DeleteEmployee(int id)
         {
             base.dal.DeleteEmployee(id);
+        }
+
+        public SelectList GetEmployeesSelectList()
+        {
+            var response = GetAllEmployees();
+            if (response.Succeeded)
+            {
+                var employees = response.ElementList.Select(e => new
+                {
+                    Id = e.Id.ToString(),
+                    FullName = $"{e.FirstName} {e.LastName}"
+                }).ToList();
+
+                return new SelectList(employees, "Id", "FullName");
+            }
+            return new SelectList(Enumerable.Empty<SelectListItem>());
+        }
+
+        public string GetEmployeeName(int employeeId)
+        {
+            var employeeResponse = GetEmployeeById(employeeId);
+            return employeeResponse.Succeeded && employeeResponse.Element != null
+                ? $"{employeeResponse.Element.FirstName} {employeeResponse.Element.LastName}"
+                : "Inconnu";
         }
     }
 }

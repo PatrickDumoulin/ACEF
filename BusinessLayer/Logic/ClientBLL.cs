@@ -2,6 +2,7 @@
 using BusinessLayer.Core.Definitions;
 using BusinessLayer.Logic.Interfaces;
 using CoreLib.Definitions;
+using DataAccess.BOL.Client;
 using DataAccess.Providers.Interfaces;
 using DataModels.BOL.Client;
 using System;
@@ -41,7 +42,15 @@ namespace BusinessLayer.Logic
             base.dal.UpdateClient(clientBOL);
         }
 
-        
+        public string GetClientName(int clientId)
+        {
+            var clientResponse = GetClient(clientId);
+            return clientResponse.Succeeded && clientResponse.Element != null
+                ? $"{clientResponse.Element.FirstName} {clientResponse.Element.LastName}"
+                : "Inconnu";
+        }
+
+
     }
 }
 

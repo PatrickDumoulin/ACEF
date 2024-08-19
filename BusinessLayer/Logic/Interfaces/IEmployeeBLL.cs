@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace BusinessLayer.Logic.Interfaces
 {
@@ -16,5 +17,9 @@ namespace BusinessLayer.Logic.Interfaces
         void CreateEmployee(Employees employee);
         void UpdateEmployee(Employees employee);
         void DeleteEmployee(int id);
+
+        SelectList GetEmployeesSelectList();
+
+        string GetEmployeeName(int employeeId);
     }
 }
