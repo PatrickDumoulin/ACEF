@@ -230,17 +230,16 @@
                         </select>
                         <span asp-validation-for="IdLoanReason" class="text-danger"></span>
                     </div>
-                    <div>
-                        <label class="form-label">Petit prêt remboursé</label>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
-                            <label class="form-check-label" for="isLoanPaidYes">Oui</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
-                            <label class="form-check-label" for="isLoanPaidNo">Non</label>
-                        </div>
-                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
+                    <div class="btn-group" role="group" aria-label="Loan paid status">
+                        <input type="hidden" asp-for="IsLoanPaid" value="false">
+                        <button type="button" class="btn btn-outline-primary @(Model.IsLoanPaid == true ? "active" : "")"
+                                onclick="document.getElementById('IsLoanPaid').value='true';">
+                            Oui
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary @(Model.IsLoanPaid == false ? "active" : "")"
+                                onclick="document.getElementById('IsLoanPaid').value='false';">
+                            Non
+                        </button>
                     </div>
                 </div>
             </div>
