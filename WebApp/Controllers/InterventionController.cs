@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using DataAccess.BOL.Client;
 using System.Net.Sockets;
+using DataAccess.BOL.MdInterventionSolution;
 
 namespace WebApp.Controllers
 {
@@ -50,7 +51,7 @@ namespace WebApp.Controllers
             DateTime now = DateTime.Now;
             if (searchModel.DateFilter == "Semaine en cours")
             {
-                DateTime startOfWeek = StartOfWeek(now, DayOfWeek.Monday);
+                DateTime startOfWeek = _interventionBLL.StartOfWeek(now, DayOfWeek.Monday);
                 DateTime endOfWeek = startOfWeek.AddDays(6);
                 interventions = interventions.Where(i => i.DateIntervention >= startOfWeek && i.DateIntervention <= endOfWeek).ToList();
             }
@@ -202,7 +203,7 @@ namespace WebApp.Controllers
                         IdReferenceType = viewModel.IdReferenceType,
                         IdStatusType = viewModel.IdStatusType,
                         IdInterventionType = viewModel.IdInterventionType,
-                        DebtAmount = viewModel.DebtAmount.HasValue ? EncryptDebtAmount(viewModel.DebtAmount.Value) : null,
+                        DebtAmount = viewModel.DebtAmount.HasValue ? _interventionBLL.EncryptDebtAmount(viewModel.DebtAmount.Value) : null,
                         IdLoanReason = viewModel.IdLoanReason,
                         IsLoanPaid = viewModel.IsLoanPaid,
                     };
@@ -281,20 +282,29 @@ namespace WebApp.Controllers
                         return NotFound();
                     }
 
-                    var intervention = MapToBOL(viewModel);
+                    //var intervention = MapToBOL(viewModel);
 
                     //Mettre à jour les solutions d'intervention
                     if (viewModel.SelectedSolutions != null)
                     {
                         // Suppression des anciennes solutions
-                        intervention.InterventionsInterventionSolutions.Clear();
+                        var solutionsToRemove = existingIntervention.InterventionsInterventionSolutions.ToList();
+                        foreach (var solution in solutionsToRemove)
+                        {
+                            _solutionsBLL.DeleteInterventionsInterventionSolutions(solution.Id);
+                        }
+
+                        // Creer les nouvelles solutions
                         foreach (var solutionId in viewModel.SelectedSolutions)
                         {
-                            intervention.InterventionsInterventionSolutions.Add(new InterventionsInterventionSolutionsBOL
+                            var solutionBOL = new InterventionsInterventionSolutionsBOL
                             {
+                                IdIntervention = existingIntervention.Id,
                                 IdInterventionSolution = solutionId
-                            });
+                            };
+                            _solutionsBLL.CreateInterventionsInterventionSolutions(solutionBOL);
                         }
+
                     }
 
                     existingIntervention.IsVirtual = viewModel.IsVirtual;
@@ -304,7 +314,7 @@ namespace WebApp.Controllers
                     existingIntervention.IdReferenceType = viewModel.IdReferenceType;
                     existingIntervention.IdStatusType = viewModel.IdStatusType;
                     existingIntervention.IdInterventionType = viewModel.IdInterventionType;
-                    existingIntervention.DebtAmount = viewModel.DebtAmount.HasValue ? EncryptDebtAmount(viewModel.DebtAmount.Value) : null;
+                    existingIntervention.DebtAmount = viewModel.DebtAmount.HasValue ? _interventionBLL.EncryptDebtAmount(viewModel.DebtAmount.Value) : null;
                     existingIntervention.IdLoanReason = viewModel.IdLoanReason;
                     existingIntervention.IsLoanPaid = viewModel.IsLoanPaid;
 
@@ -316,7 +326,7 @@ namespace WebApp.Controllers
             }
             IMDBLL mdBLL = base.GetBLL<IMDBLL>();
             PopulateMdViewBags(mdBLL);
-            ViewBag.Employees = GetEmployeesSelectList();
+            ViewBag.Employees = _employeeBLL.GetEmployeesSelectList();
             viewModel.Solutions = new SelectList(ViewBag.Solutions, "Value", "Text");
             return View(viewModel);
         }
@@ -366,14 +376,14 @@ namespace WebApp.Controllers
 
         private InterventionViewModel MapToViewModel(InterventionBOL bol)
         {
-            var employeeName = bol.IdEmployee.HasValue ? GetEmployeeName(bol.IdEmployee.Value) : "Inconnu";
-            var clientName = bol.IdClient.HasValue ? GetClientName(bol.IdClient.Value) : "Inconnu";
-            var statusName = bol.IdStatusType.HasValue ? GetStatusName(bol.IdStatusType.Value) : "Inconnu";         
-            var interventionTypeName = bol.IdInterventionType.HasValue ? GetInterventionTypeName(bol.IdInterventionType.Value) : "Inconnu";
-            var referenceTypeName = bol.IdReferenceType.HasValue ? GetReferenceTypeName(bol.IdReferenceType.Value) : "Inconnu";
+            var employeeName = bol.IdEmployee.HasValue ? _employeeBLL.GetEmployeeName(bol.IdEmployee.Value) : "Inconnu";
+            var clientName = bol.IdClient.HasValue ? _clientBLL.GetClientName(bol.IdClient.Value) : "Inconnu";
+            var statusName = bol.IdStatusType.HasValue ? _mdbBLL.GetMdInterventionStatusTypeName(bol.IdStatusType.Value) : "Inconnu";         
+            var interventionTypeName = bol.IdInterventionType.HasValue ? _mdbBLL.GetMdInterventionTypeName(bol.IdInterventionType.Value) : "Inconnu";
+            var referenceTypeName = bol.IdReferenceType.HasValue ? _mdbBLL.GetReferenceTypeName(bol.IdReferenceType.Value) : "Inconnu";
 
             var solutionNames = bol.InterventionsInterventionSolutions != null
-                ? bol.InterventionsInterventionSolutions.Select(s => GetSolutionName(s.IdInterventionSolution)).ToList()
+                ? bol.InterventionsInterventionSolutions.Select(s => _mdbBLL.GetSolutionName(s.IdInterventionSolution)).ToList()
                 : new List<string>();
 
 
@@ -392,7 +402,7 @@ namespace WebApp.Controllers
                 StatusName = statusName,
                 IdInterventionType = bol.IdInterventionType,
                 InterventionTypeName = interventionTypeName,
-                DebtAmount = bol.DebtAmount != null ? DecryptDebtAmount(bol.DebtAmount) : (decimal?)null,
+                DebtAmount = bol.DebtAmount != null ? _interventionBLL.DecryptDebtAmount(bol.DebtAmount) : (decimal?)null,
                 IdLoanReason = bol.IdLoanReason,
                 IsLoanPaid = bol.IsLoanPaid,
                 SelectedSolutions = bol.InterventionsInterventionSolutions?.Select(s => s.IdInterventionSolution).ToList(),
@@ -414,7 +424,7 @@ namespace WebApp.Controllers
                 IdReferenceType = viewModel.IdReferenceType,
                 IdStatusType = viewModel.IdStatusType,
                 IdInterventionType = viewModel.IdInterventionType,
-                DebtAmount = viewModel.DebtAmount.HasValue ? EncryptDebtAmount(viewModel.DebtAmount.Value) : null,
+                DebtAmount = viewModel.DebtAmount.HasValue ? _interventionBLL.EncryptDebtAmount(viewModel.DebtAmount.Value) : null,
                 IdLoanReason = viewModel.IdLoanReason,
                 IsLoanPaid = viewModel.IsLoanPaid
             };
@@ -439,7 +449,7 @@ namespace WebApp.Controllers
             var mdInterventionStatusTypes = mdBLL.GetAllMdInterventionStatusTypes();
             var mdInterventionTypes = mdBLL.GetAllMdInterventionTypes();
             var mdLoanReasons = mdBLL.GetAllMdLoanReasons();
-            var mdInterventionSolutions= mdBLL.GetAllMdInterventionSolutions();
+            var mdInterventionSolutions = mdBLL.GetAllMdInterventionSolutions();
             var employees = GetEmployeesSelectList();
 
 
@@ -476,9 +486,9 @@ namespace WebApp.Controllers
 
             ViewBag.Employees = employees;
         }
-    
 
-        
+
+
 
         private SelectList GetEmployeesSelectList()
         {
@@ -518,24 +528,24 @@ namespace WebApp.Controllers
             return new List<ClientViewModel>();
         }
 
-        private DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
-        {
-            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
-            return dt.AddDays(-1 * diff).Date;
+        //private DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
+        //{
+        //    int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+        //    return dt.AddDays(-1 * diff).Date;
 
-        }
+        //}
 
 
         // Méthodes de chiffrement et déchiffrement
-        private byte[] EncryptDebtAmount(decimal amount)
-        {
-            return BitConverter.GetBytes((double)amount);
-        }
+        //    private byte[] EncryptDebtAmount(decimal amount)
+        //    {
+        //        return BitConverter.GetBytes((double)amount);
+        //    }
 
-        private decimal DecryptDebtAmount(byte[] encryptedAmount)
-        {
-            return (decimal)BitConverter.ToDouble(encryptedAmount, 0);
-        }
+        //    private decimal DecryptDebtAmount(byte[] encryptedAmount)
+        //    {
+        //        return (decimal)BitConverter.ToDouble(encryptedAmount, 0);
+        //    }
 
         private string GetEmployeeName(int employeeId)
         {
@@ -545,44 +555,44 @@ namespace WebApp.Controllers
                 : "Inconnu";
         }
 
-        private string GetClientName(int clientId)
-        {
-            var clientResponse = _clientBLL.GetClient(clientId);
-            return clientResponse.Succeeded && clientResponse.Element != null
-                ? $"{clientResponse.Element.FirstName} {clientResponse.Element.LastName}"
-                : "Inconnu";
-        }
+        //    private string GetClientName(int clientId)
+        //    {
+        //        var clientResponse = _clientBLL.GetClient(clientId);
+        //        return clientResponse.Succeeded && clientResponse.Element != null
+        //            ? $"{clientResponse.Element.FirstName} {clientResponse.Element.LastName}"
+        //            : "Inconnu";
+        //    }
 
-        private string GetStatusName(int statusId)
-        {
-            var statusResponse = _mdbBLL.GetMdInterventionStatusType(statusId);
-            return statusResponse.Succeeded && statusResponse.Element != null
-                ? statusResponse.Element.Name
-                : "Inconnu";
-        }
+        //    private string GetStatusName(int statusId)
+        //    {
+        //        var statusResponse = _mdbBLL.GetMdInterventionStatusType(statusId);
+        //        return statusResponse.Succeeded && statusResponse.Element != null
+        //            ? statusResponse.Element.Name
+        //            : "Inconnu";
+        //    }
 
-        private string GetReferenceTypeName(int referenceTypeId)
-        {
-            var referenceResponse = _mdbBLL.GetMdReferenceSource(referenceTypeId);
-            return referenceResponse.Succeeded && referenceResponse.Element != null
-                ? referenceResponse.Element.Name
-                : "Inconnu";
-        }
+        //    private string GetReferenceTypeName(int referenceTypeId)
+        //    {
+        //        var referenceResponse = _mdbBLL.GetMdReferenceSource(referenceTypeId);
+        //        return referenceResponse.Succeeded && referenceResponse.Element != null
+        //            ? referenceResponse.Element.Name
+        //            : "Inconnu";
+        //    }
 
-        private string GetInterventionTypeName(int interventionTypeId)
-        {
-            var interventionResponse = _mdbBLL.GetMdInterventionType(interventionTypeId);
-            return interventionResponse.Succeeded && interventionResponse.Element != null
-                ? interventionResponse.Element.Name
-                : "Inconnu";
-        }
+        //    private string GetInterventionTypeName(int interventionTypeId)
+        //    {
+        //        var interventionResponse = _mdbBLL.GetMdInterventionType(interventionTypeId);
+        //        return interventionResponse.Succeeded && interventionResponse.Element != null
+        //            ? interventionResponse.Element.Name
+        //            : "Inconnu";
+        //    }
 
-        private string GetSolutionName(int solutionId)
-        {
-            var solutionResponse = _mdbBLL.GetMdInterventionSolution(solutionId);
-            return solutionResponse.Succeeded && solutionResponse.Element != null
-                ? solutionResponse.Element.Name
-                : "Inconnu";
-        }
+        //    private string GetSolutionName(int solutionId)
+        //    {
+        //        var solutionResponse = _mdbBLL.GetMdInterventionSolution(solutionId);
+        //        return solutionResponse.Succeeded && solutionResponse.Element != null
+        //            ? solutionResponse.Element.Name
+        //            : "Inconnu";
+        //    }
     }
 }

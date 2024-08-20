@@ -98,13 +98,16 @@ namespace DataAccess.Providers.Entity
                 throw new ArgumentNullException(nameof(interventionBOL), "InterventionBOL cannot be null");
             }
 
-            var existingIntervention = Db.Interventions.FirstOrDefault(x => x.Id == interventionBOL.Id);
+            var existingIntervention = Db.Interventions
+                .Include(i => i.InterventionsInterventionSolutions)
+                .FirstOrDefault(x => x.Id == interventionBOL.Id);
 
             if (existingIntervention == null)
             {
                 throw new KeyNotFoundException($"Intervention with ID {interventionBOL.Id} not found.");
             }
 
+            // Mettre à jour les propriétés de l'intervention
             existingIntervention.IsVirtual = interventionBOL.IsVirtual;
             existingIntervention.DateIntervention = interventionBOL.DateIntervention;
             existingIntervention.IdEmployee = interventionBOL.IdEmployee;
@@ -115,8 +118,9 @@ namespace DataAccess.Providers.Entity
             existingIntervention.DebtAmount = interventionBOL.DebtAmount;
             existingIntervention.IdLoanReason = interventionBOL.IdLoanReason;
             existingIntervention.IsLoanPaid = interventionBOL.IsLoanPaid;
-            
 
+
+            // Sauvegarder les changements
             Db.SaveChanges();
         }
         public void DeleteIntervention(int id)

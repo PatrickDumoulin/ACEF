@@ -24,7 +24,6 @@ namespace BusinessLayer.Logic.Interfaces
 {
     public interface IMDBLL : IBLL
     {
-        void PopulateMdViewBags(dynamic viewBag);
         GetItemResponse<IMdBankBOL> GetMdBank(int id);
         GetListResponse<IMdBankBOL> GetAllMdBanks();
 

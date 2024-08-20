@@ -29,20 +29,15 @@ using System.Web.Mvc;
 
 namespace BusinessLayer.Logic
 {
+    
     public class MDBLL: AbstractBLL<IMDDAL>, IMDBLL
     {
+        public readonly IEmployeeBLL _employeeBLL;
         public MDBLL() { }
         public MDBLL(ProviderDALTypes dalType) : base(dalType) { }
         public MDBLL(IDAL externalDAL) : base(externalDAL) { }
 
-        public void PopulateMdViewBags(dynamic viewBag)
-        {
-            viewBag.ReferenceTypes = new SelectList(GetAllMdReferenceSources().ElementList, "Id", "Name");
-            viewBag.StatusTypes = new SelectList(GetAllMdInterventionStatusTypes().ElementList, "Id", "Name");
-            viewBag.InterventionTypes = new SelectList(GetAllMdInterventionTypes().ElementList, "Id", "Name");
-            viewBag.LoanReasons = new SelectList(GetAllMdLoanReasons().ElementList, "Id", "Name");
-            viewBag.Solutions = new SelectList(GetAllMdInterventionSolutions().ElementList, "Id", "Name");
-        }
+        
 
         public GetItemResponse<IMdBankBOL> GetMdBank(int id)
         {
