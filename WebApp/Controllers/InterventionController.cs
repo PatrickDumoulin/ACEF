@@ -510,7 +510,9 @@ namespace WebApp.Controllers
         public JsonResult SearchClients(string searchTerm)
         {
             var clients = GetClients().Where(c =>
-                c.FullName.ToLower().Contains(searchTerm.ToLower())).ToList();
+                c.FullName.ToLower().Contains(searchTerm.ToLower()) ||
+                c.Id.ToString().Contains(searchTerm)).ToList();
+
             return Json(clients);
         }
 

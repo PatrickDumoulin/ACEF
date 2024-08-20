@@ -137,5 +137,8 @@
         $('.modal-backdrop').remove();
         $('#clientSearchResults').empty();
         $('#clientSearchResults').empty();
+        $('body').css('overflow', 'auto');
     });
+
+
 });
