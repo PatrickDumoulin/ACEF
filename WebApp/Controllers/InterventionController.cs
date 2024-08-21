@@ -49,21 +49,36 @@ namespace WebApp.Controllers
 
             // Filtrer par date
             DateTime now = DateTime.Now;
+
+            
+
             if (searchModel.DateFilter == "Semaine en cours")
             {
                 DateTime startOfWeek = _interventionBLL.StartOfWeek(now, DayOfWeek.Monday);
                 DateTime endOfWeek = startOfWeek.AddDays(6);
                 interventions = interventions.Where(i => i.DateIntervention >= startOfWeek && i.DateIntervention <= endOfWeek).ToList();
+
+                searchModel.semaineEnCours = true;
+                searchModel.moisEnCours = false;
+                searchModel.intervalle = false;
             }
             else if (searchModel.DateFilter == "Mois en cours")
             {
                 DateTime startOfMonth = new DateTime(now.Year, now.Month, 1);
                 DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
                 interventions = interventions.Where(i => i.DateIntervention >= startOfMonth && i.DateIntervention <= endOfMonth).ToList();
+
+                searchModel.semaineEnCours = false;
+                searchModel.moisEnCours = true;
+                searchModel.intervalle = false;
             }
             else if (searchModel.DateFilter == "Intervalle" && searchModel.StartDate.HasValue && searchModel.EndDate.HasValue)
             {
                 interventions = interventions.Where(i => i.DateIntervention >= searchModel.StartDate && i.DateIntervention <= searchModel.EndDate).ToList();
+
+                searchModel.semaineEnCours = false;
+                searchModel.moisEnCours = false;
+                searchModel.intervalle = true;
             }
 
             // Populate the Employees and InterventionTypes lists
@@ -101,11 +116,15 @@ namespace WebApp.Controllers
                 interventions = interventions.Where(c => c.IsLoanPaid == !searchModel.IsLoanUnpaid.Value).ToList();
             }
 
-            // Apply sorting
+            // Appliquer le tri
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.ClientIdSortParm = sortOrder == "IdClient" ? "clientId_desc" : "IdClient";
             ViewBag.EmployeeIdSortParm = sortOrder == "IdEmployee" ? "employeeId_desc" : "IdEmployee";
             ViewBag.InterventionTypeSortParm = sortOrder == "IdInterventionType" ? "interventionType_desc" : "IdInterventionType";
+            ViewBag.LoanPaidSortParm = sortOrder == "LoanPaid" ? "loanPaid_desc" : "LoanPaid";
+
+
 
             switch (sortOrder)
             {
@@ -130,9 +149,16 @@ namespace WebApp.Controllers
                 case "interventionType_desc":
                     interventions = interventions.OrderByDescending(c => c.IdInterventionType).ToList();
                     break;
+                case "LoanPaid":
+                    interventions = interventions.OrderBy(c => c.IsLoanPaid).ToList();
+                    break;
+                case "loanPaid_desc":
+                    interventions = interventions.OrderByDescending(c => c.IsLoanPaid).ToList();
+                    break;
                 default:
                     interventions = interventions.OrderBy(c => c.Id).ToList();
                     break;
+
             }
 
             var totalcount = interventions.Count;
@@ -148,7 +174,10 @@ namespace WebApp.Controllers
                 IsLoanUnpaid = searchModel.IsLoanUnpaid,
                 Employees = employees,
                 InterventionTypes = interventionTypes,
-                Interventions = pagedInterventions // Assign the filtered, sorted, and paginated interventions
+                Interventions = pagedInterventions, // Assign the filtered, sorted, and paginated interventions
+                semaineEnCours = searchModel.DateFilter == "Semaine en cours",
+                moisEnCours = searchModel.DateFilter == "Mois en cours",
+                intervalle = searchModel.DateFilter == "Intervalle"
             };
 
             return View(viewModel);

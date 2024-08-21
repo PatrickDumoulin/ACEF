@@ -8,6 +8,8 @@
 }
 
 <style>
+    
+    
     .table-container {
         margin-top: 30px;
         padding: 7px;
@@ -60,6 +62,16 @@
     .table th, .table td {
         vertical-align: middle;
     }
+
+    .table-header a {
+        text-decoration: none; /* Enlever le soulignement des liens */
+        color: inherit; /* Garder la couleur de texte par défaut */
+    }
+
+        .table-header a:hover {
+            text-decoration: underline; /* Assurez-vous que les liens ne sont pas soulignés au survol */
+            color: inherit; /* Garder la couleur au survol */
+        }
 </style>
 
 <div class="container">
@@ -84,7 +96,9 @@
             <div class="col-md-2 mb-3">
                 <div class="form-group">
                     <label for="DateFilter">Date</label>
+
                         <select name="DateFilter" id="DateFilter" class="form-control">
+                            <option value="">Sélectionner</option>
                             <option value="Semaine en cours" selected="@(Model.DateFilter == "Semaine en cours")">Semaine en cours</option>
                             <option value="Mois en cours" selected="@(Model.DateFilter == "Mois en cours")">Mois en cours</option>
                             <option value="Intervalle" selected="@(Model.DateFilter == "Intervalle")">Intervalle</option>
@@ -148,14 +162,19 @@
             </div>
         </div>
 
+
+            
+
         <div class="row">
             <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
                 <div class="form-group d-flex">
                     <button type="submit" class="btn btn-primary me-2">
                         <i class="bi bi-search"></i> Rechercher
                     </button>
-                    @if (Model.IdClient.HasValue || Model.IdEmployee.HasValue || Model.IdInterventionType.HasValue || Model.IsLoanUnpaid.HasValue)
-                    {
+                        @if (Model.IdClient.HasValue || Model.IdEmployee.HasValue 
+                        || Model.IdInterventionType.HasValue || Model.IsLoanUnpaid.HasValue 
+                        || Model.semaineEnCours || Model.moisEnCours || Model.intervalle)
+                                    {
                         <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-eraser"></i> Effacer le filtre</a>
                     }
                 </div>
@@ -163,6 +182,24 @@
         </div>
     </form>
 </div>
+
+
+    <div class="pt-2 pb-2">
+
+        @if (Model.semaineEnCours)
+        {
+            <h4><i class="bi bi-search"></i> Semaine en cours</h4>
+        }
+        else if(Model.moisEnCours)
+        {
+            <h4><i class="bi bi-search"></i>  Mois en cours</h4>
+        }
+        else if (Model.intervalle)
+        {
+            <h4><i class="bi bi-search"></i>  Intervalle du ** au **</h4>
+        }
+
+    </div>
 
 <script>
     // Show/hide date range fields based on DateFilter value
@@ -183,6 +220,8 @@
 </script>
 
 
+
+
     <!-- Table of Interventions -->
     <div class="table-container">
         @if (Model.Interventions != null && Model.Interventions.Any())
@@ -190,15 +229,97 @@
             <table class="table table-striped">
                 <thead class="table-header">
                     <tr>
-
-                        <th>Date de l'intervention</th>
-                        <th>Intervenant</th>
-                        <th>Raison</th>
-                        <th># Dossier Client</th>
-                        <th>Prêt remboursé</th>
-                        <th>Actions</th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.IdSortParm">
+                                Date de l'intervention
+                                @if (ViewBag.CurrentSort == "id_desc")
+                                {
+                                    <i class="bi bi-caret-down-fill"></i>
+                                }
+                                else if (ViewBag.CurrentSort == "Id")
+                                {
+                                    <i class="bi bi-caret-up-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.EmployeeIdSortParm">
+                                Intervenant
+                                @if (ViewBag.CurrentSort == "employeeId_desc")
+                                {
+                                    <i class="bi bi-caret-down-fill"></i>
+                                }
+                                else if (ViewBag.CurrentSort == "IdEmployee")
+                                {
+                                    <i class="bi bi-caret-up-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.InterventionTypeSortParm">
+                                Raison
+                                @if (ViewBag.CurrentSort == "interventionType_desc")
+                                {
+                                    <i class="bi bi-caret-down-fill"></i>
+                                }
+                                else if (ViewBag.CurrentSort == "IdInterventionType")
+                                {
+                                    <i class="bi bi-caret-up-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.ClientIdSortParm">
+                                # Dossier Client
+                                @if (ViewBag.CurrentSort == "clientId_desc")
+                                {
+                                    <i class="bi bi-caret-down-fill"></i>
+                                }
+                                else if (ViewBag.CurrentSort == "IdClient")
+                                {
+                                    <i class="bi bi-caret-up-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.LoanPaidSortParm">
+                                Prêt remboursé
+                                @if (ViewBag.CurrentSort == "loanPaid_desc")
+                                {
+                                    <i class="bi bi-caret-down-fill"></i>
+                                }
+                                else if (ViewBag.CurrentSort == "LoanPaid")
+                                {
+                                    <i class="bi bi-caret-up-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>
+                            Actions
+                        </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var intervention in Model.Interventions)
                     {
@@ -212,8 +333,6 @@
                                     ? (intervention.IsLoanPaid.Value ? "Oui" : "Non")
                                     : "N/A")
                             </td>
-                            @* <td>@intervention.ClientName</td> 
-                            <td>@intervention.StatusName</td>  *@
                             
                             
                             <td>
@@ -240,3 +359,5 @@
         }
     </div>
 </div>
+
+
