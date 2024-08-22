@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+
     // Fonction pour afficher/cacher les champs liés au "Petit Prêt"
     function toggleLoanFields() {
         var containsPetitPret = false;
@@ -26,6 +27,7 @@
         });
 
         if (containsPetitPret) {
+            $('#loanFields').find('select, input[type=radio]').val(true).prop('checked', true);
             $('#loanFields').removeClass('hidden');
         } else {
             $('#loanFields').addClass('hidden');

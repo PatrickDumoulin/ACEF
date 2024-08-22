@@ -24,6 +24,11 @@ namespace WebApp.ViewModels
         public bool moisEnCours { get; set; } = false;
         public bool intervalle { get; set; } = false;
 
+
+        //Pagination
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+
         // Drop-down lists
         public IEnumerable<SelectListItem> Employees { get; set; }
         public IEnumerable<SelectListItem> InterventionTypes { get; set; }

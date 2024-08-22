@@ -191,7 +191,6 @@
                 <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-12 pt-3">
                 <!-- Solutions proposées -->
@@ -222,26 +221,7 @@
 
                 
 
-                @* <div class="mb-3 hidden" id="loanFields">
-                    <div>
-                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
-                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
-                            <option value="">--Sélectionnez le but d'emprunt--</option>
-                        </select>
-                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-                    </div>
-                    <div class="btn-group" role="group" aria-label="Loan paid status">
-                        <input type="hidden" asp-for="IsLoanPaid" value="false">
-                        <button type="button" class="btn btn-outline-primary @(Model.IsLoanPaid == true ? "active" : "")"
-                                onclick="document.getElementById('IsLoanPaid').value='true';">
-                            Oui
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary @(Model.IsLoanPaid == false ? "active" : "")"
-                                onclick="document.getElementById('IsLoanPaid').value='false';">
-                            Non
-                        </button>
-                    </div>
-                </div> *@
+                
             </div>
         </div>
 

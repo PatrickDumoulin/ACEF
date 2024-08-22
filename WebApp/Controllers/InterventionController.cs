@@ -177,7 +177,9 @@ namespace WebApp.Controllers
                 Interventions = pagedInterventions, // Assign the filtered, sorted, and paginated interventions
                 semaineEnCours = searchModel.DateFilter == "Semaine en cours",
                 moisEnCours = searchModel.DateFilter == "Mois en cours",
-                intervalle = searchModel.DateFilter == "Intervalle"
+                intervalle = searchModel.DateFilter == "Intervalle",
+                CurrentPage = page,
+                TotalPages = totalPages,
             };
 
             return View(viewModel);

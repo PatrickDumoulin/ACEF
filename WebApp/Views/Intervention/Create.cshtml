@@ -67,8 +67,21 @@
         }
 
     .hidden {
-        display: none;
+        visibility: hidden;
+        height: 0;
+        overflow: hidden;
     }
+</style>
+
+<style>
+    .btn-group .btn {
+        width: 75px;
+    }
+
+        .btn-group .btn.active {
+            background-color: #007bff; /* Couleur active */
+            color: #fff;
+        }
 </style>
 
 @if (!ViewData.ModelState.IsValid)
@@ -183,17 +196,25 @@
                     <input asp-for="DebtAmount" class="form-control" />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>
-                <div>
-                    <label class="form-label pt-4">Petit prêt remboursé</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
-                        <label class="form-check-label" for="isLoanPaidYes">Oui</label>
+
+                @* Hidden Fields *@
+                <div class="hidden" id="loanFields">
+                    <div>
+                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
+                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
+                            <option value="">--Sélectionnez le but d'emprunt--</option>
+                        </select>
+                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
-                        <label class="form-check-label" for="isLoanPaidNo">Non</label>
+                    <div>
+                        <label class="form-label pt-4">Petit prêt remboursé</label>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" id="btnYes" class="btn btn-success">Oui</button>
+                            <button type="button" id="btnNo" class="btn btn-danger">Non</button>
+                        </div>
+                        <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" />
+                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -234,6 +255,26 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/Intervention.js"></script>
+
+    <script>
+        //Boutons OUI NON pour Petit Prêt
+
+        $(document).ready(function () {
+            $('#btnYes').click(function () {
+                $('#IsLoanPaid').val(true);
+                $('#btnYes').addClass('active');
+                $('#btnNo').removeClass('active');
+            });
+
+            $('#btnNo').click(function () {
+                $('#IsLoanPaid').val(false);
+                $('#btnNo').addClass('active');
+                $('#btnYes').removeClass('active');
+            });
+        });
+    </script>
+
+    
 
     
 }
