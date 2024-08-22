@@ -5,84 +5,9 @@
     Layout = "_Layout";
 }
 
-<style>
-    .form-container {
-        background-color: #ffffff;
-        border-radius: 8px;
-        padding: 30px;
-        box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-title {
-        font-size: 28px;
-        color: #000000;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
-
-    .form-label {
-        font-weight: bold;
-        color: #000000;
-    }
-
-    .form-control {
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        box-shadow: none;
-        transition: border-color 0.3s;
-    }
-
-        .form-control:focus {
-            border-color: #495057;
-            box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
-        }
-
-    .btn-primary, .btn-secondary {
-        border-radius: 20px;
-        padding: 10px 20px;
-        font-weight: 600;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .btn-primary {
-        background-color: #000000;
-        color: #ffffff;
-    }
-
-        .btn-primary:hover {
-            background-color: white;
-            color: black;
-            border: solid 1px;
-            border-color: black;
-        }
-
-    .btn-secondary {
-        background-color: #ffffff;
-        color: #000000;
-        border: 1px solid #000000;
-    }
-
-        .btn-secondary:hover {
-            background-color: #f0f0f0;
-        }
-
-    .hidden {
-        visibility: hidden;
-        height: 0;
-        overflow: hidden;
-    }
-</style>
-
-<style>
-    .btn-group .btn {
-        width: 75px;
-    }
-
-        .btn-group .btn.active {
-            background-color: #007bff; /* Couleur active */
-            color: #fff;
-        }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Intervention/Create.css" />
+}
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -98,18 +23,20 @@
             <h2 class="form-title text-center">Ajouter une Nouvelle Intervention</h2>
             <hr />
         </div>
+        <div class="mb-3">
+            <label asp-for="IsVirtual" class="form-label">Est virtuel</label>
+            <div class="form-check">
+                <input asp-for="IsVirtual" class="form-check-input" type="checkbox" />
+                <span asp-validation-for="IsVirtual" class="text-danger"></span>
+            </div>
+        </div>
         <div class="row">
+            <!-- Première Colonne -->
             <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="IsVirtual" class="form-label">Est virtuel</label>
-                    <div class="form-check">
-                        <input asp-for="IsVirtual" class="form-check-input" type="checkbox" />
-                        <span asp-validation-for="IsVirtual" class="text-danger"></span>
-                    </div>
-                </div>
+                
                 <div class="mb-3">
                     <label asp-for="DateIntervention" class="form-label">Date de l'intervention</label>
-                    <input asp-for="DateIntervention" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <input asp-for="DateIntervention" type="date" class="form-control date-input" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="DateIntervention" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -117,17 +44,7 @@
                     <select asp-for="IdEmployee" class="form-control" asp-items="@(ViewBag.Employees)"></select>
                     <span asp-validation-for="IdEmployee" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <label asp-for="IdClient" class="form-label"># Dossier client</label>
-                    <div class="input-group">
-                        <input asp-for="IdClient" type="hidden" id="IdClient" value="@Model.IdClient" />
-                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="background-color: #e9ecef; cursor: not-allowed;" value="@Model.ClientName" />
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#clientModal">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                    <span asp-validation-for="IdClient" class="text-danger"></span>
-                </div>
+                
                 <div class="mb-3">
                     <label asp-for="IdReferenceType" class="form-label">Référence</label>
                     <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.MdReferenceSources)">
@@ -142,6 +59,31 @@
                     </select>
                     <span asp-validation-for="IdStatusType" class="text-danger"></span>
                 </div>
+                <!-- HIDDEN FIELDS -->
+
+
+                <div class="hidden" id="loanFields">
+                    <div>
+                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
+                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
+                            <option value="">--Sélectionnez le but d'emprunt--</option>
+                        </select>
+                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label class="form-label pt-5">Petit prêt remboursé</label>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="button" id="btnYes" class="btn btn-secondary">Oui</button>
+                            <button type="button" id="btnNo" class="btn btn-secondary">Non</button>
+                        </div>
+                        <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" />
+                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
+                    </div>
+                </div>
+               
+            </div>
+            <!-- Deuxième Colonne -->
+            <div class="col-md-6">
                 <div class="mb-3">
                     <label asp-for="IdInterventionType" class="form-label">Raison consultation</label>
                     <select asp-for="IdInterventionType" class="form-control" asp-items="@(ViewBag.MdInterventionTypes)">
@@ -150,30 +92,23 @@
                     <span asp-validation-for="IdInterventionType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Solutions proposées</label>
-                    <ul id="selectedSolutionsList" class="list-group">
-                        @if (Model.Solutions != null && Model.Solutions.Any())
-                        {
-                            @foreach (var solution in Model.SelectedSolutions)
-                            {
-                                var solutionText = Model.Solutions.FirstOrDefault(s => s.Value == solution.ToString())?.Text;
-                                <li class="list-group-item" data-value="@solution">
-                                    @solutionText
-                                    <button type="button" class="btn btn-sm btn-danger float-right remove-solution">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                    <input type="hidden" name="SelectedSolutions" value="@solution" />
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="list-group-item text-danger">Aucune solution disponible.</li>
-                        }
-                    </ul>
-                    <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
+                    <label asp-for="DebtAmount" class="form-label">Montant de la dette</label>
+                    <input asp-for="DebtAmount" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>
-
+                <div class="mb-3">
+                    <label asp-for="IdClient" class="form-label"># Dossier client</label>
+                    <div class="input-group">
+                        <input asp-for="IdClient" type="hidden" id="IdClient" value="@Model.IdClient" />
+                        <input type="text" class="form-control" id="clientNameDisplay"
+                               readonly style="cursor: not-allowed;" value="@Model.ClientName" />
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#clientModal">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="IdClient" class="text-danger"></span>
+                </div>
+                
                 <div class="mb-3">
                     <label asp-for="SelectedSolutions" class="form-label">Solution</label>
                     <div class="input-group">
@@ -191,33 +126,35 @@
                     </div>
                     <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
-                    <label asp-for="DebtAmount" class="form-label">Montant de la dette</label>
-                    <input asp-for="DebtAmount" class="form-control" />
-                    <span asp-validation-for="DebtAmount" class="text-danger"></span>
-                </div>
 
-                @* Hidden Fields *@
-                <div class="hidden" id="loanFields">
-                    <div>
-                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
-                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
-                            <option value="">--Sélectionnez le but d'emprunt--</option>
-                        </select>
-                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label class="form-label pt-4">Petit prêt remboursé</label>
-                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <button type="button" id="btnYes" class="btn btn-success">Oui</button>
-                            <button type="button" id="btnNo" class="btn btn-danger">Non</button>
-                        </div>
-                        <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" />
-                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
-                    </div>
+                
+                <div id="solutionsSection" class="mb-3">
+                    <label class="form-label text-center">Solutions proposées</label>
+                    <ul id="selectedSolutionsList" class="list-group">
+                        @foreach (var solution in Model.SelectedSolutions)
+                        {
+                            var solutionText = Model.Solutions.FirstOrDefault(s => s.Value == solution.ToString())?.Text;
+                            <li class="list-group-item" data-value="@solution">
+                                @solutionText
+                                <button type="button" class="btn btn-sm btn-danger float-right remove-solution">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <input type="hidden" name="SelectedSolutions" value="@solution" />
+                            </li>
+                        }
+                    </ul>
+                    <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
                 </div>
+                
+
+                
             </div>
+
+            
+            
         </div>
+
+        
         <div class="row">
             <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-primary" style="width:150px">Ajouter</button>
@@ -248,7 +185,6 @@
     </div>
 </div>
 
-
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -273,14 +209,4 @@
             });
         });
     </script>
-
-    
-
-    
 }
-
-
-
-
-
-
