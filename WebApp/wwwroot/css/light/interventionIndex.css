@@ -13,9 +13,6 @@
     outline: none; /* Supprime tout contour */
 }
 
-h1, h4 {
-    color: white !important;
-}
 
 .search-form {
     background-color: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
