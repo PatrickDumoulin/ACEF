@@ -1,7 +1,7 @@
-﻿/*LIGHT*/
+﻿/* DARK */
 
 
-.index {
+.clientIndex {
     background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
     border-radius: 8px;
     padding: 30px;
@@ -13,12 +13,19 @@
     outline: none; /* Supprime tout contour */
 }
 
-h1, h4 {
-    color: white !important;
+.search-form {
+    background-color: linear-gradient(135deg, #1b263b, #14578e);
 }
 
+
+h1, h4 {
+    color: white;
+}
+
+
+
 .search-form {
-    background-color: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    background: #1b263b; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
     border-radius: 8px;
     padding: 30px;
     border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
@@ -27,17 +34,20 @@ h1, h4 {
 
 .table th, .table td {
     vertical-align: middle;
-    background-color: white;;
-    color: black;
+    background-color: #1b263b;
+    color: white;
     font-weight: bold;
 }
 
 .table-container {
-    background: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    background: #1b263b;
     border-radius: 8px;
     padding: 10px;
-    border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
-    outline: none; /* Supprime tout contour */
+    border: none;
+    outline: none;
+    overflow-x: auto; /* Permettre le défilement horizontal si la table dépasse */
+    width: 100%;
+    box-sizing: border-box; /* S'assurer que le padding et la bordure sont inclus dans la largeur totale */
 }
 
 tableHeader {
@@ -52,38 +62,25 @@ tableHeader {
 
 .table th:last-child,
 .table td:last-child {
-    width: 35%; /* Ajustez ce pourcentage selon vos besoins */
+    width: 15% !; /* Ajustez ce pourcentage selon vos besoins */
 }
 
-.btn-group .btn {
-    padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
-    font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
-    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
-}
 
-    .btn-group .btn i {
-        font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
-    }
 
-.btn-primary, .btn-warning, .btn-danger {
-    min-width: 80px; /* Réduire la largeur minimale si nécessaire */
-}
-
-.btn-primary, .btn-danger {
+.btn-primary {
     background-color: #007bff !important; /* Bouton principal bleu foncé */
     color: #ffffff;
 }
 
     .btn-primary:hover {
         background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
-        color: white;
-        !important; /* Changer la couleur du texte si nécessaire */
+        color: white !important; /* Changer la couleur du texte si nécessaire */
         border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
     }
 
 .btn-secondary {
     background-color: white !important;
-    color: black;
+    color: black !important;
     border: 1px solid #000000;
     font-weight: bold;
 }
@@ -93,15 +90,17 @@ tableHeader {
         color: black;
     }
 
-.btn-danger:hover {
-    background-color: red !important;
-}
+
+
 
 .table-container .btn-group {
     display: flex;
     justify-content: space-around; /* Pour s'assurer que les boutons ne sont pas trop espacés */
     gap: 5px; /* Espacement entre les boutons */
 }
+
+
+
 
 
 
@@ -115,8 +114,15 @@ tableHeader {
         color: inherit; /* Garder la couleur au survol */
     }
 
+.index.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 
-
-
+.searchForm.container {
+    width: 100%;
+    box-sizing: border-box;
+}
 
 

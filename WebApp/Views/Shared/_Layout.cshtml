@@ -14,11 +14,20 @@
         // Immédiatement appliquer le thème correct avant que la page ne soit rendue
         (function () {
             const currentTheme = localStorage.getItem('theme') || 'dark';
+            //layout
             document.write('<link id="layoutStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/layout.css" asp-append-version="true" />');
+            
+            //intervention
             document.write('<link id="interventionCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionCreate.css" asp-append-version="true" />');
             document.write('<link id="interventionEditStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionEdit.css" asp-append-version="true" />');
             document.write('<link id="interventionIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionIndex.css" asp-append-version="true" />');
             document.write('<link id="interventionDetailsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionDetails.css" asp-append-version="true" />');
+
+            //client
+            document.write('<link id="clientIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientIndex.css" asp-append-version="true" />');
+            document.write('<link id="clientDetailsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientDetails.css" asp-append-version="true" />');
+            document.write('<link id="clientCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientCreate.css" asp-append-version="true" />');
+            document.write('<link id="clientEditStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientEdit.css" asp-append-version="true" />');
         })();
     </script>
 
@@ -78,12 +87,22 @@
             const currentTheme = localStorage.getItem('theme') || 'dark';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
+            //layouy
             document.getElementById('layoutStylesheet').setAttribute('href', `/css/${newTheme}/layout.css`);
+
+            //intervention
             document.getElementById('interventionCreateStylesheet').setAttribute('href', `/css/${newTheme}/interventionCreate.css`);
             document.getElementById('interventionEditStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionEdit.css`);
             document.getElementById('interventionIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionIndex.css`);
             document.getElementById('interventionDetailsStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionDetails.css`);
             document.getElementById('interventionDeleteStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionDelete.css`);
+
+            //client
+            document.getElementById('clientCreateStylesheet').setAttribute('href', `/css/${newTheme}/clientCreate.css`);
+            document.getElementById('clientEditStylesheet')?.setAttribute('href', `/css/${newTheme}/clientEdit.css`);
+            document.getElementById('clientIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/clientIndex.css`);
+            document.getElementById('clientDetailsStylesheet')?.setAttribute('href', `/css/${newTheme}/clientDetails.css`);
+            document.getElementById('clientDeleteStylesheet')?.setAttribute('href', `/css/${newTheme}/clientDelete.css`);
 
             localStorage.setItem('theme', newTheme);
         });

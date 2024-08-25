@@ -1,7 +1,7 @@
 ﻿/*LIGHT*/
 
 
-.index {
+.clientIndex {
     background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
     border-radius: 8px;
     padding: 30px;
@@ -27,7 +27,8 @@ h1, h4 {
 
 .table th, .table td {
     vertical-align: middle;
-    background-color: white;;
+    background-color: white;
+    ;
     color: black;
     font-weight: bold;
 }
@@ -69,8 +70,8 @@ tableHeader {
     min-width: 80px; /* Réduire la largeur minimale si nécessaire */
 }
 
-.btn-primary, .btn-danger {
-    background-color: #007bff !important; /* Bouton principal bleu foncé */
+.btn-primary {
+    background-color: #14578e; /* Bouton principal bleu foncé */
     color: #ffffff;
 }
 
@@ -93,10 +94,6 @@ tableHeader {
         color: black;
     }
 
-.btn-danger:hover {
-    background-color: red !important;
-}
-
 .table-container .btn-group {
     display: flex;
     justify-content: space-around; /* Pour s'assurer que les boutons ne sont pas trop espacés */
@@ -114,9 +111,3 @@ tableHeader {
         text-decoration: underline; /* Assurez-vous que les liens ne sont pas soulignés au survol */
         color: inherit; /* Garder la couleur au survol */
     }
-
-
-
-
-
-

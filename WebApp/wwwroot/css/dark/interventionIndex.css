@@ -59,10 +59,22 @@ tableHeader {
 
 .table th:last-child,
 .table td:last-child {
-    width: 35%; /* Ajustez ce pourcentage selon vos besoins */
+    width: 39%; /* Ajustez ce pourcentage selon vos besoins */
 }
 
-.btn-primary {
+.btn-group .btn {
+    padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
+    font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
+    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
+}
+
+    .btn-group .btn i {
+        font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
+    }
+
+
+
+.btn-primary, .btn-danger {
     background-color: #007bff !important; /* Bouton principal bleu foncé */
     color: #ffffff;
 }
@@ -85,33 +97,17 @@ tableHeader {
         color: black;
     }
 
-.btn-group .btn {
-    padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
-    font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
-    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
+.btn-danger:hover {
+    background-color: red !important;
 }
 
-    .btn-group .btn i {
-        font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
-    }
 
-.btn-primary, .btn-warning, .btn-danger {
-    min-width: 80px; /* Réduire la largeur minimale si nécessaire */
-}
+
 
 .table-container .btn-group {
     display: flex;
     justify-content: space-around; /* Pour s'assurer que les boutons ne sont pas trop espacés */
     gap: 5px; /* Espacement entre les boutons */
-}
-
-.btn-primary {
-    background-color: #007bff;
-}
-
-.btn-secondary {
-    background-color: white; !important;
-    color:black; !important;
 }
 
 
