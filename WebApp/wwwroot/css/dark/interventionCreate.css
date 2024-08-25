@@ -98,32 +98,38 @@ body {
     display: none;
 }
 
-/*.btn-group .btn {
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
+.modal-title {
+    color: white !important; /* Assurez-vous que le texte est également bien lisible */
+}
+.modal-content {
+    background: linear-gradient(135deg, #1b263b, #14578e) !important; /* Appliquez le dégradé au contenu du modal */
+    color: white !important; /* Assurez-vous que le texte est également bien lisible */
+    border-radius: 8px !important; /* Ajoutez des coins arrondis si nécessaire */
 }
 
-    .btn-group .btn.active {
-        background-color: #007bff;*/ /* Couleur active */
-        /*color: #fff;
-        background-color: #0056b3;*/ /* Couleur encore plus foncée au survol */
-        /*color: #ffffff;
-    }*/
+.modal-header, .modal-footer {
+    border: none !important; /* Supprimez les bordures par défaut */
+    background: transparent !important; /* Rendre la couleur de fond transparente */
+}
+
+.modal-body {
+    background: linear-gradient(135deg, #1b263b, #14578e) !important; /* Assurez-vous que le corps du modal prend la couleur */
+    color: white !important;
+}
+
+.modal-header .close {
+    color: white !important; /* Assurez-vous que le bouton de fermeture est visible */
+}
+
+#searchClientInput{
+    background-color:white;
+}
 
 
-/* Centrer le texte "Solutions proposées" */
-/*label.form-label {
-    text-align: center;*/ /* Centrer le texte */
-    /*display: block;*/ /* S'assurer que l'élément prend toute la largeur du conteneur parent */
-    /*font-weight: bold;*/ /* Rendre le texte en gras pour plus de visibilité */
-    /*margin-bottom: 15px;*/ /* Ajouter un espace sous le label */
-/*}*/
 
 #selectedSolutionsList {
     background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
-    
+
     border-radius: 5px; /* Ajouter un peu de rayon pour arrondir les coins */
     padding: 10px; /* Ajoutez du padding pour l'espacement intérieur */
 }

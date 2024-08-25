@@ -110,7 +110,7 @@
                     <label asp-for="IdClient" class="form-label"># Dossier client</label>
                     <div class="input-group">
                         <input asp-for="IdClient" type="hidden" id="IdClient" value="@Model.IdClient" />
-                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="background-color: #e9ecef; cursor: not-allowed;" value="@Model.ClientName" />
+                        <input type="text" class="form-control" id="clientNameDisplay" readonly style="cursor: not-allowed;" value="@Model.ClientName" />
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#clientModal">
                             <i class="bi bi-search"></i>
                         </button>
@@ -244,7 +244,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="text" id="searchClientInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <input type="text" id="searchClientInput" class="form-control" placeholder="Rechercher par nom, prénom ou numéro">
                 <ul id="clientSearchResults" class="list-group mt-2">
                     <!-- Les résultats de la recherche seront ajoutés ici -->
                 </ul>

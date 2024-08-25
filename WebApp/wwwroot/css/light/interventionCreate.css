@@ -64,4 +64,32 @@
     display: none;
 }
 
+.modal-title {
+    color: white !important; /* Assurez-vous que le texte est également bien lisible */
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1b263b, #14578e) !important; /* Appliquez le dégradé au contenu du modal */
+    color: white !important; /* Assurez-vous que le texte est également bien lisible */
+    border-radius: 8px !important; /* Ajoutez des coins arrondis si nécessaire */
+}
+
+.modal-header, .modal-footer {
+    border: none !important; /* Supprimez les bordures par défaut */
+    background: transparent !important; /* Rendre la couleur de fond transparente */
+}
+
+.modal-body {
+    background: linear-gradient(135deg, #1b263b, #14578e) !important; /* Assurez-vous que le corps du modal prend la couleur */
+    color: white !important;
+}
+
+.modal-header .close {
+    color: white !important; /* Assurez-vous que le bouton de fermeture est visible */
+}
+
+#searchClientInput {
+    background-color: white;
+}
+
 
