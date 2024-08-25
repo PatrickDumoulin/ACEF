@@ -1,0 +1,146 @@
+﻿/* DARK */
+
+
+
+body {
+    background: black;
+    color: #dcdde1;
+    min-height: 100vh; /* S'assure que le dégradé couvre toute la hauteur de la page */
+    margin: 0;
+    padding: 0;
+}
+
+.date-input {
+    color-scheme: dark; /* Rend l'icône et le texte blanc dans les navigateurs supportés */
+    position: relative;
+    background-color: #fff; /* Couleur du fond */
+    color: #000; /* Couleur du texte */
+}
+
+
+.interventionCreateForm{
+    background-color:black;
+}
+
+.form-container {
+    background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 0 20px 2px rgba(9, 132, 227, 0.8), /* Blue outer glow */
+    0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle dark shadow for depth */
+    border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
+    outline: none; /* Supprime tout contour */
+}
+
+.form-title {
+    font-size: 28px;
+    color: #e0e0e0; /* Blanc cassé pour un contraste */
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #e0e0e0; /* Même couleur que le titre */
+}
+
+.form-control {
+    background-color: #1e1e1e; /* Fond sombre pour les champs de saisie */
+    border: 1px solid #939292; /* Bordure grise foncée */
+    color: white; /* Texte clair pour contraster avec le fond sombre */
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+    .form-control:focus {
+        border-color: #007bff; /* Bordure bleue plus sombre lorsqu'un champ est actif */
+        background-color: #181818; /* Fond légèrement plus clair au focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.7); /* Lueur bleue */
+        color: white;
+        font-weight: bold;
+        
+
+}
+
+        .btn-primary, .btn-secondary {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+.btn-primary {
+    background-color: #007bff !important; /* Bouton principal bleu foncé */
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
+        color: white !important; /* Changer la couleur du texte si nécessaire */
+        border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
+    }
+
+.btn-secondary {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+    .btn-secondary:hover {
+        background-color: white;
+        color: black;
+    }
+
+.hidden {
+    display: none;
+}
+
+/*.btn-group .btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-group .btn.active {
+        background-color: #007bff;*/ /* Couleur active */
+        /*color: #fff;
+        background-color: #0056b3;*/ /* Couleur encore plus foncée au survol */
+        /*color: #ffffff;
+    }*/
+
+
+/* Centrer le texte "Solutions proposées" */
+/*label.form-label {
+    text-align: center;*/ /* Centrer le texte */
+    /*display: block;*/ /* S'assurer que l'élément prend toute la largeur du conteneur parent */
+    /*font-weight: bold;*/ /* Rendre le texte en gras pour plus de visibilité */
+    /*margin-bottom: 15px;*/ /* Ajouter un espace sous le label */
+/*}*/
+
+#selectedSolutionsList {
+    background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    
+    border-radius: 5px; /* Ajouter un peu de rayon pour arrondir les coins */
+    padding: 10px; /* Ajoutez du padding pour l'espacement intérieur */
+}
+
+    #selectedSolutionsList li {
+        background: #1e1e1e;
+        /*text-align: center;*/ /* Centrer le texte */
+        color: white; /* Pour que le texte reste lisible sur fond noir */
+        font-weight: bold;
+        /*border: none;*/ /* Enlever les bordures si nécessaire */
+        padding: 10px; /* Ajouter du padding pour que le texte soit espacé */
+        margin-bottom: 5px; /* Ajouter un peu d'espace entre les éléments */
+        border: 1px solid #939292; /* Bordure grise foncée */
+        
+    }
+
+
+
+
+

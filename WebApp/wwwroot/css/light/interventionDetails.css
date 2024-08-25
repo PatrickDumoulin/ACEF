@@ -1,0 +1,81 @@
+﻿/*LIGHT*/
+.details-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px 10px rgba(0, 0, 0, 0.15);
+    margin-top: 30px;
+}
+
+.details-header {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+    .details-header h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .details-header h4 {
+        font-size: 18px;
+        color: #666;
+    }
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+    .details-grid .label,
+    .details-grid .value {
+        padding: 10px 0;
+    }
+
+    .details-grid .label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .details-grid .value {
+        color: #333;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+
+
+.btn-container {
+    margin-top: 30px;
+}
+
+    .btn-container a {
+        text-decoration: none;
+    }
+
+.btn-primary {
+    background-color: #14578e; /* Bouton principal bleu foncé */
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
+        color: white !important; /* Changer la couleur du texte si nécessaire */
+        border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
+    }
+
+.btn-secondary {
+    background-color: white !important;
+    color: black;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+    .btn-secondary:hover {
+        background-color: white;
+        color: black;
+    }
+
+

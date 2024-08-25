@@ -1,0 +1,68 @@
+﻿/* LIGHT */
+.form-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-size: 28px;
+    color: #000000;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #000000;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: border-color 0.3s;
+}
+
+    .form-control:focus {
+        border-color: #495057;
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+    }
+
+.btn-primary, .btn-secondary {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+.btn-primary {
+    background-color: #14578e !important; /* Bouton principal bleu foncé */
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
+        color: white !important; /* Changer la couleur du texte si nécessaire */
+        border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
+    }
+
+.btn-secondary {
+    background-color: white !important;
+    color: black;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+    .btn-secondary:hover {
+        background-color: white;
+        color: black;
+    }
+
+
+
+.hidden {
+    display: none;
+}

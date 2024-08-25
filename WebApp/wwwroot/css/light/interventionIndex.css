@@ -1,0 +1,118 @@
+﻿/*LIGHT*/
+
+
+.index {
+    background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px 2px rgba(9, 132, 227, 0.8), /* Blue outer glow */
+    0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle dark shadow for depth */
+    border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
+    outline: none; /* Supprime tout contour */
+}
+
+h1, h4 {
+    color: white;
+}
+
+.search-form {
+    background-color: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    border-radius: 8px;
+    padding: 30px;
+    border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
+    outline: none; /* Supprime tout contour */
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    background-color: white;;
+    color: black;
+    font-weight: bold;
+}
+
+.table-container {
+    background: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    border-radius: 8px;
+    padding: 10px;
+    border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
+    outline: none; /* Supprime tout contour */
+}
+
+tableHeader {
+    background-color: black;
+}
+
+.table-header {
+    background-color: #343a40;
+    color: white;
+    text-transform: uppercase;
+}
+
+.table th:last-child,
+.table td:last-child {
+    width: 35%; /* Ajustez ce pourcentage selon vos besoins */
+}
+
+.btn-group .btn {
+    padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
+    font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
+    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
+}
+
+    .btn-group .btn i {
+        font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
+    }
+
+.btn-primary, .btn-warning, .btn-danger {
+    min-width: 80px; /* Réduire la largeur minimale si nécessaire */
+}
+
+.btn-primary {
+    background-color: #14578e; /* Bouton principal bleu foncé */
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
+        color: white;
+        !important; /* Changer la couleur du texte si nécessaire */
+        border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
+    }
+
+.btn-secondary {
+    background-color: white !important;
+    color: black;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+    .btn-secondary:hover {
+        background-color: white;
+        color: black;
+    }
+
+.table-container .btn-group {
+    display: flex;
+    justify-content: space-around; /* Pour s'assurer que les boutons ne sont pas trop espacés */
+    gap: 5px; /* Espacement entre les boutons */
+}
+
+
+
+.table-header a {
+    text-decoration: none; /* Enlever le soulignement des liens */
+    color: inherit; /* Garder la couleur de texte par défaut */
+}
+
+    .table-header a:hover {
+        text-decoration: underline; /* Assurez-vous que les liens ne sont pas soulignés au survol */
+        color: inherit; /* Garder la couleur au survol */
+    }
+
+
+
+
+
+

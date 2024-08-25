@@ -7,74 +7,9 @@
     Layout = "_Layout";
 }
 
-<style>
-    
-    
-    .table-container {
-        margin-top: 30px;
-        padding: 7px;
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px 15px rgba(0, 0, 0, 0.1);
-    }
 
-    .table-header {
-        background-color: #343a40;
-        color: white;
-        text-transform: uppercase;
-    }
 
-    .btn-primary, .btn-secondary {
-        border-radius: 20px;
-        font-weight: 600;
-        padding: 10px 20px;
-        border: solid 1px;
-        margin-bottom: 10px;
-        background-color: #343a40;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-        .btn-primary:hover {
-            background-color: white;
-            color: black;
-            border: solid 1px;
-            border-color: black
-        }
-
-    .btn-secondary {
-        background-color: #ffffff;
-        color: #000000;
-        border: 1px solid #000000;
-    }
-
-        .btn-secondary:hover {
-            background-color: #f0f0f0;
-        }
-
-    .btn-group .btn {
-        border-radius: 5px;
-    }
-
-        .btn-group .btn + .btn {
-            margin-left: 5px;
-        }
-
-    .table th, .table td {
-        vertical-align: middle;
-    }
-
-    .table-header a {
-        text-decoration: none; /* Enlever le soulignement des liens */
-        color: inherit; /* Garder la couleur de texte par défaut */
-    }
-
-        .table-header a:hover {
-            text-decoration: underline; /* Assurez-vous que les liens ne sont pas soulignés au survol */
-            color: inherit; /* Garder la couleur au survol */
-        }
-</style>
-
-<div class="container">
+<div class="index container">
     <div class="row pt-5">
         <div class="col-6">
             <h1 class="pb-2">Liste des Interventions</h1>
@@ -228,8 +163,8 @@
         {
             <table class="table table-striped">
                 <thead class="table-header">
-                    <tr>
-                        <th>
+                    <tr class="tableHeader">
+                        <th >
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.IdSortParm">
                                 Date de l'intervention
                                 @if (ViewBag.CurrentSort == "id_desc")
@@ -246,7 +181,7 @@
                                 }
                             </a>
                         </th>
-                        <th>
+                        <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.EmployeeIdSortParm">
                                 Intervenant
                                 @if (ViewBag.CurrentSort == "employeeId_desc")
@@ -263,7 +198,7 @@
                                 }
                             </a>
                         </th>
-                        <th>
+                        <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.InterventionTypeSortParm">
                                 Raison
                                 @if (ViewBag.CurrentSort == "interventionType_desc")
@@ -280,7 +215,7 @@
                                 }
                             </a>
                         </th>
-                        <th>
+                        <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.ClientIdSortParm">
                                 # Dossier Client
                                 @if (ViewBag.CurrentSort == "clientId_desc")
@@ -297,7 +232,7 @@
                                 }
                             </a>
                         </th>
-                        <th>
+                        <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.LoanPaidSortParm">
                                 Prêt remboursé
                                 @if (ViewBag.CurrentSort == "loanPaid_desc")
@@ -314,7 +249,7 @@
                                 }
                             </a>
                         </th>
-                        <th>
+                        <th class="tableHeader">
                             Actions
                         </th>
                     </tr>
@@ -340,10 +275,10 @@
                                     <a asp-action="Details" asp-route-id="@intervention.Id" class="btn btn-primary">
                                         <i class="bi bi-list-ul"></i> Détails
                                     </a>
-                                    <a asp-action="Edit" asp-route-id="@intervention.Id" class="btn btn-warning">
+                                    <a asp-action="Edit" asp-route-id="@intervention.Id" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modifier
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@intervention.Id" class="btn btn-danger">
+                                    <a asp-action="Delete" asp-route-id="@intervention.Id" class="btn btn-primary">
                                         <i class="bi bi-trash"></i> Supprimer
                                     </a>
                                 </div>
