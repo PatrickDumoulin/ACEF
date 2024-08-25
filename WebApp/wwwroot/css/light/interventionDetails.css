@@ -47,35 +47,6 @@
 
 
 
-.btn-container {
-    margin-top: 30px;
-}
 
-    .btn-container a {
-        text-decoration: none;
-    }
-
-.btn-primary {
-    background-color: #14578e; /* Bouton principal bleu foncé */
-    color: #ffffff;
-}
-
-    .btn-primary:hover {
-        background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
-        color: white !important; /* Changer la couleur du texte si nécessaire */
-        border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
-    }
-
-.btn-secondary {
-    background-color: white !important;
-    color: black;
-    border: 1px solid #000000;
-    font-weight: bold;
-}
-
-    .btn-secondary:hover {
-        background-color: white;
-        color: black;
-    }
 
 

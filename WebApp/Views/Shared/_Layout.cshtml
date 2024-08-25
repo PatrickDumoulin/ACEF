@@ -16,6 +16,9 @@
             const currentTheme = localStorage.getItem('theme') || 'dark';
             //layout
             document.write('<link id="layoutStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/layout.css" asp-append-version="true" />');
+
+            //buttons
+            document.write('<link id="buttonsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/buttons.css" asp-append-version="true" />');
             
             //intervention
             document.write('<link id="interventionCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionCreate.css" asp-append-version="true" />');
@@ -87,8 +90,11 @@
             const currentTheme = localStorage.getItem('theme') || 'dark';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-            //layouy
+            //layout
             document.getElementById('layoutStylesheet').setAttribute('href', `/css/${newTheme}/layout.css`);
+
+            //buttons
+            document.getElementById('buttonsStylesheet').setAttribute('href', `/css/${newTheme}/buttons.css`);
 
             //intervention
             document.getElementById('interventionCreateStylesheet').setAttribute('href', `/css/${newTheme}/interventionCreate.css`);

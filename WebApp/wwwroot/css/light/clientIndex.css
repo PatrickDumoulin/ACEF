@@ -56,43 +56,7 @@ tableHeader {
     width: 35%; /* Ajustez ce pourcentage selon vos besoins */
 }
 
-.btn-group .btn {
-    padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
-    font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
-    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
-}
 
-    .btn-group .btn i {
-        font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
-    }
-
-.btn-primary, .btn-warning, .btn-danger {
-    min-width: 80px; /* Réduire la largeur minimale si nécessaire */
-}
-
-.btn-primary {
-    background-color: #14578e; /* Bouton principal bleu foncé */
-    color: #ffffff;
-}
-
-    .btn-primary:hover {
-        background-color: #070e70 !important; /* Utilisation de !important pour forcer l'application du style */
-        color: white;
-        !important; /* Changer la couleur du texte si nécessaire */
-        border-color: #007bff !important; /* Assurer la cohérence avec la couleur du texte */
-    }
-
-.btn-secondary {
-    background-color: white !important;
-    color: black;
-    border: 1px solid #000000;
-    font-weight: bold;
-}
-
-    .btn-secondary:hover {
-        background-color: white;
-        color: black;
-    }
 
 .table-container .btn-group {
     display: flex;
