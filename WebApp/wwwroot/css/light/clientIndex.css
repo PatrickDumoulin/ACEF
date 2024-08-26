@@ -13,11 +13,11 @@
     outline: none; /* Supprime tout contour */
 }
 
-.titreInterventionIndex{
+.titreClientIndex {
     color: white;
 }
 
-.titreRechercheInterventionIndex {
+.titreRechercheClientIndex {
     color: white;
 }
 

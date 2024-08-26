@@ -13,6 +13,18 @@
     outline: none; /* Supprime tout contour */
 }
 
+.titreInterventionIndex {
+    color: white;
+}
+
+.titreRechercheInterventionIndex {
+    color: white;
+}
+
+.rechercheInterventionSousTitreInteractif{
+    color:white;
+}
+
 
 .search-form {
     background-color: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
