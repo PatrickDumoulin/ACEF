@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using WebApp.ViewModels;
 using CoreLib.Definitions;
 using WebApp.Core.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Intervenant")]
     public class ClientsAttachmentsController : AbstractBLLController<IClientAttachmentBLL>
     {
         public IActionResult Index(int clientId)

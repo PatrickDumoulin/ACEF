@@ -47,7 +47,7 @@
             {
                 <div>
                     <div class="label">Petit prêt remboursé :</div>
-                    <div class="value">@(Model.IsLoanPaid.HasValue ? (Model.IsLoanPaid.Value ? "Oui" : "Non") : "NULL")</div>
+                    <div class="value">@Model.IsLoanPaid ? "Oui" : "Non"</div>
                 </div>
             }
             <div>

@@ -5,9 +5,11 @@ using System.Linq;
 using WebApp.ViewModels;
 using CoreLib.Definitions;
 using WebApp.Core.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    
     public class NoteController : AbstractBLLController<INoteBLL>
     {
         public NoteController() : base() { }

@@ -13,6 +13,18 @@ public partial class Projet_CLContext : DbContext
     {
     }
 
+    public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+
+    public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+
+    public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+
     public virtual DbSet<Clients> Clients { get; set; }
 
     public virtual DbSet<ClientsAttachments> ClientsAttachments { get; set; }
@@ -86,6 +98,94 @@ public partial class Projet_CLContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CI_AS");
+
+        modelBuilder.Entity<AspNetRoleClaims>(entity =>
+        {
+            entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+
+            entity.Property(e => e.RoleId).IsRequired();
+
+            entity.HasOne(d => d.Role).WithMany(p => p.AspNetRoleClaims).HasForeignKey(d => d.RoleId);
+        });
+
+        modelBuilder.Entity<AspNetRoles>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedName] IS NOT NULL)");
+
+            entity.Property(e => e.Name).HasMaxLength(256);
+            entity.Property(e => e.NormalizedName).HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<AspNetUserClaims>(entity =>
+        {
+            entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+            entity.Property(e => e.UserId).IsRequired();
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserClaims).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserLogins>(entity =>
+        {
+            entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+            entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+            entity.Property(e => e.LoginProvider).HasMaxLength(128);
+            entity.Property(e => e.ProviderKey).HasMaxLength(128);
+            entity.Property(e => e.UserId).IsRequired();
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserLogins).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserTokens>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+            entity.Property(e => e.LoginProvider).HasMaxLength(128);
+            entity.Property(e => e.Name).HasMaxLength(128);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUsers>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
+
+            entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+            entity.Property(e => e.Active)
+                .IsRequired()
+                .HasDefaultValueSql("(CONVERT([bit],(0)))");
+            entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.FirstName)
+                .IsRequired()
+                .HasDefaultValueSql("(N'')");
+            entity.Property(e => e.IsFirstLogin)
+                .IsRequired()
+                .HasDefaultValueSql("(CONVERT([bit],(0)))");
+            entity.Property(e => e.LastName)
+                .IsRequired()
+                .HasDefaultValueSql("(N'')");
+            entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+            entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+            entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany(d => d.Role).WithMany(p => p.User)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AspNetUserRoles",
+                    r => r.HasOne<AspNetRoles>().WithMany().HasForeignKey("RoleId"),
+                    l => l.HasOne<AspNetUsers>().WithMany().HasForeignKey("UserId"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId");
+                        j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
+                    });
+        });
 
         modelBuilder.Entity<Clients>(entity =>
         {
