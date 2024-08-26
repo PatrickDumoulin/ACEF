@@ -35,10 +35,7 @@
         color: black;
     }
 
-    .btn-secondary:focus {
-        background-color: #007bff !important;
-        
-    }
+    
 
 .btn-danger:hover {
     background-color: red !important;
