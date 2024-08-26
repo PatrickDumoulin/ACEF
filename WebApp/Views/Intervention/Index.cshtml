@@ -25,12 +25,12 @@
 
     <!-- Search Form -->
     <div class="searchForm container">
-    <form asp-action="Index" method="get" class="form-inline search-form">
-        <div class="row">
-            <!-- Date filter -->
-            <div class="col-md-2 mb-3">
-                <div class="form-group">
-                    <label for="DateFilter">Date</label>
+        <form asp-action="Index" method="get" class="form-inline search-form">
+            <div class="row">
+                <!-- Date filter -->
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
+                        <label for="DateFilter">Date</label>
 
                         <select name="DateFilter" id="DateFilter" class="form-control">
                             <option value="">Sélectionner</option>
@@ -38,94 +38,94 @@
                             <option value="Mois en cours" selected="@(Model.DateFilter == "Mois en cours")">Mois en cours</option>
                             <option value="Intervalle" selected="@(Model.DateFilter == "Intervalle")">Intervalle</option>
                         </select>
+                    </div>
+                </div>
+
+                <!-- Date Range -->
+                <div class="col-md-2 mb-3" id="date-range" style="display:none;">
+                    <div class="form-group">
+                        <label for="StartDate">Du</label>
+                        <input type="date" name="StartDate" id="StartDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-3" id="date-range-end" style="display:none;">
+                    <div class="form-group">
+                        <label for="EndDate">Au</label>
+                        <input type="date" name="EndDate" id="EndDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")">
+                    </div>
+                </div>
+
+                <!-- Other filters (Intervenant, Raison, etc.) -->
+                <!-- Reste du code pour les autres filtres -->
+
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
+                        <label for="IdEmployee">Intervenant</label>
+                        <select name="IdEmployee" id="IdEmployee" class="form-control">
+                            <option value="">Sélectionner</option>
+                            @foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Value" selected="@(employee.Value == Model.IdEmployee?.ToString())">
+                                    @employee.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
+                        <label for="IdInterventionType">Raison</label>
+                        <select name="IdInterventionType" id="IdInterventionType" class="form-control">
+                            <option value="">Sélectionner</option>
+                            @foreach (var type in Model.InterventionTypes)
+                            {
+                                <option value="@type.Value" selected="@(type.Value == Model.IdInterventionType?.ToString())">
+                                    @type.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
+                        <label for="IsLoanUnpaid">Petit prêt non remboursé</label>
+                        <input type="checkbox" name="IsLoanUnpaid" id="IsLoanUnpaid" class="form-check-input" value="true" @(Model.IsLoanUnpaid == true ? "checked" : "")>
+                    </div>
                 </div>
             </div>
 
-            <!-- Date Range -->
-            <div class="col-md-2 mb-3" id="date-range" style="display:none;">
-                <div class="form-group">
-                    <label for="StartDate">Du</label>
-                    <input type="date" name="StartDate" id="StartDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")">
-                </div>
-            </div>
-
-            <div class="col-md-2 mb-3" id="date-range-end" style="display:none;">
-                <div class="form-group">
-                    <label for="EndDate">Au</label>
-                    <input type="date" name="EndDate" id="EndDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")">
-                </div>
-            </div>
-
-            <!-- Other filters (Intervenant, Raison, etc.) -->
-            <!-- Reste du code pour les autres filtres -->
-            
-            <div class="col-md-2 mb-3">
-                <div class="form-group">
-                    <label for="IdEmployee">Intervenant</label>
-                    <select name="IdEmployee" id="IdEmployee" class="form-control">
-                        <option value="">Sélectionner</option>
-                        @foreach (var employee in Model.Employees)
-                        {
-                            <option value="@employee.Value" selected="@(employee.Value == Model.IdEmployee?.ToString())">
-                                @employee.Text
-                            </option>
-                        }
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-2 mb-3">
-                <div class="form-group">
-                    <label for="IdInterventionType">Raison</label>
-                    <select name="IdInterventionType" id="IdInterventionType" class="form-control">
-                        <option value="">Sélectionner</option>
-                        @foreach (var type in Model.InterventionTypes)
-                        {
-                            <option value="@type.Value" selected="@(type.Value == Model.IdInterventionType?.ToString())">
-                                @type.Text
-                            </option>
-                        }
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-2 mb-3">
-                <div class="form-group">
-                    <label for="IsLoanUnpaid">Petit prêt non remboursé</label>
-                    <input type="checkbox" name="IsLoanUnpaid" id="IsLoanUnpaid" class="form-check-input" value="true" @(Model.IsLoanUnpaid == true ? "checked" : "")>
-                </div>
-            </div>
-        </div>
 
 
-            
 
-        <div class="row">
-            <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
-                <div class="form-group d-flex">
-                    <button type="submit" class="btn btn-primary me-2">
-                        <i class="bi bi-search"></i> Rechercher
-                    </button>
-                        @if (Model.IdClient.HasValue || Model.IdEmployee.HasValue 
-                        || Model.IdInterventionType.HasValue || Model.IsLoanUnpaid.HasValue 
+            <div class="row">
+                <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
+                    <div class="form-group d-flex">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-search"></i> Rechercher
+                        </button>
+                        @if (Model.IdClient.HasValue || Model.IdEmployee.HasValue
+                        || Model.IdInterventionType.HasValue || Model.IsLoanUnpaid.HasValue
                         || Model.semaineEnCours || Model.moisEnCours || Model.intervalle)
-                                    {
-                        <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-eraser"></i> Effacer le filtre</a>
-                    }
+                        {
+                            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-eraser"></i> Effacer le filtre</a>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
 
     <div class="pt-2 pb-2">
 
         @if (Model.semaineEnCours)
         {
-            <h4 class="rechercheInterventionSousTitreInteractif pt-4" ><i class="bi bi-search"></i> Semaine en cours</h4>
+            <h4 class="rechercheInterventionSousTitreInteractif pt-4"><i class="bi bi-search"></i> Semaine en cours</h4>
         }
-        else if(Model.moisEnCours)
+        else if (Model.moisEnCours)
         {
             <h4 class="rechercheInterventionSousTitreInteractif pt-4"><i class="bi bi-search"></i>  Mois en cours</h4>
         }
@@ -136,23 +136,23 @@
 
     </div>
 
-<script>
-    // Show/hide date range fields based on DateFilter value
-    document.getElementById("DateFilter").addEventListener("change", function() {
-        var dateRange = document.getElementById("date-range");
-        var dateRangeEnd = document.getElementById("date-range-end");
-        if (this.value === "Intervalle") {
-            dateRange.style.display = "block";
-            dateRangeEnd.style.display = "block";
-        } else {
-            dateRange.style.display = "none";
-            dateRangeEnd.style.display = "none";
-        }
-    });
+    <script>
+        // Show/hide date range fields based on DateFilter value
+        document.getElementById("DateFilter").addEventListener("change", function () {
+            var dateRange = document.getElementById("date-range");
+            var dateRangeEnd = document.getElementById("date-range-end");
+            if (this.value === "Intervalle") {
+                dateRange.style.display = "block";
+                dateRangeEnd.style.display = "block";
+            } else {
+                dateRange.style.display = "none";
+                dateRangeEnd.style.display = "none";
+            }
+        });
 
-    // Trigger change event to set the initial state
-    document.getElementById("DateFilter").dispatchEvent(new Event("change"));
-</script>
+        // Trigger change event to set the initial state
+        document.getElementById("DateFilter").dispatchEvent(new Event("change"));
+    </script>
 
 
 
@@ -164,7 +164,7 @@
             <table class="table table-striped">
                 <thead class="table-header">
                     <tr class="tableHeader">
-                        <th >
+                        <th>
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.IdSortParm">
                                 Date de l'intervention
                                 @if (ViewBag.CurrentSort == "id_desc")
@@ -268,8 +268,8 @@
                                     ? (intervention.IsLoanPaid.Value ? "Oui" : "Non")
                                     : "N/A")
                             </td>
-                            
-                            
+
+
                             <td>
                                 <div class="btn-group" role="group">
                                     <a asp-action="Details" asp-route-id="@intervention.Id" class="btn btn-primary">
@@ -287,19 +287,19 @@
                     }
                 </tbody>
             </table>
-            
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        @for (int i = 1; i <= Model.TotalPages; i++)
-                        {
-                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-sortOrder="@ViewBag.CurrentSort">@i</a>
-                            </li>
-                        }
-                    </ul>
-                </nav>
-            
-            
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-sortOrder="@ViewBag.CurrentSort">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+
 
         }
         else

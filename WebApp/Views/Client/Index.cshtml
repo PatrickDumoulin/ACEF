@@ -1,6 +1,6 @@
 ﻿@model WebApp.ViewModels.ClientSearchViewModel
 
-<partial name="_Notification"/>
+<partial name="_Notification" />
 
 @{
     ViewData["Title"] = "Index";
@@ -47,29 +47,29 @@
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
                         <label for="PhoneNumber">Numéro de téléphone</label>
-                        <input type="text" name="PhoneNumber" id="PhoneNumber" class="form-control"  value="@Model.PhoneNumber">
+                        <input type="text" name="PhoneNumber" id="PhoneNumber" class="form-control" value="@Model.PhoneNumber">
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
                         <label for="Email">Courriel</label>
-                        <input type="text" name="Email" id="Email" class="form-control"  value="@Model.Email">
+                        <input type="text" name="Email" id="Email" class="form-control" value="@Model.Email">
                     </div>
                 </div>
-                
+
             </div>
             <div class="row">
-            <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
+                <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
                     <div class="form-group d-flex">
                         <button type="submit" class="btn btn-primary me-2">
                             <i class="bi bi-search"></i> Rechercher
                         </button>
-                    @if (!string.IsNullOrEmpty(Model.Id?.ToString()) || !string.IsNullOrEmpty(Model.LastName) || !string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.PhoneNumber) || !string.IsNullOrEmpty(Model.Email))
-                    {
+                        @if (!string.IsNullOrEmpty(Model.Id?.ToString()) || !string.IsNullOrEmpty(Model.LastName) || !string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.PhoneNumber) || !string.IsNullOrEmpty(Model.Email))
+                        {
                             <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-eraser"></i> Effacer le filtre</a>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
             </div>
         </form>
     </div>
@@ -78,8 +78,8 @@
 
 
 
-        <div class="table-container ">
-            @if (Model != null && Model.Clients.Count > 0)
+    <div class="table-container ">
+        @if (Model != null && Model.Clients.Count > 0)
         {
             <table class="table table-striped ">
                 <thead class="table-header">
@@ -89,12 +89,12 @@
                         <th>Prénom</th>
                         <th>Numéro de téléphone</th>
                         <th>Adresse du domicile</th>
-                         @* <th>Courriel</th> *@ 
+                        @* <th>Courriel</th> *@
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach (var client in Model.Clients)
+                    @foreach (var client in Model.Clients)
                     {
                         <tr>
                             <td>@client.Id</td>

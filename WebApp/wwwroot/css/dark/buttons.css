@@ -35,6 +35,29 @@
         color: black;
     }
 
+    .btn-secondary:focus {
+        background-color: #007bff !important;
+        
+    }
+
 .btn-danger:hover {
     background-color: red !important;
 }
+
+
+
+
+
+
+#btnYes:focus {
+    background-color: #007bff !important;
+    border: none;
+    color: white;
+}
+
+#btnNo:focus {
+    background-color: #007bff !important;
+    border: none;
+    
+
+

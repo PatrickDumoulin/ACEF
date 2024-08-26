@@ -6,28 +6,6 @@
 }
 
 
-        .btn-secondary:hover {
-            background-color: #f0f0f0;
-        }
-
-    .hidden {
-        visibility: hidden;
-        height: 0;
-        overflow: hidden;
-    }
-</style>
-
-<style>
-    .btn-group .btn {
-        width: 75px;
-    }
-
-        .btn-group .btn.active {
-            background-color: #007bff; /* Couleur active */
-            color: #fff;
-        }
-</style>
-
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger">
@@ -52,7 +30,7 @@
         <div class="row">
             <!-- Première Colonne -->
             <div class="col-md-6">
-                
+
                 <div class="mb-3">
                     <label asp-for="DateIntervention" class="form-label">Date de l'intervention</label>
                     <input asp-for="DateIntervention" type="date" class="form-control date-input" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
@@ -63,7 +41,7 @@
                     <select asp-for="IdEmployee" class="form-control" asp-items="@(ViewBag.Employees)"></select>
                     <span asp-validation-for="IdEmployee" class="text-danger"></span>
                 </div>
-                
+
                 <div class="mb-3">
                     <label asp-for="IdReferenceType" class="form-label">Référence</label>
                     <select asp-for="IdReferenceType" class="form-control" asp-items="@(ViewBag.MdReferenceSources)">
@@ -92,14 +70,14 @@
                     <div>
                         <label class="form-label pt-5">Petit prêt remboursé</label>
                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <button type="button" id="btnYes" class="btn btn-secondary">Oui</button>
-                            <button type="button" id="btnNo" class="btn btn-secondary">Non</button>
+                            <button type="button" id="btnYes" class="btn btn-dark">Oui</button>
+                            <button type="button" id="btnNo" class="btn btn-dark">Non</button>
                         </div>
                         <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" />
                         <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
                     </div>
                 </div>
-               
+
             </div>
             <!-- Deuxième Colonne -->
             <div class="col-md-6">
@@ -127,7 +105,7 @@
                     </div>
                     <span asp-validation-for="IdClient" class="text-danger"></span>
                 </div>
-                
+
                 <div class="mb-3">
                     <label asp-for="SelectedSolutions" class="form-label">Solution</label>
                     <div class="input-group">
@@ -146,7 +124,7 @@
                     <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
                 </div>
 
-                
+
                 <div id="solutionsSection" class="mb-3">
                     <label class="form-label text-center">Solutions proposées</label>
                     <ul id="selectedSolutionsList" class="list-group">
@@ -165,32 +143,15 @@
                     <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
                 </div>
 
-                @* Hidden Fields *@
-                <div class="hidden" id="loanFields">
-                    <div>
-                        <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
-                        <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
-                            <option value="">--Sélectionnez le but d'emprunt--</option>
-                        </select>
-                        <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label class="form-label pt-4">Petit prêt remboursé</label>
-                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <button type="button" id="btnYes" class="btn btn-success">Oui</button>
-                            <button type="button" id="btnNo" class="btn btn-danger">Non</button>
-                        </div>
-                        <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" />
-                        <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
-                    </div>
-                </div>
+
+
             </div>
 
-            
-            
+
+
         </div>
 
-        
+
         <div class="row">
             <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-primary" style="width:150px">Ajouter</button>
@@ -226,50 +187,23 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/Intervention.js"></script>
 
     <script>
+        //Boutons OUI NON pour Petit Prêt
+
         $(document).ready(function () {
-            // Ajouter une solution à la liste des solutions proposées
-            $('#addSolutionButton').on('click', function () {
-                var selectedOption = $('#AvailableSolutions option:selected');
-                var solutionText = selectedOption.text();
-                var solutionValue = selectedOption.val();
-
-                console.log("Adding solution:", solutionValue, solutionText);
-
-                if (solutionValue && solutionText) {
-                    // Ajouter la solution à la liste des solutions proposées
-                    $('#selectedSolutionsList').append('<li class="list-group-item" data-value="' + solutionValue + '">' +
-                        solutionText + ' <button type="button" class="btn btn-sm btn-danger float-right remove-solution"><i class="bi bi-trash"></i></button>' +
-                        '<input type="hidden" name="SelectedSolutions" value="' + solutionValue + '" />' +
-                        '</li>');
-
-                    // Retirer l'option sélectionnée de la liste déroulante
-                    selectedOption.remove();
-
-                    // Réinitialiser la sélection dans la liste déroulante
-                    $('#AvailableSolutions').val('');
-                }
+            $('#btnYes').click(function () {
+                $('#IsLoanPaid').val(true);
+                $('#btnYes').addClass('active');
+                $('#btnNo').removeClass('active');
             });
 
-            // Supprimer une solution de la liste sélectionnée et la réajouter à la liste déroulante
-            $('#selectedSolutionsList').on('click', '.remove-solution', function () {
-                var listItem = $(this).closest('li');
-                var solutionValue = listItem.data('value');
-                var solutionText = listItem.contents().get(0).nodeValue.trim(); // Récupérer le texte sans l'icône de suppression
-
-                if (solutionValue && solutionText) {
-                    // Réajouter l'option supprimée dans la liste déroulante
-                    $('#AvailableSolutions').append('<option value="' + solutionValue + '">' + solutionText + '</option>');
-
-                    // Supprimer l'élément de la liste des solutions proposées
-                    listItem.remove();
-                }
+            $('#btnNo').click(function () {
+                $('#IsLoanPaid').val(false);
+                $('#btnNo').addClass('active');
+                $('#btnYes').removeClass('active');
             });
         });
     </script>
-
-    
-
-    
 }

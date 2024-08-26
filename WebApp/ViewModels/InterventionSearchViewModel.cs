@@ -10,13 +10,25 @@ namespace WebApp.ViewModels
         public int? IdClient { get; set; }
         public int? IdEmployee { get; set; }
         public int? IdInterventionType { get; set; }
-        
+
 
 
         public string DateFilter { get; set; } // Week, Month, Interval
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? IsLoanUnpaid { get; set; }
+
+        //Flags Recherche
+
+        public bool semaineEnCours { get; set; } = false;
+        public bool moisEnCours { get; set; } = false;
+        public bool intervalle { get; set; } = false;
+
+
+        //Pagination
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+
         // Drop-down lists
         public IEnumerable<SelectListItem> Employees { get; set; }
         public IEnumerable<SelectListItem> InterventionTypes { get; set; }

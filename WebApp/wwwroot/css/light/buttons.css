@@ -46,6 +46,29 @@
         color: black;
     }
 
+.btn btn-dark {
+    background-color: black !important;
+    color: black;
+    border: 1px solid #000000;
+    font-weight: bold;
+    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
+}
+
+
+
+
+#btnYes:focus {
+    background-color: #14578e !important;
+    border: none;
+    color: white;
+}
+
+#btnNo:focus {
+    background-color: #14578e !important;
+    border: none;
+    color: white;
+}
+
 .btn-danger:hover {
     background-color: red !important;
 }
