@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - ACEF</title>
-    <link rel="stylesheet" href="~/css/create-employee.css">
+  
 </head>
 <body>
     <div class="container">
@@ -32,10 +32,15 @@
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="UserName" class="control-label">Nom d'utilisateur</label>
-                            <input asp-for="UserName" class="form-control">
+                            <label asp-for="UserName" class="control-label">UserName</label>
+                            <input asp-for="UserName" class="form-control" type="UserName">
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label">Email</label>
+                            <input asp-for="Email" class="form-control" type="email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>                        
                         <div class="form-group">
                             <label asp-for="PasswordHash" class="control-label">Mot de passe</label>
                             <input asp-for="PasswordHash" class="form-control" type="password">
@@ -50,6 +55,23 @@
                             <span asp-validation-for="Active" class="text-danger"></span>
                         </div>
                     </div><br>
+
+                    <!-- Ajout des rôles -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="IsSuperUser" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsSuperUser" class="form-check-label">Superutilisateur</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="IsIntervenant" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsIntervenant" class="form-check-label">Intervenant</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="IsAdministrateurCA" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsAdministrateurCA" class="form-check-label">Administrateur CA</label>
+                        </div>
+                    </div><br>
+
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Enregistrer" class="btn btn-primary">
@@ -61,8 +83,6 @@
         </div>
     </div>
 
-    @section Scripts {
-        <script src="~/js/your-custom-scripts.js"></script>
-    }
+    
 </body>
 </html>

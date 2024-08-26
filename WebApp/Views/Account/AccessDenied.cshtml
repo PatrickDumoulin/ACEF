@@ -1,0 +1,9 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Accès refusé";
+}
+
+<h1>Accès refusé</h1>
+<p>Vous n'avez pas les autorisations nécessaires pour accéder à cette ressource</p>
+<a href="@Url.Action("Index", "Home")">Retour à l'accueil</a>

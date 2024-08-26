@@ -3,6 +3,7 @@ using BusinessLayer.Logic.Interfaces;
 using DataAccess.BOL.Client;
 using DataAccess.Models;
 using DataModels.BOL.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Intervenant")]
     public class ClientController : AbstractBLLController<IClientBLL>
     {
 

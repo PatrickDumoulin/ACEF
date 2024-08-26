@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,22 +27,40 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Client" asp-action="Index">Clients</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Seminars" asp-action="Index">Atelier</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Intervention" asp-action="Index">Intervention</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Permission" asp-action="Index">Permission</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="employee" asp-action="Index">Employes</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Client" asp-action="Index">Clients</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Seminars" asp-action="Index">Atelier</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Intervention" asp-action="Index">Intervention</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index">Employés</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-white">Bonjour @UserManager.GetUserName(User)</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="form-inline">
+                                    <button type="submit" class="nav-link btn btn-link text-white">Déconnexion</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Connexion</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -52,7 +74,7 @@
 
     <footer class="border-top footer bg-primary text-white text-center">
         <div class="container">
-            Copyright <i class="bi bi-c-circle-fill"></i> 2024 ACEF. Tous droits réservés. <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            Copyright <i class="bi bi-c-circle-fill"></i> 2024 ACEF. Tous droits réservés. <a asp-area="" asp-controller="Home" asp-action="Privacy">Confidentialité</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

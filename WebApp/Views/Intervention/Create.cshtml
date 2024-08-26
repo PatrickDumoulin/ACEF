@@ -67,21 +67,8 @@
         }
 
     .hidden {
-        visibility: hidden;
-        height: 0;
-        overflow: hidden;
+        display: none;
     }
-</style>
-
-<style>
-    .btn-group .btn {
-        width: 75px;
-    }
-
-        .btn-group .btn.active {
-            background-color: #007bff; /* Couleur active */
-            color: #fff;
-        }
 </style>
 
 @if (!ViewData.ModelState.IsValid)
@@ -196,9 +183,7 @@
                     <input asp-for="DebtAmount" class="form-control" />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>
-
-                @* Hidden Fields *@
-                <div class="hidden" id="loanFields">
+                <div class="mb-3 hidden" id="loanFields">
                     <div>
                         <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
                         <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
@@ -207,12 +192,15 @@
                         <span asp-validation-for="IdLoanReason" class="text-danger"></span>
                     </div>
                     <div>
-                        <label class="form-label pt-4">Petit prêt remboursé</label>
-                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <button type="button" id="btnYes" class="btn btn-success">Oui</button>
-                            <button type="button" id="btnNo" class="btn btn-danger">Non</button>
+                        <label class="form-label">Petit prêt remboursé</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
+                            <label class="form-check-label" for="isLoanPaidYes">Oui</label>
                         </div>
-                        <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
+                            <label class="form-check-label" for="isLoanPaidNo">Non</label>
+                        </div>
                         <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
                     </div>
                 </div>
@@ -254,29 +242,104 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/Intervention.js"></script>
 
     <script>
-        //Boutons OUI NON pour Petit Prêt
-
         $(document).ready(function () {
-            $('#btnYes').click(function () {
-                $('#IsLoanPaid').val(true);
-                $('#btnYes').addClass('active');
-                $('#btnNo').removeClass('active');
+            // Ajouter une solution à la liste des solutions proposées
+            $('#addSolutionButton').on('click', function () {
+                var selectedOption = $('#AvailableSolutions option:selected');
+                var solutionText = selectedOption.text();
+                var solutionValue = selectedOption.val();
+
+                console.log("Adding solution:", solutionValue, solutionText);
+
+                if (solutionValue && solutionText) {
+                    // Ajouter la solution à la liste des solutions proposées
+                    $('#selectedSolutionsList').append('<li class="list-group-item" data-value="' + solutionValue + '">' +
+                        solutionText + ' <button type="button" class="btn btn-sm btn-danger float-right remove-solution"><i class="bi bi-trash"></i></button>' +
+                        '<input type="hidden" name="SelectedSolutions" value="' + solutionValue + '" />' +
+                        '</li>');
+
+                    // Retirer l'option sélectionnée de la liste déroulante
+                    selectedOption.remove();
+
+                    // Réinitialiser la sélection dans la liste déroulante
+                    $('#AvailableSolutions').val('');
+                }
             });
 
-            $('#btnNo').click(function () {
-                $('#IsLoanPaid').val(false);
-                $('#btnNo').addClass('active');
-                $('#btnYes').removeClass('active');
+            // Supprimer une solution de la liste sélectionnée et la réajouter à la liste déroulante
+            $('#selectedSolutionsList').on('click', '.remove-solution', function () {
+                var listItem = $(this).closest('li');
+                var solutionValue = listItem.data('value');
+                var solutionText = listItem.contents().get(0).nodeValue.trim(); // Récupérer le texte sans l'icône de suppression
+
+                if (solutionValue && solutionText) {
+                    // Réajouter l'option supprimée dans la liste déroulante
+                    $('#AvailableSolutions').append('<option value="' + solutionValue + '">' + solutionText + '</option>');
+
+                    // Supprimer l'élément de la liste des solutions proposées
+                    listItem.remove();
+                }
+            });
+
+            // Validation côté client pour vérifier que IdClient est défini et qu'au moins une solution est sélectionnée
+            $('form').on('submit', function (event) {
+                var clientId = $('#IdClient').val();
+                var selectedSolutions = $('#selectedSolutionsList li').length;
+
+                if (!clientId) {
+                    event.preventDefault();
+                    alert("Veuillez sélectionner un dossier client.");
+                    return false;
+                }
+
+                if (selectedSolutions === 0) {
+                    event.preventDefault();
+                    alert("Veuillez sélectionner au moins une solution.");
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Recherche et sélection d'un client
+            $('#searchClientInput').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm.length > 2) {
+                    $.ajax({
+                        url: '/Intervention/SearchClients',
+                        data: { searchTerm: searchTerm },
+                        success: function (data) {
+                            $('#clientSearchResults').empty();
+                            data.forEach(function (client) {
+                                $('#clientSearchResults').append('<li class="list-group-item" data-id="' + client.id + '">' + client.fullName + ' (#' + client.id + ')</li>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Erreur lors de la recherche des clients:", status, error);
+                        }
+                    });
+                }
+            });
+
+            $('#clientSearchResults').on('click', 'li', function () {
+                var clientId = $(this).data('id');
+                var clientName = $(this).text();
+                $('#IdClient').val(clientId);
+                $('#clientNameDisplay').val(clientName);
+                $('#clientModal').modal('hide');
+            });
+
+            // Nettoyage du modal de recherche de client
+            $('#clientModal').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#clientSearchResults').empty();
+                $('#clientSearchResults').empty();
             });
         });
     </script>
-
-    
-
-    
 }
 
 

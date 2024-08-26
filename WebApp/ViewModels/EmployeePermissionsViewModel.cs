@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.ViewModels
@@ -10,7 +10,10 @@ namespace WebApp.ViewModels
 
         [Required]
         [Display(Name = "Employé")]
-        public int? EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
+
+        [Display(Name = "Nom de l'employé")]
+        public string EmployeeName { get; set; } // Ajoutez cette propriété
 
         [Display(Name = "Autoriser les Interventions")]
         public bool AllowInterventions { get; set; }
@@ -23,4 +26,5 @@ namespace WebApp.ViewModels
 
         public SelectList Employees { get; set; }
     }
+
 }

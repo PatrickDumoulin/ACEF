@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.32" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.32">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -29,6 +31,35 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\ClientsAttachments\Create.cshtml" />
+    <None Include="Views\ClientsAttachments\Index.cshtml" />
+    <None Include="Views\Client\Create.cshtml" />
+    <None Include="Views\Client\Details.cshtml" />
+    <None Include="Views\Client\Edit.cshtml" />
+    <None Include="Views\Client\Index.cshtml" />
+    <None Include="Views\Employee\Create.cshtml" />
+    <None Include="Views\Employee\Delete.cshtml" />
+    <None Include="Views\Employee\Edit.cshtml" />
+    <None Include="Views\Employee\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Intervention\Create.cshtml" />
+    <None Include="Views\Intervention\Delete.cshtml" />
+    <None Include="Views\Intervention\Details.cshtml" />
+    <None Include="Views\Intervention\Edit.cshtml" />
+    <None Include="Views\Intervention\Index.cshtml" />
+    <None Include="Views\Note\Create.cshtml" />
+    <None Include="Views\Note\Delete.cshtml" />
+    <None Include="Views\Note\Edit.cshtml" />
+    <None Include="Views\Note\Index.cshtml" />
+    <None Include="Views\Seminars\Create.cshtml" />
+    <None Include="Views\Seminars\Delete.cshtml" />
+    <None Include="Views\Seminars\Details.cshtml" />
+    <None Include="Views\Seminars\Edit.cshtml" />
+    <None Include="Views\Seminars\Index.cshtml" />
   </ItemGroup>
 
 </Project>

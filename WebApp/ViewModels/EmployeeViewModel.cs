@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.ViewModels
 {
     public class EmployeeViewModel
     {
         public int Id { get; set; }
-
-        //public string FullName { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
         [Display(Name = "First Name")]
@@ -22,6 +21,7 @@ namespace WebApp.ViewModels
 
         [Required(ErrorMessage = "Password is required")]
         [Display(Name = "Password")]
+        [DataType(DataType.Password)] // Indication que c'est un mot de passe
         public string PasswordHash { get; set; }
 
         [Display(Name = "Last Login Date")]
@@ -29,5 +29,19 @@ namespace WebApp.ViewModels
 
         [Display(Name = "Active")]
         public bool? Active { get; set; }
+
+        // Propriétés pour les rôles
+        [Display(Name = "Superutilisateur")]
+        public bool IsSuperUser { get; set; }
+
+        [Display(Name = "Intervenant")]
+        public bool IsIntervenant { get; set; }
+
+        [Display(Name = "Administrateur CA")]
+        public bool IsAdministrateurCA { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 }
