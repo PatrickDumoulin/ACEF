@@ -13,12 +13,14 @@
             <h1 class="titreInterventionDetails text-center pb-2">Détails de l'Intervention</h1>
             <h4 class="sousTitreInterventionDetails text-center"># @Model.IdClient - @Model.ClientName</h4><br />
             <div class="text-center">
-                <div class="btn-group" role="group" aria-label="Client Actions">
+                <div class="btn-group" role="group" aria-label="Intervention Actions">
                     <a asp-controller="InterventionNotes" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2">Notes (@ViewBag.NoteCount)</a>
                     <a asp-controller="InterventionAttachments" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2">Pièces jointes (@ViewBag.AttachmentCount)</a>
                 </div>
             </div>
         </div>
+
+       
 
         <div class="details-grid">
             <div>

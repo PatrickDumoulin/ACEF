@@ -8,7 +8,7 @@
 <h2 class="notes-card-header">Notes pour l'intervention' : @intervention.Id</h2>
 
 <div class="notes-card-body">
-    <a asp-action="Create" asp-route-clientId="@intervention.Id" class="btn btn-primary custom-btn custom-btn-create">Ajouter une note</a>
+    <a asp-action="Create" asp-route-interventionId="@intervention.Id" class="btn btn-primary custom-btn custom-btn-create">Ajouter une note</a>
     <a asp-action="Details" asp-controller="Intervention" asp-route-id="@intervention.Id" class="btn btn-primary custom-btn custom-btn-create">Retour Detail de l'intervention'</a>
 
     <table class="table">
