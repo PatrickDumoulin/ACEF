@@ -59,7 +59,5 @@
 
 
 .tableHeader {
-    
-    border-bottom: 3px solid black; /* Bordure grise foncée */
-    
+    border-bottom: 3px solid #14578e; /* Bordure grise foncée */
 }

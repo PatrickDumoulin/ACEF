@@ -44,6 +44,24 @@
 
 
 
+/* BOUTONS DE PAGINATION */
+.pagination .page-item.active .page-link {
+    background-color: white; /* Fond blanc pour le bouton actif */
+    color: black; /* Texte noir pour le bouton actif */
+    border-color: white; /* Bordure blanche pour le bouton actif */
+}
+
+.pagination .page-item .page-link {
+    background-color: black; /* Fond noir pour les boutons non actifs */
+    color: white; /* Texte blanc pour les boutons non actifs */
+    border-color: black; /* Bordure noire pour les boutons non actifs */
+}
+
+    .pagination .page-item .page-link:hover {
+        background-color: #444444; /* Fond gris foncé au survol */
+        border-color: #444444; /* Bordure gris foncé au survol */
+    }
+
 
 
 #btnYes:focus {
