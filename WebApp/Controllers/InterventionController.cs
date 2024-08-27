@@ -580,13 +580,13 @@ namespace WebApp.Controllers
         //        return (decimal)BitConverter.ToDouble(encryptedAmount, 0);
         //    }
 
-        private string GetEmployeeName(int employeeId)
-        {
-            var employeeResponse = _employeeBLL.GetEmployeeById(employeeId);
-            return employeeResponse.Succeeded && employeeResponse.Element != null
-                ? $"{employeeResponse.Element.FirstName} {employeeResponse.Element.LastName}"
-                : "Inconnu";
-        }
+        //private string GetEmployeeName(int employeeId)
+        //{
+        //    var employeeResponse = _employeeBLL.GetEmployeeById(employeeId);
+        //    return employeeResponse.Succeeded && employeeResponse.Element != null
+        //        ? $"{employeeResponse.Element.FirstName} {employeeResponse.Element.LastName}"
+        //        : "Inconnu";
+        //}
 
         //    private string GetClientName(int clientId)
         //    {
