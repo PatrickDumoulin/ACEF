@@ -7,6 +7,7 @@
     Layout = "_Layout";
 }
 
+<!-- SWEETALERT DELETE STYLE-->
 <style>
     .custom-swal-popup {
         background: linear-gradient(135deg, #1b263b, #14578e);
@@ -190,8 +191,8 @@
         {
             <table class="table table-striped">
                 <thead class="table-header">
-                    <tr class="tableHeader">
-                        <th>
+                    <tr >
+                        <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.IdSortParm">
                                 Date de l'intervention
                                 @if (ViewBag.CurrentSort == "id_desc")
@@ -223,11 +224,12 @@
                                 {
                                     <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
                                 }
+                                
                             </a>
                         </th>
                         <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.InterventionTypeSortParm">
-                                Raison
+                                
                                 @if (ViewBag.CurrentSort == "interventionType_desc")
                                 {
                                     <i class="bi bi-caret-down-fill"></i>
@@ -240,11 +242,12 @@
                                 {
                                     <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
                                 }
+                                Raison
                             </a>
                         </th>
                         <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.ClientIdSortParm">
-                                # Dossier Client
+                                #Dossier Client
                                 @if (ViewBag.CurrentSort == "clientId_desc")
                                 {
                                     <i class="bi bi-caret-down-fill"></i>
@@ -257,11 +260,12 @@
                                 {
                                     <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
                                 }
+                                
                             </a>
                         </th>
                         <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.LoanPaidSortParm">
-                                Prêt remboursé
+                                
                                 @if (ViewBag.CurrentSort == "loanPaid_desc")
                                 {
                                     <i class="bi bi-caret-down-fill"></i>
@@ -274,6 +278,7 @@
                                 {
                                     <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
                                 }
+                                Prêt remboursé
                             </a>
                         </th>
                         <th class="tableHeader">
@@ -336,6 +341,7 @@
     </div>
 </div>
 
+<!-- SWEETALERT DELETE-->
 <script>
 
     function Delete(url) {

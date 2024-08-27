@@ -25,6 +25,9 @@
             //buttons
             document.write('<link id="buttonsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/buttons.css" asp-append-version="true" />');
             
+            //tables
+            document.write('<link id="tablesStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/tables.css" asp-append-version="true" />');
+
             //intervention
             document.write('<link id="interventionCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionCreate.css" asp-append-version="true" />');
             document.write('<link id="interventionEditStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionEdit.css" asp-append-version="true" />');
@@ -120,6 +123,9 @@
 
             //buttons
             document.getElementById('buttonsStylesheet').setAttribute('href', `/css/${newTheme}/buttons.css`);
+
+            //tables
+            document.getElementById('tablesStylesheet').setAttribute('href', `/css/${newTheme}/tables.css`);
 
             //intervention
             document.getElementById('interventionCreateStylesheet').setAttribute('href', `/css/${newTheme}/interventionCreate.css`);
