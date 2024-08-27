@@ -46,8 +46,8 @@
 
 /* BOUTONS DE PAGINATION */
 .pagination .page-item.active .page-link {
-    background-color: white; /* Fond blanc pour le bouton actif */
-    color: black; /* Texte noir pour le bouton actif */
+    background-color: #007bff; /* Fond blanc pour le bouton actif */
+    color: white; /* Texte noir pour le bouton actif */
     border-color: white; /* Bordure blanche pour le bouton actif */
 }
 
