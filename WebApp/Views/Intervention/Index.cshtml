@@ -305,7 +305,7 @@
                                     <a asp-action="Edit" asp-route-id="@intervention.Id" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modifier
                                     </a>
-                                    <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Intervention", new { id = intervention.Id })')" class="btn btn-danger">
+                                    <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Intervention", new { id = intervention.Id })')" class="btn btn-danger ">
                                         <i class="bi bi-trash-fill"></i> Supprimer
                                     </a>
                                 </div>
@@ -365,21 +365,28 @@
                         'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                     },
                     success: function (data) {
-                        Swal.fire({
-                            title: 'Supprimé!',
-                            text: 'L\'intervention a été supprimée.',
-                            icon: 'success',
-                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                title: 'custom-swal-title',
-                                content: 'custom-swal-content',
-                                confirmButton: 'custom-swal-confirm-button',
-                            }
-                        }).then(() => {
+                        // Vérifiez s'il reste des éléments sur la page actuelle
+                        if ($('tbody tr').length <= 1 && $('.pagination .active').text() != "1") {
+                            // S'il n'y a plus d'éléments, revenir à la page précédente
+                            let previousPage = parseInt($('.pagination .active').text()) - 1;
+                            window.location.href = `?page=${previousPage}`;
+                        } else {
                             // Rafraîchir la page après la suppression
-                            window.location.reload();
-                        });
+                            Swal.fire({
+                                title: 'Supprimé!',
+                                text: 'L\'intervention a été supprimée.',
+                                icon: 'success',
+                                background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                                customClass: {
+                                    popup: 'custom-swal-popup',
+                                    title: 'custom-swal-title',
+                                    content: 'custom-swal-content',
+                                    confirmButton: 'custom-swal-confirm-button',
+                                }
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        }
                     },
                     error: function (xhr, status, error) {
                         Swal.fire({
@@ -399,6 +406,7 @@
             }
         });
     }
+
 
 
 
