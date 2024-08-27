@@ -35,6 +35,7 @@
     .details-grid .label,
     .details-grid .value {
         padding: 10px 0;
+        font-weight: bold;
     }
 
     .details-grid .label {

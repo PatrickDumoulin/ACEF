@@ -1,4 +1,6 @@
-﻿.btn-group .btn {
+﻿/* DARK */
+
+.btn-group .btn {
     padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
     font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
     border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
@@ -58,7 +60,7 @@
 }
 
     .pagination .page-item .page-link:hover {
-        background-color: #444444; /* Fond gris foncé au survol */
+        background-color: #070e70; /* Fond gris foncé au survol */
         border-color: #444444; /* Bordure gris foncé au survol */
     }
 
