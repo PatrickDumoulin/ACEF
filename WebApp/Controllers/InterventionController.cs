@@ -375,7 +375,7 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
-        [HttpPost, ActionName("DeleteConfirmed")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -396,7 +396,7 @@ namespace WebApp.Controllers
                 bll.DeleteIntervention(id);
 
                 TempData["success"] = "Intervention supprimée avec succès";
-                return RedirectToAction(nameof(Index));
+                return Json(new {success = true, message = "Intervention supprimée avec succès" });
             }
             catch (Exception ex)
             {

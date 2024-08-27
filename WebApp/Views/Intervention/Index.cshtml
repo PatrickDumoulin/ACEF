@@ -7,6 +7,33 @@
     Layout = "_Layout";
 }
 
+<style>
+    .custom-swal-popup {
+        background: linear-gradient(135deg, #1b263b, #14578e);
+        color: white;
+    }
+
+    .custom-swal-title {
+        color: #ffffff; /* Change la couleur du titre à blanc */
+    }
+
+    .custom-swal-content {
+        color: #ffffff; /* Change la couleur du texte du contenu à blanc */
+    }
+
+    .custom-swal-confirm-button {
+        background-color: #3085d6; /* Couleur du bouton de confirmation */
+        color: white;
+    }
+
+    .custom-swal-cancel-button {
+        background-color: #d33; /* Couleur du bouton d'annulation */
+        color: white;
+    }
+
+
+</style>
+
 
 
 <div class="index container">
@@ -278,8 +305,8 @@
                                     <a asp-action="Edit" asp-route-id="@intervention.Id" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modifier
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@intervention.Id" class="btn btn-danger">
-                                        <i class="bi bi-trash"></i> Supprimer
+                                    <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Intervention", new { id = intervention.Id })')" class="btn btn-danger">
+                                        <i class="bi bi-trash-fill"></i> Supprimer
                                     </a>
                                 </div>
                             </td>
@@ -308,5 +335,75 @@
         }
     </div>
 </div>
+
+<script>
+
+    function Delete(url) {
+        Swal.fire({
+            title: "Êtes-vous certain?",
+            text: "Cette intervention sera supprimée définitivement!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Oui, supprimer!",
+            cancelButtonText: "Annuler",
+            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                content: 'custom-swal-content',
+                confirmButton: 'custom-swal-confirm-button',
+                cancelButton: 'custom-swal-cancel-button'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        Swal.fire({
+                            title: 'Supprimé!',
+                            text: 'L\'intervention a été supprimée.',
+                            icon: 'success',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        }).then(() => {
+                            // Rafraîchir la page après la suppression
+                            window.location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Erreur!',
+                            text: 'Une erreur est survenue lors de la suppression.',
+                            icon: 'error',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
+
+
+
+</script>
 
 

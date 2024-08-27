@@ -144,3 +144,16 @@
 
 
 });
+
+
+function loadDelete() {
+    return `
+                   
+                    <a href="javascript:void(0);" onclick="Delete(this.getAttribute('data-url'))" data-url="/Intervention/Delete/@intervention.Id" class="btn btn-danger mx-2">
+    <i class="bi bi-trash-fill"></i> Delete
+</a>`
+}
+
+
+
+
