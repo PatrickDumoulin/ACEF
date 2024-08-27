@@ -14,7 +14,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = "Intervenant")]
+    //[Authorize(Roles = "Intervenant")]
     public class ClientController : AbstractBLLController<IClientBLL>
     {
 

@@ -1,58 +1,72 @@
 ﻿@model WebApp.ViewModels.InterventionViewModel
 
 @{
-    ViewData["Title"] = "Supprimer l'intervention";
+    ViewData["Title"] = "Détails de l'Intervention";
+    Layout = "_Layout";
 }
 
-<h2>Supprimer l'intervention</h2>
 
-<h3>Êtes-vous sûr de vouloir supprimer cette intervention ?</h3>
-<div>
-    <h4>Intervention</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Date de l'intervention
-        </dt>
-        <dd class="col-sm-10">
-            @Model.DateIntervention
-        </dd>
-        <dt class="col-sm-2">
-            Employé
-        </dt>
-        <dd class="col-sm-10">
-            @Model.EmployeeName
-        </dd>
-        <dt class="col-sm-2">
-            # Dossier
-        </dt>
-        <dd class="col-sm-10">
-            @Model.IdClient
-        </dd>
-        <dt class="col-sm-2">
-            Client
-        </dt>
-        <dd class="col-sm-10">
-            @Model.ClientName
-        </dd>
-        <dt class="col-sm-2">
-            Référence
-        </dt>
-        <dd class="col-sm-10">
-            @Model.ReferenceTypeName
-        </dd>
-        <dt class="col-sm-2">
-            Statut
-        </dt>
-        <dd class="col-sm-10">
-            @Model.StatusName
-        </dd>
-        <!-- Ajoutez d'autres champs si nécessaire -->
-    </dl>
 
-    <form asp-action="DeleteConfirmed" method="post">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
-    </form>
+<div class="container">
+    <div class="details-container">
+        <div class="details-header">
+            <h1 class="titreInterventionDetails text-center pb-2">Détails de l'Intervention</h1>
+            <h4 class="sousTitreInterventionDetails text-center"># @Model.IdClient - @Model.ClientName</h4><br />
+        </div>
+
+        <div class="details-grid">
+            <div>
+                <div class="label">Est virtuel</div>
+                <div class="value">@(Model.IsVirtual ? "Oui" : "Non")</div>
+            </div>
+            <div>
+                <div class="label">Date de l'intervention :</div>
+                <div class="value">@Model.DateIntervention?.ToString("dd/MM/yyyy")</div>
+            </div>
+            <div>
+                <div class="label">Intervenant :</div>
+                <div class="value">@Model.EmployeeName</div>
+            </div>
+            <div>
+                <div class="label">Référence :</div>
+                <div class="value">@Model.ReferenceTypeName</div>
+            </div>
+            <div>
+                <div class="label">Statut :</div>
+                <div class="value">@Model.StatusName</div>
+            </div>
+            <div>
+                <div class="label">Raison consultation :</div>
+                <div class="value">@Model.InterventionTypeName</div>
+            </div>
+            <div>
+                <div class="label">Montant de la dette : </div>
+                <div class="value">@Model.DebtAmount?.ToString("C")</div>
+            </div>
+            @if (Model.IdLoanReason.HasValue)
+            {
+                <div>
+                    <div class="label">Petit prêt remboursé :</div>
+                    <div class="value">@(Model.IsLoanPaid.HasValue ? (Model.IsLoanPaid.Value ? "Oui" : "Non") : "NULL")</div>
+                </div>
+            }
+            <div>
+                <div class="label">Solutions proposées :</div>
+                <div class="value">
+                    <ul class="list-group">
+                        @foreach (var solutionName in Model.SolutionNames)
+                        {
+                            <li class="list-group-item">@solutionName</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container text-center">
+            <a asp-controller="Intervention" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier</a>
+            <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary">Retour</a>
+
+        </div>
+    </div>
 </div>
