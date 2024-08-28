@@ -1,17 +1,31 @@
-﻿using CoreLib.Definitions;
+﻿using DataAccess.Core.Definitions;
+using DataModels.BOL.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataModels.BOL.Client
+namespace DataAccess.BOL.Client
 {
-	public interface IClientBOL : IBOL
-	{
-		public int Id { get; set; }
+    public class ClientMockBOL : AbstractUnboundBOL, IClientBOL
+    {
+        public ClientMockBOL()
+        {
+            Id = GetNewSequence();
+        }
 
-		public bool IsMember { get; set; }
+        public ClientMockBOL(int id)
+        {
+            Id = id;
+        }
+
+
+
+
+        public int Id { get; set; }
+
+        public bool IsMember { get; set; }
 
         public string LastName { get; set; }
 
@@ -50,7 +64,13 @@ namespace DataModels.BOL.Client
         public DateTime? CreatedDate { get; set; }
 
         public DateTime? LastModifiedDate { get; set; }
-        public string FullName => $"{FirstName} {LastName}";
-    }
-}
 
+        private int GetNewSequence()
+        {
+            // Generate a new sequence ID for mock purposes
+            return new Random().Next(1, 1000);
+        }
+
+    }
+
+}

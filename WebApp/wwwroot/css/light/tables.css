@@ -25,10 +25,10 @@ tableHeader {
     text-transform: uppercase;
 }
 
-.table th:last-child,
+/*.table th:last-child,
 .table td:last-child {
-    width: 10%; /* Ajustez ce pourcentage selon vos besoins */
-}
+    width: 10%;*/ /* Ajustez ce pourcentage selon vos besoins */
+/*}*/
 
 
 

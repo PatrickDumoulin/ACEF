@@ -16,7 +16,7 @@ namespace DataAccess.BOL.Client
 		public ClientBOL(Clients record) : base(record) { }
 
 
-        public int Id { get { return base.Record.Id; } }
+        public int Id { get { return base.Record.Id; } set { base.Record.Id = value; } }
         public bool IsMember { get { return base.Record.IsMember; } set { base.Record.IsMember = value; } }
         public string LastName { get { return base.Record.LastName; } set { base.Record.LastName = value; } }
         public string FirstName { get { return base.Record.FirstName; } set { base.Record.FirstName = value; } }
@@ -35,9 +35,9 @@ namespace DataAccess.BOL.Client
         public int? IdEmploymentSituation { get { return base.Record.IdEmploymentSituation; } set { base.Record.IdEmploymentSituation = value; } }
         public int? IdScholarshipType { get { return base.Record.IdScholarshipType; } set { base.Record.IdScholarshipType = value; } }
         public byte[] Income { get { return base.Record.Income; } set { base.Record.Income = value; } }
-        public DateTime? CreatedDate { get { return base.Record.CreatedDate; } }
-        public DateTime? LastModifiedDate { get { return base.Record.LastModifiedDate; } }
+        public DateTime? CreatedDate { get { return base.Record.CreatedDate; } set { base.Record.CreatedDate = value; } }
+        public DateTime? LastModifiedDate { get { return base.Record.LastModifiedDate; } set { base.Record.LastModifiedDate = value; } }
 
-        
+
     }
 }

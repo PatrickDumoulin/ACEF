@@ -21,7 +21,10 @@ namespace BusinessLayer.Core.Mappings
             BindBll<ICowMilkBLL, CowMilkBLL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
 
             BindBll<IProductionBLL, ProductionBLL>();
+
             BindBll<IClientBLL, ClientBLL>();
+            BindBll<IClientBLL, ClientBLL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
+
             BindBll<IMDBLL, MDBLL>();
             BindBll<INoteBLL, NoteBLL>();
             BindBll<IClientAttachmentBLL, ClientAttachmentBLL>();
@@ -43,7 +46,10 @@ namespace BusinessLayer.Core.Mappings
             BindDal<ICowMilkDAL, CowMilkMockDAL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
 
             BindDal<IProductionDAL, ProductionEntityDAL>();
+
             BindDal<IClientDAL, ClientEntityDAL>();
+            BindDal<IClientDAL, ClientEntityDAL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
+
             BindDal<IMDDAL, MDEntityDAL>();
             BindDal<INoteDAL, NoteEntityDAL>();
             BindDal<IClientAttachmentDAL, ClientAttachmentEntityDAL>();

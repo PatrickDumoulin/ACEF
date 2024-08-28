@@ -1,4 +1,5 @@
-﻿using CoreLib.Injection;
+﻿using BusinessLayer.Logic;
+using CoreLib.Injection;
 using Microsoft.Extensions.Configuration;
 using Ninject.Modules;
 using UnitTests;
@@ -15,5 +16,7 @@ List<INinjectModule> list = new List<INinjectModule>();
 list.Add(new ProdBinder());
 Injector.InitializeKernel(list);
 
-InitialTests tests = new InitialTests();
-tests.RunTests();
+InitialTests initialTests = new InitialTests();
+ClientTests clientTests = new ClientTests();
+
+clientTests.RunTests();

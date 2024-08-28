@@ -28,10 +28,10 @@
     text-transform: uppercase;
 }
 
-.table th:last-child,
+/*.table th:last-child,
 .table td:last-child {
-    width: 3% !; /* Ajustez ce pourcentage selon vos besoins */
-}
+    width: 3%;*/ /* Ajustez ce pourcentage selon vos besoins */
+/*}*/
 
 
 

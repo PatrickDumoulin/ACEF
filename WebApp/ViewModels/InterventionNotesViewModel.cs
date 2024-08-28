@@ -7,5 +7,7 @@ namespace WebApp.ViewModels
     {
         public InterventionViewModel Intervention { get; set; }
         public IEnumerable<InterventionNoteBOL> InterventionNotes { get; set; }
+
+        
     }
 }

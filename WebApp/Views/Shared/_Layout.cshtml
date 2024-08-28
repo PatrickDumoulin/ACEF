@@ -34,6 +34,9 @@
             document.write('<link id="interventionIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionIndex.css" asp-append-version="true" />');
             document.write('<link id="interventionDetailsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionDetails.css" asp-append-version="true" />');
 
+            //intervention Notes
+            document.write('<link id="interventionNotesIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionNotesIndex.css" asp-append-version="true" />');
+
             //client
             document.write('<link id="clientIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientIndex.css" asp-append-version="true" />');
             document.write('<link id="clientDetailsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientDetails.css" asp-append-version="true" />');
@@ -107,7 +110,7 @@
 
     <footer class="text-white text-center">
         <div class="container">
-            Copyright <i class="bi bi-c-circle-fill"></i> 2024 ACEF. Tous droits réservés. <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            Copyright <i class="bi bi-c-circle-fill"></i> 2024 ACEF. Tous droits réservés <a asp-area="" asp-controller="Home"></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -133,6 +136,9 @@
             document.getElementById('interventionIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionIndex.css`);
             document.getElementById('interventionDetailsStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionDetails.css`);
             document.getElementById('interventionDeleteStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionDelete.css`);
+
+            //interventionNotes
+            document.getElementById('interventionNotesIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionNotesIndex.css`);
 
             //client
             document.getElementById('clientCreateStylesheet').setAttribute('href', `/css/${newTheme}/clientCreate.css`);
