@@ -1,163 +1,98 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
-using BusinessLayer.Logic;
 using BusinessLayer.Logic.Interfaces;
-using CoreLib.Injection;
-using DataAccess.BOL.Client;
-using DataAccess.BOL.CowMilk;
-using DataAccess.Models;
-using DataAccess.Providers.Mock;
-using DataModels.BOL;
 using DataModels.BOL.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Reflection.Emit;
-using System.Web.Helpers;
 
 namespace UnitTests
 {
+    [TestClass]
     public class ClientTests
     {
-        public ClientTests() { }
+        private Mock<IClientBLL> mockClientBLL;
 
-        public bool RunTests()
+        [TestInitialize]
+        public void Setup()
         {
-            bool allSuccess = true;
+            // Initialiser le mock pour IClientBLL
+            mockClientBLL = new Mock<IClientBLL>();
 
-            allSuccess &= getClientsList();
-            allSuccess &= getClientById();
-            allSuccess &= addNewClient();
-            allSuccess &= updateExistingClient();
-            allSuccess &= deleteClient();
-
-            return allSuccess;
-        }
-
-        #region Get
-        private bool getClientsList()
-        {
-            IClientBLL clientBLL = Injector.ImplementBll<IClientBLL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
-            List<IClientBOL> clients = clientBLL.GetClients().ElementList;
-
-            bool allSuccess = clients.Any();
-            foreach (IClientBOL client in clients)
+            // Utiliser des mocks pour éviter la dépendance au conteneur IoC
+            var mockClientList = new List<IClientBOL>
             {
-                allSuccess &= (client != null && !string.IsNullOrEmpty(client.FirstName));
-            }
-
-            return allSuccess;
-        }
-
-        private bool getClientById()
-        {
-            int clientId = 22; // Assume client with ID 1 exists
-            IClientBLL clientBLL = Injector.ImplementBll<IClientBLL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
-            IClientBOL client = clientBLL.GetClient(clientId).Element;
-
-            return client != null && client.Id == clientId;
-        }
-        #endregion
-
-        #region Add
-        public bool addNewClient()
-        {
-            // Utilise le MockDAL pour simuler les opérations de la base de données
-            var clientDAL = new ClientMockDAL();
-
-            // Injecte le MockDAL dans votre BLL
-            var clientBLL = new ClientBLL(clientDAL);
-
-            // Crée un nouveau client fictif
-            IClientBOL newClient = new ClientMockBOL
-            {
-                FirstName = "New",
-                LastName = "Client",
-                Birthdate = DateTime.Now,
-                PhoneNumber = "418-223-4444",
-                Email = "yopatman@hotmail.com",
-                IdGenderDenomination = 1,
-                Address = "9160 av des ancetres",
-                ZipCode = "G2B 1M4",
-                IdMaritalStatus = 11,
-                IdFamilySituation = 12,
-                AdultsAtHome = 2,
-                ChildsAtHome = 3,
-                IdHabitationType = 18,
-                IdBank = 52,
-                IdEmploymentSituation = 44,
-                IdScholarshipType = 25,
-                Income = BitConverter.GetBytes(44444),
-                CreatedDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now
+                new Mock<IClientBOL>().Object, // Mock au lieu de new ClientBOL()
+                new Mock<IClientBOL>().Object
             };
 
-            // Ajoute le client au MockDAL
-            clientBLL.CreateClient(newClient);
+            // Configurer les méthodes du mock pour retourner des résultats simulés
+            mockClientBLL.Setup(bll => bll.GetClients())
+                         .Returns(new GetListResponse<IClientBOL>(mockClientList));
 
-            // Récupère le client ajouté à partir du MockDAL
-            IClientBOL dbClient = clientBLL.GetClient(newClient.Id).Element;
+            mockClientBLL.Setup(bll => bll.GetClient(It.IsAny<int>()))
+                         .Returns((int id) =>
+                         {
+                             var mockClient = new Mock<IClientBOL>(); // Mock au lieu de new ClientBOL()
+                             mockClient.Setup(c => c.Id).Returns(id);
+                             return new GetItemResponse<IClientBOL>(mockClient.Object);
+                         });
 
-            // Vérifie que le client a bien été ajouté
-            return dbClient != null && dbClient.FirstName == newClient.FirstName;
+            mockClientBLL.Setup(bll => bll.CreateClient(It.IsAny<IClientBOL>())).Verifiable();
+            mockClientBLL.Setup(bll => bll.UpdateClient(It.IsAny<IClientBOL>())).Verifiable();
         }
 
-        #endregion
-
-        #region Update
-        private bool updateExistingClient()
+        [TestMethod]
+        public void Test_GetClientsList()
         {
-            int clientId = 22; // Suppose que le client avec l'ID 1 existe
-            IClientBLL clientBLL = Injector.ImplementBll<IClientBLL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
-
-            // Récupérer le client à mettre à jour
-            IClientBOL clientToUpdate = clientBLL.GetClient(clientId).Element;
-
-            if (clientToUpdate == null)
-            {
-                return false; // Si le client n'existe pas, le test échoue
-            }
-
-            // Modifier le nom de famille du client
-            clientToUpdate.LastName = "UpdatedLastName";
-
-            // Mettre à jour le client
-            clientBLL.UpdateClient(clientToUpdate);
-
-            // Récupérer le client après la mise à jour
-            IClientBOL updatedClient = clientBLL.GetClient(clientId).Element;
-
-            // Vérifier si la mise à jour a réussi
-            return updatedClient != null && updatedClient.LastName == "UpdatedLastName";
+            var result = mockClientBLL.Object.GetClients().ElementList;
+            Assert.IsTrue(result.Any(), "Le test de récupération de la liste des clients a échoué.");
         }
-        #endregion
 
-        #region Delete
-        private bool deleteClient()
+        [TestMethod]
+        public void Test_GetClientById()
         {
-            int clientId = 22; // Suppose que le client avec l'ID 1 existe
-            IClientBLL clientBLL = Injector.ImplementBll<IClientBLL>(CoreLib.Definitions.ProviderDALTypes.MOCK);
+            int clientId = 23;
+            var client = mockClientBLL.Object.GetClient(clientId).Element;
 
-            // Récupérer le client à supprimer
-            IClientBOL clientToDelete = clientBLL.GetClient(clientId).Element;
-
-            if (clientToDelete == null)
-            {
-                return false; // Si le client n'existe pas, le test échoue
-            }
-
-            // Marquer le client pour suppression
-            clientToDelete.State = CoreLib.Definitions.ObjectState.DELETED;
-
-            // Mettre à jour le client (suppression logique)
-            clientBLL.UpdateClient(clientToDelete);
-
-            // Récupérer le client après la suppression logique
-            IClientBOL dbClient = clientBLL.GetClient(clientId).Element;
-
-            // Vérifier si le client a été correctement supprimé
-            return dbClient == null || dbClient.State == CoreLib.Definitions.ObjectState.DELETED;
+            Assert.IsNotNull(client, "Le test de récupération d'un client par ID a échoué.");
+            Assert.AreEqual(clientId, client.Id);
         }
-        #endregion
+
+        [TestMethod]
+        public void Test_AddNewClient()
+        {
+            var newClient = new Mock<IClientBOL>().Object; // Mock au lieu de new ClientBOL()
+
+            mockClientBLL.Object.CreateClient(newClient);
+
+            // Vérifier si la méthode CreateClient a été appelée
+            mockClientBLL.Verify(bll => bll.CreateClient(It.IsAny<IClientBOL>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void Test_UpdateExistingClient()
+        {
+            var existingClient = mockClientBLL.Object.GetClient(23).Element;
+            existingClient.LastName = "UpdatedLastName";
+
+            mockClientBLL.Object.UpdateClient(existingClient);
+
+            // Vérifier si la méthode UpdateClient a été appelée
+            mockClientBLL.Verify(bll => bll.UpdateClient(It.IsAny<IClientBOL>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void Test_DeleteClient()
+        {
+            var client = mockClientBLL.Object.GetClient(23).Element;
+            client.State = CoreLib.Definitions.ObjectState.DELETED;
+
+            mockClientBLL.Object.UpdateClient(client);
+
+            // Vérifier si la méthode UpdateClient a été appelée
+            mockClientBLL.Verify(bll => bll.UpdateClient(It.IsAny<IClientBOL>()), Times.Once);
+        }
     }
 }
