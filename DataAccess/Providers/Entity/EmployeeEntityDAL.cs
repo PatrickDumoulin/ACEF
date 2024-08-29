@@ -1,6 +1,7 @@
 ﻿using DataAccess.Core.Definitions;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,7 +19,7 @@ namespace DataAccess.Providers.Entity
 
         public Employees GetEmployeeById(int id)
         {
-            return Db.Employees.Find(id);
+            return Db.Employees.AsNoTracking().FirstOrDefault(e => e.Id == id);
         }
 
         public void CreateEmployee(Employees employee)

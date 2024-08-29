@@ -156,45 +156,50 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(id.ToString());
-                if (user == null)
+                var response = bll.GetEmployeeById(id);
+                if (response.Succeeded && response.Element != null)
                 {
-                    return NotFound();
-                }
-
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.UserName = model.UserName;
-                user.Email = model.UserName;
-                user.Active = model.Active ?? false;
-                user.LastLoginDate = model.LastLoginDate;
-
-                var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    var employee = new Employees
+                    var user = await _userManager.FindByNameAsync(response.Element.UserName);
+                    if (user == null)
                     {
-                        Id = id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        UserName = user.UserName,
-                        PasswordHash = user.PasswordHash,
-                        LastLoginDate = user.LastLoginDate.Value,
-                        Active = user.Active
-                    };
+                        return NotFound();
+                    }
 
-                    bll.UpdateEmployee(employee);
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.UserName = model.UserName;
+                    user.Email = model.UserName;
+                    user.Active = model.Active ?? false;
+                    user.LastLoginDate = DateTime.Now; //A CORRIGER PLUS TARD 
 
-                    // Mettre à jour les rôles
-                    await UpdateRoles(user, model);
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        var employee = new Employees
+                        {
+                            Id = id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            UserName = user.UserName,
+                            PasswordHash = user.PasswordHash,
+                            LastLoginDate = user.LastLoginDate.Value,
+                            Active = user.Active
+                        };
 
-                    return RedirectToAction(nameof(Index));
+                        bll.UpdateEmployee(employee);
+
+                        // Mettre à jour les rôles
+                        await UpdateRoles(user, model);
+
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                    
             }
             return View(model);
         }
