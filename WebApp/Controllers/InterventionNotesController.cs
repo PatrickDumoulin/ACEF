@@ -156,7 +156,7 @@ namespace WebApp.Controllers
             return View(response.Element);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {

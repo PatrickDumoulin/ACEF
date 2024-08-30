@@ -35,10 +35,79 @@
                     @if (isCurrentUser)
                     {
                         <a asp-action="Edit" asp-route-id="@note.Id" class="btn btn-sm btn-primary custom-btn custom-btn-edit"><i class="bi bi-pencil-square"></i> </a>
-                        <a asp-action="Delete" asp-route-id="@note.Id" class="btn btn-sm btn-danger custom-btn custom-btn-delete"><i class="bi bi-trash-fill"></i> </a>
+                        <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "InterventionNotes", new { id = note.Id })')" class="btn btn-sm btn-danger custom-btn custom-btn-delete ">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
                     }
                 </div>
             </div>
         }
     </div>
 </div>
+
+<link rel="stylesheet" href="~/css/global/SweetAlert.css">
+
+<!-- SWEETALERT DELETE-->
+<script>
+    function Delete(url) {
+        Swal.fire({
+            title: "Êtes-vous certain?",
+            text: "Cette intervention sera supprimée définitivement!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Oui, supprimer!",
+            cancelButtonText: "Annuler",
+            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                content: 'custom-swal-content',
+                confirmButton: 'custom-swal-confirm-button',
+                cancelButton: 'custom-swal-cancel-button'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        // Afficher un message de confirmation et recharger la page après la suppression
+                        Swal.fire({
+                            title: 'Supprimé!',
+                            text: 'L\'intervention a été supprimée.',
+                            icon: 'success',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Erreur!',
+                            text: 'Une erreur est survenue lors de la suppression.',
+                            icon: 'error',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

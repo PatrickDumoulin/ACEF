@@ -28,5 +28,9 @@ namespace WebApp.ViewModels
         }
 
         public string EmployeeName { get; set; }
+
+        // Propriétés pour la pagination
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
     }
 }
