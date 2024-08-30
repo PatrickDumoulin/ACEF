@@ -21,5 +21,7 @@ namespace BusinessLayer.Logic.Interfaces
         SelectList GetEmployeesSelectList();
 
         string GetEmployeeName(int employeeId);
+
+        public GetItemResponse<Employees> GetEmployeeByUsername(string userName);
     }
 }

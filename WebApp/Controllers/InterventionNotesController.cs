@@ -7,6 +7,7 @@ using WebApp.Core.Controllers;
 using WebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using CoreLib.Injection;
 
 namespace WebApp.Controllers
 {
@@ -18,12 +19,19 @@ namespace WebApp.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
 
-        public InterventionNotesController() : base() { }
+        public InterventionNotesController() : base()
+        {
+            _employeeBLL = Injector.ImplementBll<IEmployeeBLL>();
+            
+        }
 
-        
+
+
+
 
         public IActionResult Index(int interventionId)
         {
+            ViewBag.Title = "Ajouter une note";
             var interventionResponse = GetBLL<IInterventionBLL>().GetIntervention(interventionId);
             if (!interventionResponse.Succeeded || interventionResponse.Element == null)
             {
@@ -34,14 +42,15 @@ namespace WebApp.Controllers
 
             var currentUserName = HttpContext.User.Identity.Name;
 
-            var viewModel = new InterventionNotesViewModel
+            var viewModel = new InterventionNotesViewModel(_employeeBLL)
             {
                 Intervention = new InterventionViewModel
                 {
                     Id = interventionResponse.Element.Id,
                     EmployeeName = currentUserName
                 },
-                InterventionNotes = notesResponse.ElementList
+                InterventionNotes = notesResponse.ElementList,
+                CreatedBy = currentUserName
             };
 
             return View(viewModel);
@@ -49,7 +58,22 @@ namespace WebApp.Controllers
 
         public IActionResult Create(int interventionId)
         {
-            var note = new InterventionNoteBOL { IdIntervention = interventionId };
+            // Récupérer l'utilisateur actuellement connecté
+            var currentUserName = HttpContext.User.Identity.Name;
+            var employee = _employeeBLL.GetEmployeeByUsername(currentUserName).Element;
+
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Impossible de trouver l'enregistrement de l'employé.");
+                return View();
+            }
+
+            var note = new InterventionNoteBOL
+            {
+                IdIntervention = interventionId,
+                IdEmployee = employee.Id  // Assigner l'ID de l'employé à la note
+            };
+
             return View(note);
         }
 
@@ -57,6 +81,19 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(InterventionNoteBOL note)
         {
+            // Récupérer l'utilisateur actuellement connecté
+            var currentUserName = HttpContext.User.Identity.Name;
+            var employee = _employeeBLL.GetEmployeeByUsername(currentUserName).Element;
+
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Unable to find the employee record.");
+                return View(note);
+            }
+
+            // Assigner l'ID de l'employé à la note
+            note.IdEmployee = employee.Id;
+
             if (ModelState.IsValid)
             {
                 bll.CreateInterventionNote(note);

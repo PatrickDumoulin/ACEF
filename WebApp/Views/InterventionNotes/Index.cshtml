@@ -18,11 +18,13 @@
     <div class="notes-container mt-3">
         @foreach (var note in Model.InterventionNotes)
         {
-            bool isCurrentUser = intervention.EmployeeName == User.Identity.Name; // Vérification pour chaque note individuellement
+            // Utilisation de la méthode pour obtenir le nom d'utilisateur basé sur l'ID de l'employé qui a créé la note
+            var employeeName = @Model.GetEmployeeUsernameByEmployeeId(note.IdEmployee);
+            bool isCurrentUser = employeeName == User.Identity.Name;
 
             <div class="note @(isCurrentUser ? "note-current-user" : "note-other-user")">
                 <div class="note-header">
-                    <strong>@(isCurrentUser ? "Vous" : intervention.EmployeeName)</strong> : @note.CreatedDate?.ToString("dd/MM/yyyy hh:mm tt")
+                    <strong>@(isCurrentUser ? "Vous" : employeeName)</strong> : @note.CreatedDate?.ToString("dd/MM/yyyy hh:mm tt")
                 </div>
                 <div class="note-body">
                     <p>@note.Comment</p>

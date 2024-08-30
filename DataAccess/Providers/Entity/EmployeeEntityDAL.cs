@@ -43,5 +43,11 @@ namespace DataAccess.Providers.Entity
                 Db.SaveChanges();
             }
         }
+
+        public Employees GetEmployeeByUsername(string userName)
+        {
+            // Rechercher et retourner l'employé par son nom d'utilisateur
+            return Db.Employees.FirstOrDefault(e => e.UserName == userName);
+        }
     }
 }

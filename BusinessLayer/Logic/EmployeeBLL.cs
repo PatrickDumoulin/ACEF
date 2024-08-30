@@ -69,5 +69,14 @@ namespace BusinessLayer.Logic
                 ? $"{employeeResponse.Element.FirstName} {employeeResponse.Element.LastName}"
                 : "Inconnu";
         }
+
+        public GetItemResponse<Employees> GetEmployeeByUsername(string userName)
+        {
+            // Rechercher l'employé par son nom d'utilisateur dans la DAL
+            var employee = base.dal.GetEmployeeByUsername(userName);
+
+            // Retourner une réponse contenant l'employé trouvé
+            return new GetItemResponse<Employees>(employee);
+        }
     }
 }

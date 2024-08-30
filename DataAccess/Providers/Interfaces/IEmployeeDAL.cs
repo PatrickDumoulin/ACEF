@@ -15,5 +15,7 @@ namespace DataAccess.Providers.Interfaces
         void CreateEmployee(Employees employee);
         void UpdateEmployee(Employees employee);
         void DeleteEmployee(int id);
+
+        public Employees GetEmployeeByUsername(string userName);
     }
 }
