@@ -105,6 +105,7 @@ namespace WebApp.Controllers
 
         public IActionResult Edit(int id)
         {
+            
             var response = bll.GetInterventionNoteById(id);
             if (response.Element == null)
             {
@@ -118,6 +119,18 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, InterventionNoteBOL note)
         {
+            var currentUserName = HttpContext.User.Identity.Name;
+            var employee = _employeeBLL.GetEmployeeByUsername(currentUserName).Element;
+
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Unable to find the employee record.");
+                return View(note);
+            }
+
+            // Assigner l'ID de l'employé à la note
+            note.IdEmployee = employee.Id;
+
             if (id != note.Id)
             {
                 return BadRequest();

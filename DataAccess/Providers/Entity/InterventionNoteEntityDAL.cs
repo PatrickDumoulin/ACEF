@@ -81,7 +81,7 @@ namespace DataAccess.Providers.Entity
         {
             return new InterventionNoteBOL
             {
-
+                Id = entity.Id,
                 IdIntervention = entity.IdIntervention,
                 IdEmployee = entity.IdEmployee,
                 Comment = entity.Comment,

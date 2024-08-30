@@ -1,4 +1,4 @@
-﻿/* DARK */
+﻿/* LIGHT */
 
 .notes-card-body {
     background: linear-gradient(135deg, #1b263b, #14578e) !important; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
@@ -12,41 +12,43 @@
     outline: none; /* Supprime tout contour */
 }
 
+.notes-card-header{
+    color:white;
+}
+
 
 .note {
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #1b263b !important;
-}
-
-.note-other-user {
-    background-color: #1b263b !important; /* Gris clair pour les autres utilisateurs */
-    text-align: left;
-    color: white;
-    margin-right: auto;
-    font-weight: bold;
+   
 }
 
 .note-current-user {
-    background-color: #1b263b ; /* Bleu clair pour l'utilisateur connecté */
-    color: white;
+    color: black;
     text-align: right;
+    font-weight: bold;
     margin-left: auto;
-    font-weight:bold;
+    background-color: white !important; 
 }
 
-
+.note-other-user {
+    text-align: left;
+    color: black;
+    font-weight: bold;
+    margin-right: auto;
+    background-color: white !important;
+}
 
 .note-header {
+
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .note-body {
     margin-bottom: 10px;
-
 }
 
 .note-actions {
@@ -56,3 +58,5 @@
 .custom-btn {
     border-radius: 5px;
 }
+
+

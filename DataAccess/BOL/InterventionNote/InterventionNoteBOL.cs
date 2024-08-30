@@ -15,7 +15,7 @@ namespace DataAccess.BOL.InterventionNote
 
         public InterventionNoteBOL(InterventionsNotes record) : base(record) { }
 
-        public int Id { get { return base.Record.Id; } }
+        public int Id { get { return base.Record.Id; } set { base.Record.Id = value; } }
 
         public int? IdIntervention { get { return base.Record.IdIntervention; } set { base.Record.IdIntervention = value; } }
 

@@ -22,6 +22,8 @@
             var employeeName = @Model.GetEmployeeUsernameByEmployeeId(note.IdEmployee);
             bool isCurrentUser = employeeName == User.Identity.Name;
 
+            <input type="hidden" asp-for="@note.Id" />
+
             <div class="note @(isCurrentUser ? "note-current-user" : "note-other-user")">
                 <div class="note-header">
                     <strong>@(isCurrentUser ? "Vous" : employeeName)</strong> : @note.CreatedDate?.ToString("dd/MM/yyyy hh:mm tt")

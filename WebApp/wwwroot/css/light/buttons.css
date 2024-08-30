@@ -10,9 +10,9 @@
         font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
     }
 
-.btn-primary, .btn-warning, .btn-danger {
-    min-width: 80px; /* Réduire la largeur minimale si nécessaire */
-}
+/*.btn-primary, .btn-warning, .btn-danger {
+    min-width: 80px;*/ /* Réduire la largeur minimale si nécessaire */
+/*}*/
 
 .btn-primary {
     background-color: #14578e !important; /* Bouton principal bleu foncé */
