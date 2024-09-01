@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = "Intervenant")]
+    //[Authorize(Roles = "Intervenant")]
     public class ClientsAttachmentsController : AbstractBLLController<IClientAttachmentBLL>
     {
         public IActionResult Index(int clientId)
