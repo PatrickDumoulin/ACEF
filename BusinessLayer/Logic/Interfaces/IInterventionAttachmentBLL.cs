@@ -17,6 +17,8 @@ namespace BusinessLayer.Logic.Interfaces
         void CreateInterventionAttachment(InterventionAttachmentBOL attachment);
         void DeleteInterventionAttachment(int id);
 
+        void DeleteAllInterventionAttachmentsByInterventionId(int interventionId);
+
         int GetInterventionAttachmentCount(int interventionId);
     }
 }

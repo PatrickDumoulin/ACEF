@@ -202,7 +202,7 @@ namespace WebApp.Controllers
             if (response.Succeeded && response.Element != null)
             {
                 var viewModel = MapToViewModel(response.Element);
-                var noteCount = _interventionNotesBLL.GetInterventionNoteCount(id);
+                var noteCount = _interventionNotesBLL.GetInterventionNotesCount(id);
                 var attachmentCount = _interventionAttachmentsBLL.GetInterventionAttachmentCount(id);
                 ViewBag.NoteCount = noteCount;
                 ViewBag.AttachmentCount = attachmentCount;
@@ -404,6 +404,11 @@ namespace WebApp.Controllers
                         _solutionsBLL.DeleteInterventionsInterventionSolutions(solution.Id);
                     }
                 }
+                
+                //On delete toutes les notes et tous les attachments avant
+                _interventionNotesBLL.DeleteAllInterventionNotesByInterventionId(id);
+                _interventionAttachmentsBLL.DeleteAllInterventionAttachmentsByInterventionId(id);
+
 
                 bll.DeleteIntervention(id);
 
@@ -573,71 +578,6 @@ namespace WebApp.Controllers
             return new List<ClientViewModel>();
         }
 
-        //private DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
-        //{
-        //    int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
-        //    return dt.AddDays(-1 * diff).Date;
-
-        //}
-
-
-        // Méthodes de chiffrement et déchiffrement
-        //    private byte[] EncryptDebtAmount(decimal amount)
-        //    {
-        //        return BitConverter.GetBytes((double)amount);
-        //    }
-
-        //    private decimal DecryptDebtAmount(byte[] encryptedAmount)
-        //    {
-        //        return (decimal)BitConverter.ToDouble(encryptedAmount, 0);
-        //    }
-
-        //private string GetEmployeeName(int employeeId)
-        //{
-        //    var employeeResponse = _employeeBLL.GetEmployeeById(employeeId);
-        //    return employeeResponse.Succeeded && employeeResponse.Element != null
-        //        ? $"{employeeResponse.Element.FirstName} {employeeResponse.Element.LastName}"
-        //        : "Inconnu";
-        //}
-
-        //    private string GetClientName(int clientId)
-        //    {
-        //        var clientResponse = _clientBLL.GetClient(clientId);
-        //        return clientResponse.Succeeded && clientResponse.Element != null
-        //            ? $"{clientResponse.Element.FirstName} {clientResponse.Element.LastName}"
-        //            : "Inconnu";
-        //    }
-
-        //    private string GetStatusName(int statusId)
-        //    {
-        //        var statusResponse = _mdbBLL.GetMdInterventionStatusType(statusId);
-        //        return statusResponse.Succeeded && statusResponse.Element != null
-        //            ? statusResponse.Element.Name
-        //            : "Inconnu";
-        //    }
-
-        //    private string GetReferenceTypeName(int referenceTypeId)
-        //    {
-        //        var referenceResponse = _mdbBLL.GetMdReferenceSource(referenceTypeId);
-        //        return referenceResponse.Succeeded && referenceResponse.Element != null
-        //            ? referenceResponse.Element.Name
-        //            : "Inconnu";
-        //    }
-
-        //    private string GetInterventionTypeName(int interventionTypeId)
-        //    {
-        //        var interventionResponse = _mdbBLL.GetMdInterventionType(interventionTypeId);
-        //        return interventionResponse.Succeeded && interventionResponse.Element != null
-        //            ? interventionResponse.Element.Name
-        //            : "Inconnu";
-        //    }
-
-        //    private string GetSolutionName(int solutionId)
-        //    {
-        //        var solutionResponse = _mdbBLL.GetMdInterventionSolution(solutionId);
-        //        return solutionResponse.Succeeded && solutionResponse.Element != null
-        //            ? solutionResponse.Element.Name
-        //            : "Inconnu";
-        //    }
+        
     }
 }

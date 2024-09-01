@@ -4,6 +4,7 @@ using BusinessLayer.Logic.Interfaces;
 using CoreLib.Definitions;
 using DataAccess.BOL.ClientAttachment;
 using DataAccess.BOL.InterventionAttachment;
+using DataAccess.BOL.InterventionNote;
 using DataAccess.Models;
 using DataAccess.Providers.Interfaces;
 using System;
@@ -46,6 +47,15 @@ namespace BusinessLayer.Logic
         public int GetInterventionAttachmentCount(int interventionId)
         {
             return GetInterventionAttachmentsByInterventionId(interventionId).ElementList.Count();
+        }
+
+        public void DeleteAllInterventionAttachmentsByInterventionId(int interventionId)
+        {
+            List<InterventionAttachmentBOL> interventionAttachments = base.dal.GetInterventionAttachmentsByInterventionId(interventionId);
+            foreach (var note in interventionAttachments)
+            {
+                base.dal.DeleteInterventionAttachment(note.Id);
+            }
         }
     }
 }

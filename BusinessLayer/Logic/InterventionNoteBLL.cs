@@ -47,7 +47,16 @@ namespace BusinessLayer.Logic
             base.dal.DeleteInterventionNote(id);
         }
 
-        public int GetInterventionNoteCount(int interventionId)
+        public void DeleteAllInterventionNotesByInterventionId(int interventionId)
+        {
+            List<InterventionNoteBOL> interventionNotes = base.dal.GetInterventionNotesByInterventionId(interventionId);
+            foreach (var note in interventionNotes)
+            {
+                base.dal.DeleteInterventionNote(note.Id);
+            }
+        }
+
+        public int GetInterventionNotesCount(int interventionId)
         {
            return GetInterventionNotesByInterventionId(interventionId).ElementList.Count();
         }
