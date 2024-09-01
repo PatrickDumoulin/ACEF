@@ -97,6 +97,8 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 bll.CreateInterventionNote(note);
+
+                TempData["success"] = "Note créée avec succès";
                 return RedirectToAction(nameof(Index), new { interventionId = note.IdIntervention });
             }
 

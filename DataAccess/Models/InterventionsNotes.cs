@@ -13,6 +13,7 @@ public partial class InterventionsNotes
 
     public int? IdEmployee { get; set; }
 
+
     public string Comment { get; set; }
 
     public DateTime? CreatedDate { get; set; }

@@ -74,6 +74,7 @@ namespace WebApp.Controllers
                     };
 
                     bll.CreateInterventionAttachment(attachment);
+                    TempData["success"] = "Pièce Jointe Créee avec succès";
                     return RedirectToAction(nameof(Index), new { interventionId = model.IdIntervention });
                 }
             }

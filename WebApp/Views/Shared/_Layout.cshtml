@@ -36,6 +36,7 @@
 
             //intervention Notes
             document.write('<link id="interventionNotesIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionNotesIndex.css" asp-append-version="true" />');
+            document.write('<link id="interventionNotesCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/interventionNotesCreate.css" asp-append-version="true" />');
 
             //client
             document.write('<link id="clientIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientIndex.css" asp-append-version="true" />');
@@ -139,6 +140,7 @@
 
             //interventionNotes
             document.getElementById('interventionNotesIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionNotesIndex.css`);
+            document.getElementById('interventionNotesCreateStylesheet')?.setAttribute('href', `/css/${newTheme}/interventionNotesCreate.css`);
 
             //client
             document.getElementById('clientCreateStylesheet').setAttribute('href', `/css/${newTheme}/clientCreate.css`);
