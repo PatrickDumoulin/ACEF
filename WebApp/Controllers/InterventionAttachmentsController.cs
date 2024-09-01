@@ -92,7 +92,9 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
-        public IActionResult Delete(int id)
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
         {
             var response = bll.GetInterventionAttachmentById(id);
             if (response.Succeeded && response.Element != null)
