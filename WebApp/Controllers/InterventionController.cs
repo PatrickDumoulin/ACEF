@@ -26,6 +26,7 @@ namespace WebApp.Controllers
         private readonly IClientBLL _clientBLL;
         private readonly IInterventionBLL _interventionBLL;
         private readonly IInterventionsInterventionSolutionsBLL _solutionsBLL;
+        private readonly IInterventionNoteBLL _interventionNotesBLL;
         private readonly IMDBLL _mdbBLL;
 
         public InterventionController() : base()
@@ -35,6 +36,7 @@ namespace WebApp.Controllers
             _interventionBLL = Injector.ImplementBll<IInterventionBLL>();
             _solutionsBLL = Injector.ImplementBll<IInterventionsInterventionSolutionsBLL>();
             _mdbBLL = Injector.ImplementBll<IMDBLL>();
+            _interventionNotesBLL = Injector.ImplementBll<IInterventionNoteBLL>();
         }
 
 
@@ -196,8 +198,12 @@ namespace WebApp.Controllers
             if (response.Succeeded && response.Element != null)
             {
                 var viewModel = MapToViewModel(response.Element);
+                var noteCount = _interventionNotesBLL.GetInterventionNoteCount(id);
+                ViewBag.NoteCount = noteCount;
                 return View(viewModel);
             }
+
+            
             return NotFound();
         }
 

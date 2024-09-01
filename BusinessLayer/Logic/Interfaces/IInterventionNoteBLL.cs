@@ -17,5 +17,7 @@ namespace BusinessLayer.Logic.Interfaces
         void CreateInterventionNote(InterventionNoteBOL note);
         void UpdateInterventionNote(InterventionNoteBOL note);
         void DeleteInterventionNote(int id);
+
+        int GetInterventionNoteCount(int interventionId);
     }
 }
