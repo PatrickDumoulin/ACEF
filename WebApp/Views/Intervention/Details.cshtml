@@ -14,8 +14,8 @@
             <h4 class="sousTitreInterventionDetails text-center"># @Model.IdClient - @Model.ClientName</h4><br />
             <div class="text-center">
                 <div class="btn-group" role="group" aria-label="Intervention Actions">
-                    <a asp-controller="InterventionNotes" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2">Notes (@ViewBag.NoteCount)</a>
-                    <a asp-controller="InterventionAttachments" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2">Pièces jointes (@ViewBag.AttachmentCount)</a>
+                    <a asp-controller="InterventionNotes" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-journal-text"> </i>Notes (@ViewBag.NoteCount)</a>
+                    <a asp-controller="InterventionAttachments" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-paperclip"></i> Pièces jointes (@ViewBag.AttachmentCount)</a>
                 </div>
             </div>
         </div>
@@ -72,8 +72,8 @@
         </div>
 
         <div class="btn-container text-center">
-            <a asp-controller="Intervention" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier</a>
-            <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary">Retour</a>
+            <a asp-controller="Intervention" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i>  Modifier</a>
+            <a asp-controller="Intervention" asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
 
         </div>
     </div>

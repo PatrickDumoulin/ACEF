@@ -4,17 +4,22 @@
     ViewData["Title"] = "Ajouter une Pièce Jointe";
 }
 
+<div class="interventionAttachmentCreateContainer mt-3">
+
 <h1 class="attachments-card-header">Ajouter une Pièce Jointe</h1>
 
 <div class="attachments-card-body">
     <form asp-action="Create" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="file">Sélectionner un fichier</label>
+                <label class="attachmentsCreate-label" for="file">Sélectionner un fichier</label>
             <input type="file" name="file" class="form-control" />
         </div>
         <input type="hidden" asp-for="IdIntervention" />
-        <button type="submit" class="btn btn-primary">Envoyer</button>
+            <button type="submit" class="btn btn-primary mt-3"><i class="bi bi-plus-lg"></i> Ajouter</button>
+            <a asp-action="Index" asp-route-interventionId="@Model.IdIntervention" class="btn btn-secondary mt-3"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
     </form>
+</div>
+
 </div>
 
 <link rel="stylesheet" href="~/css/attachments.css">

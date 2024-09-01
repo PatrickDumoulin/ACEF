@@ -4,9 +4,10 @@
     ViewBag.Title = "Ajouter une note";
 }
 
-<h2 class="notes-card-header">@ViewBag.Title</h2>
-
 <div class="notes-card-body">
+    <h2 class="interventionNotes-card-header">Ajouter une note</h2>
+
+
     <form asp-action="Create">
         <div class="form-group">
             <label asp-for="Comment" class="soustitreCommentaire control-label">Commentaire</label>
@@ -20,8 +21,8 @@
         </div>
         <input type="hidden" asp-for="IdIntervention" />
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-            <a asp-action="Index" asp-route-interventionId="@Model.IdIntervention" class="btn btn-secondary">Annuler</a>
+            <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+            <a asp-action="Index" asp-route-interventionId="@Model.IdIntervention" class="btn btn-secondary mt-3">Annuler</a>
         </div>
     </form>
 </div>
