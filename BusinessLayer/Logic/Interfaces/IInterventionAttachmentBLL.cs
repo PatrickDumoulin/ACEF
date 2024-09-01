@@ -16,5 +16,7 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<InterventionAttachmentBOL> GetInterventionAttachmentsByInterventionId(int interventionId);
         void CreateInterventionAttachment(InterventionAttachmentBOL attachment);
         void DeleteInterventionAttachment(int id);
+
+        int GetInterventionAttachmentCount(int interventionId);
     }
 }

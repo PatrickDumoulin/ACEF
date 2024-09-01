@@ -18,6 +18,7 @@ using DataAccess.BOL.Client;
 using System.Net.Sockets;
 using DataAccess.BOL.MdInterventionSolution;
 
+
 namespace WebApp.Controllers
 {
     public class InterventionController : AbstractBLLController<IInterventionBLL>
@@ -27,6 +28,7 @@ namespace WebApp.Controllers
         private readonly IInterventionBLL _interventionBLL;
         private readonly IInterventionsInterventionSolutionsBLL _solutionsBLL;
         private readonly IInterventionNoteBLL _interventionNotesBLL;
+        private readonly IInterventionAttachmentBLL _interventionAttachmentsBLL;
         private readonly IMDBLL _mdbBLL;
 
         public InterventionController() : base()
@@ -37,6 +39,8 @@ namespace WebApp.Controllers
             _solutionsBLL = Injector.ImplementBll<IInterventionsInterventionSolutionsBLL>();
             _mdbBLL = Injector.ImplementBll<IMDBLL>();
             _interventionNotesBLL = Injector.ImplementBll<IInterventionNoteBLL>();
+            _interventionAttachmentsBLL = Injector.ImplementBll<IInterventionAttachmentBLL>();
+
         }
 
 
@@ -199,7 +203,9 @@ namespace WebApp.Controllers
             {
                 var viewModel = MapToViewModel(response.Element);
                 var noteCount = _interventionNotesBLL.GetInterventionNoteCount(id);
+                var attachmentCount = _interventionAttachmentsBLL.GetInterventionAttachmentCount(id);
                 ViewBag.NoteCount = noteCount;
+                ViewBag.AttachmentCount = attachmentCount;
                 return View(viewModel);
             }
 

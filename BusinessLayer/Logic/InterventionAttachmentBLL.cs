@@ -42,5 +42,10 @@ namespace BusinessLayer.Logic
             base.dal.DeleteInterventionAttachment(id);
 
         }
+
+        public int GetInterventionAttachmentCount(int interventionId)
+        {
+            return GetInterventionAttachmentsByInterventionId(interventionId).ElementList.Count();
+        }
     }
 }
