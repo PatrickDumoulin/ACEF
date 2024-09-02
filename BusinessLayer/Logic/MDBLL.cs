@@ -184,6 +184,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdLoanReasonBOL>(mdLoanReasonBOL);
         }
 
+        public string GetMdLoanReasonName(int loanReasonId)
+        {
+            var loanReasonResponse = GetMdLoanReason(loanReasonId);
+            return loanReasonResponse.Succeeded && loanReasonResponse.Element != null
+                ? loanReasonResponse.Element.Name
+                : "Inconnu";
+        }
+
         public GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id)
         {
             IMdInterventionTypeBOL mdInterventionTypeBOL = base.dal.GetMdInterventionType(id);

@@ -192,6 +192,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, ClientViewModel viewModel)
         {
+            viewModel.FullName = viewModel.FirstName + " " + viewModel.LastName;
+            ModelState.Remove("FullName"); // Ignore la validation du FullName
+
             if (id != viewModel.Id)
             {
                 return BadRequest();

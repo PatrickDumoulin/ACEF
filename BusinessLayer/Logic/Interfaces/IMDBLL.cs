@@ -55,6 +55,7 @@ namespace BusinessLayer.Logic.Interfaces
 
         GetItemResponse<IMdLoanReasonBOL> GetMdLoanReason(int id);
         GetListResponse<IMdLoanReasonBOL> GetAllMdLoanReasons();
+        string GetMdLoanReasonName(int loanReasonId);
 
         GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id);
         GetListResponse<IMdInterventionTypeBOL> GetAllMdInterventionTypes();

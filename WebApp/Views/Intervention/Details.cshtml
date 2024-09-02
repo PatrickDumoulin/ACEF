@@ -32,6 +32,10 @@
                 <div class="value">@Model.DateIntervention?.ToString("dd/MM/yyyy")</div>
             </div>
             <div>
+                <div class="label">Client :</div>
+                <div class="value">@Model.ClientName</div>
+            </div>
+            <div>
                 <div class="label">Intervenant :</div>
                 <div class="value">@Model.EmployeeName</div>
             </div>
@@ -56,6 +60,10 @@
                 <div>
                     <div class="label">Petit prêt remboursé :</div>
                     <div class="value">@(Model.IsLoanPaid.HasValue ? (Model.IsLoanPaid.Value ? "Oui" : "Non") : "NULL")</div>
+                </div>
+                <div>
+                    <div class="label">But de l'emprunt :</div>
+                    <div class="value">@(Model.LoanReasonName)</div>
                 </div>
             }
             <div>

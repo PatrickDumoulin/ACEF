@@ -201,7 +201,15 @@ namespace WebApp.Controllers
             var response = bll.GetIntervention(id);
             if (response.Succeeded && response.Element != null)
             {
+                
                 var viewModel = MapToViewModel(response.Element);
+                
+                //assigner le LoanReasonName
+                if (viewModel.IdLoanReason.HasValue)
+                {
+                    viewModel.LoanReasonName = _mdbBLL.GetMdLoanReasonName((int)viewModel.IdLoanReason);
+                }
+                
                 var noteCount = _interventionNotesBLL.GetInterventionNotesCount(id);
                 var attachmentCount = _interventionAttachmentsBLL.GetInterventionAttachmentCount(id);
                 ViewBag.NoteCount = noteCount;
@@ -233,6 +241,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(InterventionViewModel viewModel)
         {
+            ModelState.Remove("LoanReasonName"); // Ignore la validation du LoanReasonName
             if (ModelState.IsValid)
             {
                 try
@@ -312,7 +321,7 @@ namespace WebApp.Controllers
             {
                 return BadRequest();
             }
-
+            ModelState.Remove("LoanReasonName"); // Ignore la validation du LoanReasonName
             if (ModelState.IsValid)
             {
                 var response = base.bll.GetIntervention(id);
