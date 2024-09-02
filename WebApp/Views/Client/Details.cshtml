@@ -13,8 +13,8 @@
             <h4 class="text-center">@Model.FirstName @Model.LastName</h4><br />
             <div class="text-center">
                 <div class="btn-group" role="group" aria-label="Client Actions">
-                    <a  asp-controller="Intervention" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2">Interventions</a>
-                    <a asp-controller="Intervention" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2">Atelier</a>
+                    <a  asp-controller="Intervention" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2">Interventions</a>
+                    <a asp-controller="Seminars" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2">Atelier</a>
                     <a asp-controller="Note" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2">Notes (@ViewBag.NoteCount)</a>
                     <a asp-controller="ClientsAttachments" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2">Pièces jointes (@ViewBag.AttachmentCount)</a>
                 </div>

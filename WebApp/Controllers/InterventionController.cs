@@ -45,10 +45,16 @@ namespace WebApp.Controllers
 
 
         // GET: ClientController
-        public IActionResult Index(InterventionSearchViewModel searchModel, string sortOrder, int page = 1, int pageSize = 6)
+        public IActionResult Index(InterventionSearchViewModel searchModel, string sortOrder, int page = 1, int pageSize = 6, int? clientId = null)
         {
             // Récupérez les interventions de la BLL
             var interventionsBOL = base.bll.GetInterventions().ElementList;
+
+            if (clientId.HasValue)
+            {
+                interventionsBOL = interventionsBOL.Where(i => i.IdClient == clientId.Value).ToList();
+                ViewBag.ClientId = clientId;
+            }
 
             // Convertir les BOL en ViewModel
             var interventions = interventionsBOL.Select(bol => MapToViewModel(bol)).ToList();
