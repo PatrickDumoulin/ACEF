@@ -23,5 +23,6 @@ namespace BusinessLayer.Logic.Interfaces
         string GetEmployeeName(int employeeId);
 
         public GetItemResponse<Employees> GetEmployeeByUsername(string userName);
+
     }
 }

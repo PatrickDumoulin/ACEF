@@ -137,6 +137,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ClientViewModel viewModel)
         {
+            viewModel.FullName = viewModel.FirstName + " " + viewModel.LastName;
+            ModelState.Remove("FullName"); // Ignore la validation du FullName
+
             if (ModelState.IsValid)
             {
                 var newClient = new ClientBOL
@@ -316,6 +319,7 @@ namespace WebApp.Controllers
                 IsMember = client.IsMember,
                 LastName = client.LastName,
                 FirstName = client.FirstName,
+                FullName = client.FullName,
                 Birthdate = client.Birthdate,
                 PhoneNumber = client.PhoneNumber,
                 Email = client.Email,

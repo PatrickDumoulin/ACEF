@@ -4,19 +4,25 @@
     ViewBag.Title = "Ajouter une note";
 }
 
-<h2 class="notes-card-header">@ViewBag.Title</h2>
-
 <div class="notes-card-body">
+    <h2 class="interventionNotesTitre-card-header">Ajouter une note</h2>
+
+
     <form asp-action="Create">
         <div class="form-group">
-            <label asp-for="Comment" class="control-label"></label>
+            <label asp-for="Comment" class="soustitreCommentaire control-label">Commentaire</label>
             <textarea asp-for="Comment" class="form-control"></textarea>
             <span asp-validation-for="Comment" class="text-danger"></span>
         </div>
+        <div class="form-group hidden">
+            <label asp-for="IdEmployee" class="control-label"></label>
+            <textarea asp-for="IdEmployee" class="form-control"></textarea>
+            <span asp-validation-for="IdEmployee" class="text-danger"></span>
+        </div>
         <input type="hidden" asp-for="IdClient" />
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-            <a asp-action="Index" asp-route-clientId="@Model.IdClient" class="btn btn-secondary">Annuler</a>
+            <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+            <a asp-action="Index" asp-route-clientId="@Model.IdClient" class="btn btn-secondary mt-3">Annuler</a>
         </div>
     </form>
 </div>

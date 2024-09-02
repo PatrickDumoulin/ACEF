@@ -1,15 +1,15 @@
 ﻿@model DataAccess.BOL.Note.NoteBOL
 
 @{
-    ViewBag.Title = "Éditer une note";
+    ViewBag.Title = "Modifier une note";
 }
+<div class="interventionNotesEdit-card-body mt-4">
+    <h2 class="InterventionNotesEdit-card-header">@ViewBag.Title</h2>
 
-<h2 class="notes-card-header">@ViewBag.Title</h2>
 
-<div class="notes-card-body">
     <form asp-action="Edit">
         <div class="form-group">
-            <label asp-for="Comment" class="control-label"></label>
+            <label asp-for="Comment" class="interventionNotesEditLabel control-label">Commentaire</label>
             <textarea asp-for="Comment" class="form-control"></textarea>
             <span asp-validation-for="Comment" class="text-danger"></span>
         </div>
@@ -17,8 +17,8 @@
         <input type="hidden" asp-for="IdClient" />
         <input type="hidden" asp-for="CreatedDate" /> <!-- Champ caché pour conserver la date -->
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary custom-btn custom-btn-save">Enregistrer</button>
-            <a asp-action="Index" asp-route-clientId="@Model.IdClient" class="btn btn-secondary custom-btn custom-btn-cancel">Annuler</a>
+            <button type="submit" class="btn btn-primary custom-btn custom-btn-save mt-3">Enregistrer </button>
+            <a asp-action="Index" asp-route-clientId="@Model.IdClient" class="btn btn-secondary custom-btn custom-btn-cancel mt-3">Annuler</a>
         </div>
     </form>
 </div>

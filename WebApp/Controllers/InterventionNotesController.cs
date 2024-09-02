@@ -141,6 +141,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 bll.UpdateInterventionNote(note);
+                TempData["success"] = "Note modifiée avec succès";
                 return RedirectToAction(nameof(Index), new { interventionId = note.IdIntervention });
             }
 
@@ -164,7 +165,7 @@ namespace WebApp.Controllers
         {
             var note = bll.GetInterventionNoteById(id).Element;
             bll.DeleteInterventionNote(id);
-            TempData["success"] = "Pièce Jointe supprimée avec succès";
+            
             return RedirectToAction(nameof(Index), new { interventionId = note.IdIntervention });
         }
     }

@@ -6,13 +6,26 @@ using WebApp.ViewModels;
 using CoreLib.Definitions;
 using WebApp.Core.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLayer.Logic;
+using CoreLib.Injection;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Controllers
 {
     
     public class NoteController : AbstractBLLController<INoteBLL>
     {
-        public NoteController() : base() { }
+        private readonly IEmployeeBLL _employeeBLL;
+
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public NoteController() : base()
+        {
+            _employeeBLL = Injector.ImplementBll<IEmployeeBLL>();
+
+        }
+
+        //public NoteController() : base() { }
 
         public IActionResult Index(int clientId)
         {
@@ -24,7 +37,7 @@ namespace WebApp.Controllers
 
             var notesResponse = bll.GetNotesByClientId(clientId);
 
-            var viewModel = new ClientNotesViewModel
+            var viewModel = new ClientNotesViewModel(_employeeBLL)
             {
                 Client = new ClientViewModel
                 {
@@ -40,7 +53,20 @@ namespace WebApp.Controllers
 
         public IActionResult Create(int clientId)
         {
-            var note = new NoteBOL { IdClient = clientId };
+            var currentUserName = HttpContext.User.Identity.Name;
+            var employee = _employeeBLL.GetEmployeeByUsername(currentUserName).Element;
+
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Impossible de trouver l'enregistrement de l'employé.");
+                return View();
+            }
+
+            var note = new NoteBOL 
+            { 
+                IdClient = clientId,
+                IdEmployee = employee.Id  // Assigner l'ID de l'employé à la note
+            };
             return View(note);
         }
 
@@ -48,9 +74,22 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(NoteBOL note)
         {
+            var currentUserName = HttpContext.User.Identity.Name;
+            var employee = _employeeBLL.GetEmployeeByUsername(currentUserName).Element;
+            
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Unable to find the employee record.");
+                return View(note);
+            }
+
+            // Assigner l'ID de l'employé à la note
+            note.IdEmployee = employee.Id;
+
             if (ModelState.IsValid)
             {
                 bll.CreateNote(note);
+                TempData["success"] = "Note créée avec succès";
                 return RedirectToAction(nameof(Index), new { clientId = note.IdClient });
             }
 
@@ -72,6 +111,18 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, NoteBOL note)
         {
+            var currentUserName = HttpContext.User.Identity.Name;
+            var employee = _employeeBLL.GetEmployeeByUsername(currentUserName).Element;
+            
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Unable to find the employee record.");
+                return View(note);
+            }
+
+            // Assigner l'ID de l'employé à la note
+            note.IdEmployee = employee.Id;
+
             if (id != note.Id)
             {
                 return BadRequest();
@@ -80,6 +131,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 bll.UpdateNote(note);
+                TempData["success"] = "Note modifiée avec succès";
                 return RedirectToAction(nameof(Index), new { clientId = note.IdClient });
             }
 
@@ -97,7 +149,7 @@ namespace WebApp.Controllers
             return View(response.Element);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {

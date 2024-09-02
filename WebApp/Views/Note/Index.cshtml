@@ -1,37 +1,114 @@
 ﻿@model WebApp.ViewModels.ClientNotesViewModel
 
+<partial name="_Notification" />
 @{
-    ViewBag.Title = "Notes";
+    ViewBag.Title = "ClientNotes";
     var client = Model.Client;
+    Layout = "_Layout";
 }
 
-<h2 class="notes-card-header">Notes pour le client : @client.FirstName @client.LastName</h2>
-
 <div class="notes-card-body">
-    <a asp-action="Create" asp-route-clientId="@client.Id" class="btn btn-primary custom-btn custom-btn-create">Ajouter une note</a>
-    <a asp-action="Details" asp-controller="Client" asp-route-id="@client.Id" class="btn btn-primary custom-btn custom-btn-create">Retour Detail du client</a>
+    <h1 class="notes-card-header mt-3 mb-3">Notes pour le Client : @client.FirstName @client.LastName</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Commentaire</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var note in Model.Notes)
-            {
-                <tr>
-                    <td>@note.IdEmployee @note.Comment</td>
-                    <td>@note.CreatedDate?.ToString("g")</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@note.Id" class="btn btn-secondary custom-btn custom-btn-edit">Modifier</a>
-                        <a asp-action="Delete" asp-route-id="@note.Id" class="btn btn-danger custom-btn custom-btn-delete">Supprimer</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="col-6 text-end">
+    </div>
+
+    <a asp-action="Create" asp-route-clientId="@client.Id" class="btn btn-primary custom-btn custom-btn-create mb-3"><i class="bi bi-sticky-fill"></i> Ajouter une note</a>
+    <a asp-action="Details" asp-controller="Client" asp-route-id="@client.Id" class="btn btn-secondary custom-btn custom-btn-create mb-3"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
+
+    <div class="notes-container mt-3">
+        @foreach (var note in Model.Notes)
+        {
+            // Utilisation de la méthode pour obtenir le nom d'utilisateur basé sur l'ID de l'employé qui a créé la note
+            var employeeName = @Model.GetEmployeeUsernameByEmployeeId(note.IdEmployee);
+            bool isCurrentUser = employeeName == User.Identity.Name;
+
+            <input type="hidden" asp-for="@note.Id" />
+
+            <div class="note @(isCurrentUser ? "note-current-user" : "note-other-user")">
+                <div class="note-header">
+                    <strong>@(isCurrentUser ? "Vous" : employeeName)</strong> : @note.CreatedDate?.ToString("dd/MM/yyyy hh:mm tt")
+                </div>
+                <div class="note-body">
+                    <p>@note.Comment</p>
+                </div>
+                <div class="note-actions">
+                    @if (isCurrentUser)
+                    {
+                        <a asp-action="Edit" asp-route-id="@note.Id" class="btn btn-sm btn-primary custom-btn custom-btn-edit"><i class="bi bi-pencil-square"></i> </a>
+                        <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Note", new { id = note.Id })')" class="btn btn-sm btn-danger custom-btn custom-btn-delete ">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
+<link rel="stylesheet" href="~/css/global/SweetAlert.css">
+
+<!-- SWEETALERT DELETE-->
+<script>
+    function Delete(url) {
+        Swal.fire({
+            title: "Êtes-vous certain?",
+            text: "Cette note sera supprimée définitivement!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Oui, supprimer!",
+            cancelButtonText: "Annuler",
+            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                content: 'custom-swal-content',
+                confirmButton: 'custom-swal-confirm-button',
+                cancelButton: 'custom-swal-cancel-button'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        // Afficher un message de confirmation et recharger la page après la suppression
+                        Swal.fire({
+                            title: 'Supprimé!',
+                            text: 'La note a été supprimée.',
+                            icon: 'success',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Erreur!',
+                            text: 'Une erreur est survenue lors de la suppression.',
+                            icon: 'error',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
