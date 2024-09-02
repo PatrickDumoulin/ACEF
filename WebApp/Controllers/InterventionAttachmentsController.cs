@@ -102,7 +102,7 @@ namespace WebApp.Controllers
             {
                 var attachment = response.Element;
                 bll.DeleteInterventionAttachment(id);
-                TempData["success"] = "Pièce Jointe supprimée avec succès";
+                
                 return RedirectToAction(nameof(Index), new { interventionId = attachment.IdIntervention });
             }
             TempData["Error"] = "La suppression de la pièce jointe a échouée";
