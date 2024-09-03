@@ -1,0 +1,37 @@
+﻿/* LIGHT */
+
+.containerAccountLogin {
+    background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px 2px rgba(9, 132, 227, 0.8), /* Lueur bleue extérieure */
+    0 4px 12px rgba(0, 0, 0, 0.3); /* Ombre subtile pour la profondeur */
+    border: none; /* Supprimer toute bordure */
+    outline: none; /* Supprimer tout contour */
+}
+
+.containerAccountLogin2 {
+    background: #1b263b;
+    padding: 50px;
+    border-radius: 15px; /* Arrondir les coins pour la seconde section */
+    box-shadow: 0 0 20px 4px rgba(9, 132, 227, 0.7), /* Lueur bleue pour correspondre à la première section */
+    0 4px 12px rgba(0, 0, 0, 0.4); /* Augmenter l'ombre subtile */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 75%; /* Augmenter la largeur maximale du conteneur */
+    margin-left: auto;
+    margin-right: auto; /* Centrer horizontalement */
+}
+
+.accountLoginTitle {
+    color: white;
+    font-size: 2rem; /* Ajuster la taille du titre */
+    margin-bottom: 20px;
+}
+
+.labelAccountLogin {
+    color: white;
+    font-size: 1.2rem; /* Ajuster la taille des labels */
+}

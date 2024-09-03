@@ -23,6 +23,9 @@
             //home
             document.write('<link id="homeIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/homeIndex.css" asp-append-version="true" />');
             
+            //account
+            document.write('<link id="accountLoginStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/accountLogin.css" asp-append-version="true" />');
+
             //layout
             document.write('<link id="layoutStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/layout.css" asp-append-version="true" />');
 
@@ -133,6 +136,9 @@
 
             //home
             document.getElementById('homeIndexStylesheet').setAttribute('href', `/css/${newTheme}/homeIndex.css`);
+
+            //account
+            document.getElementById('accountLoginStylesheet').setAttribute('href', `/css/${newTheme}/accountLogin.css`);
 
             //layout
             document.getElementById('layoutStylesheet').setAttribute('href', `/css/${newTheme}/layout.css`);
