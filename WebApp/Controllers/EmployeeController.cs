@@ -36,7 +36,7 @@ namespace WebApp.Controllers
                     UserName = e.UserName,
                     PasswordHash = e.PasswordHash,
                     LastLoginDate = e.LastLoginDate,
-                    Active = e.Active
+                    Active = e.Active,
                 }).ToList();
 
                 return View(viewModelList);
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.UserName,
-                    Email = model.Email,
+                    Email = model.UserName,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     LastLoginDate = DateTime.Now,
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
 
                     bll.CreateEmployee(employee);
 
-                    // Ajouter l'utilisateur aux rôles (par exemple, Superutilisateur)
+                    // Ajouter l'utilisateur aux rôles 
                     if (model.IsSuperUser)
                     {
                         await _userManager.AddToRoleAsync(user, "Superutilisateur");
@@ -110,25 +110,31 @@ namespace WebApp.Controllers
             return View(model);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             var response = bll.GetEmployeeById(id);
             if (response.Succeeded && response.Element != null)
             {
+                var user = await _userManager.FindByNameAsync(response.Element.UserName);
+
                 var model = new EmployeeViewModel
                 {
                     Id = response.Element.Id,
                     FirstName = response.Element.FirstName,
                     LastName = response.Element.LastName,
                     UserName = response.Element.UserName,
-                    PasswordHash = response.Element.PasswordHash,
-                    LastLoginDate = response.Element.LastLoginDate,
-                    Active = response.Element.Active
+                    Email = response.Element.UserName,
+                    Active = response.Element.Active,
+                    IsSuperUser = await _userManager.IsInRoleAsync(user, "Superutilisateur"),
+                    IsIntervenant = await _userManager.IsInRoleAsync(user, "Intervenant"),
+                    IsAdministrateurCA = await _userManager.IsInRoleAsync(user, "AdministrateurCA")
                 };
+
                 return View(model);
             }
             return NotFound();
         }
+
 
         public IActionResult Edit(int id)
         {

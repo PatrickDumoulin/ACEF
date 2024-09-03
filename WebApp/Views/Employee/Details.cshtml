@@ -1,0 +1,74 @@
+﻿@model WebApp.ViewModels.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Employé Details";
+}
+
+
+
+<div class="container">
+    <div class="details-container">
+        <div class="details-header">
+            <h1 class="text-center pb-2">Détails de l'employé</h1>
+            <h4 class="text-center">@Model.FirstName @Model.LastName</h4><br />
+            
+        </div>
+
+
+        <div class="details-grid">
+            <div class="hidden">
+                <div class="label">Id</div>
+                <div class="value">@Model.Id</div>
+            </div>
+            <div>
+                <div class="label">Prénom</div>
+                <div class="value">@Model.FirstName</div>
+            </div>
+            <div>
+                <div class="label">Nom</div>
+                <div class="value">@Model.LastName</div>
+            </div>
+            <div>
+                <div class="label">Nom d'utilisateur</div>
+                <div class="value">@Model.UserName</div>
+            </div>
+            <div>
+                <div class="label">Actif</div>
+                <div class="value">@(Model.Active.HasValue ? (Model.Active.Value ? "Oui" : "Non") : "Non spécifié")</div>
+
+            </div>
+            @* <div>
+                <div class="label">Adresse Email</div>
+                <div class="value">@Model.Email</div>
+            </div> *@
+            
+            <div>
+                <div class="label">Type d'utilisateur</div>
+                <div>
+                    @if (Model.IsSuperUser)
+                    {
+                        <span>Superutilisateur</span>
+                    }
+                    else if (Model.IsIntervenant)
+                    {
+                        <span>Intervenant</span>
+                    }
+                    else if (Model.IsAdministrateurCA)
+                    {
+                        <span>Administrateur CA</span>
+                    }
+                    else
+                    {
+                        <span>Aucun Rôle</span> <!-- Valeur par défaut si aucun rôle n'est sélectionné -->
+                    }
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="btn-container text-center">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier le client</a>
+            <a asp-action="Index" class="btn btn-secondary">Retour</a>
+        </div>
+    </div>
+</div>

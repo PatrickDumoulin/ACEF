@@ -39,6 +39,7 @@
                         <td>@employee.UserName</td>
                         <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
                         <td>
+                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary">Détails</a>
                             <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-warning">Modifier</a>
                             <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Supprimer</a>
                         </td>
