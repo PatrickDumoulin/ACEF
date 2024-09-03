@@ -19,6 +19,10 @@
         // Immédiatement appliquer le thème correct avant que la page ne soit rendue
         (function () {
             const currentTheme = localStorage.getItem('theme') || 'dark';
+            
+            //home
+            document.write('<link id="homeIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/homeIndex.css" asp-append-version="true" />');
+            
             //layout
             document.write('<link id="layoutStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/layout.css" asp-append-version="true" />');
 
@@ -126,6 +130,9 @@
         document.getElementById('themeToggleBtn').addEventListener('click', function () {
             const currentTheme = localStorage.getItem('theme') || 'dark';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            //home
+            document.getElementById('homeIndexStylesheet').setAttribute('href', `/css/${newTheme}/homeIndex.css`);
 
             //layout
             document.getElementById('layoutStylesheet').setAttribute('href', `/css/${newTheme}/layout.css`);
