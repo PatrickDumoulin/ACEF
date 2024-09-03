@@ -63,6 +63,13 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 403)
+    {
+        context.HttpContext.Response.Redirect("/Account/AccessDenied");
+    }
+});
 
 app.MapControllerRoute(
     name: "default",

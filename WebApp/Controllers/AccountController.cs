@@ -148,7 +148,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            return View("AccessDenied");
+            return View();
         }
     }
 }

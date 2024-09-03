@@ -18,8 +18,12 @@
 }
 
 .custom-swal-cancel-button {
-    background-color: #3085d6 !important; /* Couleur du bouton d'annulation */
+    background-color: #007bff !important; /* Couleur du bouton d'annulation */
     color: white;
+}
+
+.custom-swal-confirm-button2 {
+    background-color: #3085d6 !important; /* Couleur du bouton d'annulation */
 }
 
 
