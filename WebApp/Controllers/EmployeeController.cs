@@ -170,11 +170,36 @@ namespace WebApp.Controllers
                     user.UserName = model.UserName;
                     user.Email = model.UserName;
                     user.Active = model.Active ?? false;
-                    user.LastLoginDate = DateTime.Now; //A CORRIGER PLUS TARD 
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
+                        // Si un nouveau mot de passe est spécifié dans le modèle, nous devons le mettre à jour
+                        if (!string.IsNullOrEmpty(model.PasswordHash))
+                        {
+                            // Supprimez l'ancien mot de passe et ajoutez le nouveau
+                            var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+                            if (!removePasswordResult.Succeeded)
+                            {
+                                foreach (var error in removePasswordResult.Errors)
+                                {
+                                    ModelState.AddModelError("", error.Description);
+                                }
+                                return View(model);
+                            }
+
+                            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.PasswordHash);
+                            if (!addPasswordResult.Succeeded)
+                            {
+                                foreach (var error in addPasswordResult.Errors)
+                                {
+                                    ModelState.AddModelError("", error.Description);
+                                }
+                                return View(model);
+                            }
+                        }
+
+                        // Mettre à jour l'employé dans la table Employees
                         var employee = new Employees
                         {
                             Id = id,
@@ -182,7 +207,7 @@ namespace WebApp.Controllers
                             LastName = user.LastName,
                             UserName = user.UserName,
                             PasswordHash = user.PasswordHash,
-                            LastLoginDate = user.LastLoginDate.Value,
+                            LastLoginDate = user.LastLoginDate ?? DateTime.Now,
                             Active = user.Active
                         };
 
@@ -199,10 +224,10 @@ namespace WebApp.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
                 }
-                    
             }
             return View(model);
         }
+
 
         private async Task UpdateRoles(ApplicationUser user, EmployeeViewModel model)
         {
