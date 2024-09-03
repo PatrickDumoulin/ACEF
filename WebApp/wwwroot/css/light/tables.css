@@ -50,6 +50,9 @@ tableHeader {
         color: inherit; /* Garder la couleur au survol */
     }
 
+.tableHeader {
+    border-bottom: 3px solid #14578e; /* Bordure grise foncée */
+}
 
 
 

@@ -1,1 +1,81 @@
-﻿
+﻿/* Styles généraux appliqués à tous les utilisateurs */
+.container_HomeIndex {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1b263b, #14578e);
+    border-radius: 15px;
+    padding: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border: none;
+    outline: none;
+    transition: transform 0.5s ease, box-shadow 0.5s ease, background 0.5s ease;
+    perspective: 1000px;
+    box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Box-shadow par défaut */
+    0 6px 18px rgba(0, 0, 0, 0.4); /* Subtle dark shadow for depth */
+}
+
+    /* Animation pour les utilisateurs non connectés */
+    .container_HomeIndex.with-animation:hover {
+        transform: scale(1.05) rotateY(5deg);
+        box-shadow: 0 0 50px 10px rgba(9, 132, 227, 0.9), 0 10px 30px rgba(0, 0, 0, 0.6);
+        background: linear-gradient(135deg, #14578e, #1b263b);
+    }
+
+    /* Styles pour les utilisateurs connectés (sans animation mais avec box-shadow) */
+    .container_HomeIndex.no-animation {
+        transform: none;
+        box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Box-shadow */
+        0 6px 18px rgba(0, 0, 0, 0.4); /* Subtle dark shadow */
+        background: linear-gradient(135deg, #1b263b, #14578e);
+    }
+
+    /* Autres styles restent inchangés */
+    .container_HomeIndex h1 {
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .container_HomeIndex p {
+        color: #d1e0ff;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .container_HomeIndex .btn-primary, .container_HomeIndex .btn-secondary {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 30px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .container_HomeIndex .btn-primary:hover, .container_HomeIndex .btn-secondary:hover {
+            transform: translateY(-3px) scale(1.1);
+            background-color: #0d3f73;
+        }
+
+    .container_HomeIndex .btn-secondary {
+        background-color: #ffffff;
+        color: #14578e;
+    }
+
+        .container_HomeIndex .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+.container_HomeIndex2 {
+    background: #1b263b;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 4px rgba(9, 132, 227, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}

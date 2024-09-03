@@ -37,6 +37,7 @@ namespace WebApp.Controllers
                     PasswordHash = e.PasswordHash,
                     LastLoginDate = e.LastLoginDate,
                     Active = e.Active,
+
                 }).ToList();
 
                 return View(viewModelList);
@@ -44,9 +45,38 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
+        
+
+        
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var response = bll.GetEmployeeById(id);
+            if (response.Succeeded && response.Element != null)
+            {
+                var user = await _userManager.FindByNameAsync(response.Element.UserName);
+
+                var model = new EmployeeViewModel
+                {
+                    Id = response.Element.Id,
+                    FirstName = response.Element.FirstName,
+                    LastName = response.Element.LastName,
+                    UserName = response.Element.UserName,
+                    Active = response.Element.Active,
+                    IsSuperUser = await _userManager.IsInRoleAsync(user, "Superutilisateur"),
+                    IsIntervenant = await _userManager.IsInRoleAsync(user, "Intervenant"),
+                    IsAdministrateurCA = await _userManager.IsInRoleAsync(user, "AdministrateurCA")
+                };
+
+                return View(model);
+            }
+            return NotFound();
+        }
+
         public IActionResult Create()
         {
-            return View();
+            var model = new EmployeeViewModel();
+            return View(model);
         }
 
         [HttpPost]
@@ -108,31 +138,6 @@ namespace WebApp.Controllers
                 }
             }
             return View(model);
-        }
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var response = bll.GetEmployeeById(id);
-            if (response.Succeeded && response.Element != null)
-            {
-                var user = await _userManager.FindByNameAsync(response.Element.UserName);
-
-                var model = new EmployeeViewModel
-                {
-                    Id = response.Element.Id,
-                    FirstName = response.Element.FirstName,
-                    LastName = response.Element.LastName,
-                    UserName = response.Element.UserName,
-                    Email = response.Element.UserName,
-                    Active = response.Element.Active,
-                    IsSuperUser = await _userManager.IsInRoleAsync(user, "Superutilisateur"),
-                    IsIntervenant = await _userManager.IsInRoleAsync(user, "Intervenant"),
-                    IsAdministrateurCA = await _userManager.IsInRoleAsync(user, "AdministrateurCA")
-                };
-
-                return View(model);
-            }
-            return NotFound();
         }
 
 

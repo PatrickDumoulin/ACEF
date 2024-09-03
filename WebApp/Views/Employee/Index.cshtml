@@ -14,14 +14,22 @@
     <link rel="stylesheet" href="~/css/employees.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Liste des Employés</h1>
-        <div class="create-button">
-            <a asp-action="Create" class="btn btn-primary">Créer un Nouvel Employé</a>
+    <div class="clientIndex Container">
+        <div class="row pt-5">
+            <div class="col-6">
+                <h1 class="titreClientIndex pb-2">Liste des Employés</h1>
+                <hr />
+                
+            </div>
+            <div class="col-6 text-end mb-5">
+                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-person-plus-fill"></i> Créer un Nouvel Employé
+                </a>
+            </div>
         </div>
 
-        <table class="table">
-            <thead class="table-header">
+        <table class="table mt-3">
+            <thead class="tableHeader">
                 <tr>
                     <th>Prénom</th>
                     <th>Nom</th>
@@ -39,9 +47,9 @@
                         <td>@employee.UserName</td>
                         <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary">Détails</a>
-                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-warning">Modifier</a>
-                            <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Supprimer</a>
+                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-list-ul"></i> Détails</a>
+                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modifier</a>
+                            <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Supprimer</a>
                         </td>
                     </tr>
                 }
