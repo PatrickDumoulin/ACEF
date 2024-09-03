@@ -11,25 +11,25 @@
 
 
 
-<div class="container_HomeIndex">
+<div class="container_HomeIndex @(SignInManager.IsSignedIn(User) ? "no-animation" : "with-animation")">
     <div class="container_HomeIndex2">
-    <div class="row justify-content-center">
-        <div class="col-md-8 text-center">
-            @if (SignInManager.IsSignedIn(User))
-            {
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                @if (SignInManager.IsSignedIn(User))
+                {
                     <img src="~/images/Logo-ACEF-Quebec1.png" alt="ACEF Logo" class="img-fluid mb-5" style="max-width: 300px;" />
-                <h1 class="homeIndexTitle">Bienvenue, @UserManager.GetUserName(User)!</h1>
+                    <h1 class="homeIndexTitle">Bienvenue, @UserManager.GetUserName(User)!</h1>
                     <p class="homeIndexTitle">Vous êtes connecté en tant que @UserManager.GetUserName(User).</p>
-                
-            }
-            else
-            {
-                    <img src="~/images/Logo-ACEF-Quebec1.png" alt="ACEF Logo" class="img-fluid mb-5" style="max-width: 300px; " />
+                }
+                else
+                {
+                    <img src="~/images/Logo-ACEF-Quebec1.png" alt="ACEF Logo" class="img-fluid mb-5" style="max-width: 300px;" />
                     <h1 class="homeIndexTitle">Bienvenue !</h1>
-                    <p class="homeIndexTitle"> Veuillez vous connecter pour accéder à votre compte.</p>
-                <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Connexion</a>
-            }
+                    <p class="homeIndexTitle">Veuillez vous connecter pour accéder à votre compte.</p>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Connexion</a>
+                }
+            </div>
         </div>
     </div>
-    </div>
 </div>
+

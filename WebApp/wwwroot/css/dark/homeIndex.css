@@ -1,74 +1,62 @@
-﻿.container_HomeIndex {
-    height: 70vh; /* Prend 50% de la hauteur de la fenêtre */
+﻿/* Styles généraux appliqués à tous les utilisateurs */
+.container_HomeIndex {
+    height: 70vh;
     display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    background: linear-gradient(135deg, #1b263b, #14578e); /* Dégradé du bleu foncé vers un bleu encore plus sombre */
-    border-radius: 15px; /* Arrondir les coins */
-    padding: 40px; /* Plus de padding pour plus d'espace interne */
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1b263b, #14578e);
+    border-radius: 15px;
+    padding: 40px;
     margin-top: 50px;
     margin-bottom: 50px;
-    box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Augmenter l'effet de lueur bleue extérieure */
-    0 6px 18px rgba(0, 0, 0, 0.4); /* Augmenter l'ombre subtile */
-    border: none; /* Supprime la bordure */
-    outline: none; /* Supprime le contour */
-    transition: transform 0.5s ease, box-shadow 0.5s ease, background 0.5s ease; /* Ajouter une transition pour l'effet de survol */
-    perspective: 1000px; /* Perspective pour transformation 3D */
+    border: none;
+    outline: none;
+    transition: transform 0.5s ease, box-shadow 0.5s ease, background 0.5s ease;
+    perspective: 1000px;
+    box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Box-shadow par défaut */
+    0 6px 18px rgba(0, 0, 0, 0.4); /* Subtle dark shadow for depth */
 }
 
-    .container_HomeIndex:hover {
-        transform: scale(1.05) rotateY(5deg); /* Zoom léger et rotation sur l'axe Y au survol */
-        box-shadow: 0 0 50px 10px rgba(9, 132, 227, 0.9), /* Augmenter la lueur bleue au survol */
-        0 10px 30px rgba(0, 0, 0, 0.6); /* Augmenter l'ombre au survol */
-        background: linear-gradient(135deg, #14578e, #1b263b); /* Inverser le dégradé pour un effet dynamique */
+    /* Animation pour les utilisateurs non connectés */
+    .container_HomeIndex.with-animation:hover {
+        transform: scale(1.05) rotateY(5deg);
+        box-shadow: 0 0 50px 10px rgba(9, 132, 227, 0.9), 0 10px 30px rgba(0, 0, 0, 0.6);
+        background: linear-gradient(135deg, #14578e, #1b263b);
     }
 
-    /* Ajout d'un effet de lumière dynamique */
-    /*.container_HomeIndex::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 200%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateX(-50%) rotate(45deg);
-        transition: opacity 0.5s ease;
-        pointer-events: none;
-        opacity: 0;
-    }*/
-
-    .container_HomeIndex:hover::before {
-        opacity: 0.3; /* Ajouter un effet de lumière au survol */
+    /* Styles pour les utilisateurs connectés (sans animation mais avec box-shadow) */
+    .container_HomeIndex.no-animation {
+        transform: none;
+        box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Box-shadow */
+        0 6px 18px rgba(0, 0, 0, 0.4); /* Subtle dark shadow */
+        background: linear-gradient(135deg, #1b263b, #14578e);
     }
 
-    /* Style des titres pour une meilleure visibilité */
+    /* Autres styles restent inchangés */
     .container_HomeIndex h1 {
-        color: #ffffff; /* Texte blanc pour contraste */
-        font-size: 2.5rem; /* Taille de la police augmentée pour le titre */
+        color: #ffffff;
+        font-size: 2.5rem;
         margin-bottom: 20px;
-        text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4); /* Ajouter une ombre au texte */
+        text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
     }
 
-    /* Style des paragraphes pour un texte plus lisible */
     .container_HomeIndex p {
-        color: #d1e0ff; /* Texte légèrement plus clair pour le contraste */
-        font-size: 1.2rem; /* Augmenter légèrement la taille de la police */
-        line-height: 1.6; /* Meilleur espacement entre les lignes */
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Ajouter une ombre au texte */
+        color: #d1e0ff;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-    /* Style des boutons pour les rendre plus attrayants */
     .container_HomeIndex .btn-primary, .container_HomeIndex .btn-secondary {
-        padding: 10px 20px; /* Ajouter du padding pour plus de confort */
-        font-size: 1rem; /* Taille de la police pour les boutons */
-        border-radius: 30px; /* Boutons plus arrondis */
-        transition: background-color 0.3s ease, transform 0.3s ease; /* Transition pour effet de survol */
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 30px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
         .container_HomeIndex .btn-primary:hover, .container_HomeIndex .btn-secondary:hover {
-            transform: translateY(-3px) scale(1.1); /* Translation et légère augmentation de la taille au survol */
-            background-color: #0d3f73; /* Changer la couleur de fond au survol */
+            transform: translateY(-3px) scale(1.1);
+            background-color: #0d3f73;
         }
 
     .container_HomeIndex .btn-secondary {
@@ -77,23 +65,17 @@
     }
 
         .container_HomeIndex .btn-secondary:hover {
-            background-color: #e0e0e0; /* Légère ombre au survol */
+            background-color: #e0e0e0;
         }
 
 .container_HomeIndex2 {
     background: #1b263b;
     padding: 50px;
-    border-radius: 15px; /* Arrondir les coins pour la seconde section */
-    box-shadow: 0 0 20px 4px rgba(9, 132, 227, 0.7), /* Lueur bleue pour correspondre à la première section */
-    0 4px 12px rgba(0, 0, 0, 0.4); /* Augmenter l'ombre subtile */
+    border-radius: 15px;
+    box-shadow: 0 0 20px 4px rgba(9, 132, 227, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 80%; /* Augmenter la largeur maximale du conteneur */
-    
-    /* Ajoutez ces propriétés pour centrer le conteneur */
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
 }
-
-
-
