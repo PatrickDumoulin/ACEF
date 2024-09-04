@@ -1,71 +1,168 @@
 ﻿@model WebApp.ViewModels.EmployeeIndexViewModel
 
 <div class="clientIndex Container">
-<h1>Liste des employés</h1>
+    <div class="row pt-5">
+        <div class="col-6">
+            <h1 class="titreClientIndex pb-2">Liste des Employés</h1>
+            <hr />
+
+        </div>
+        <div class="col-6 text-end mb-5">
+            <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-person-plus-fill"></i> Créer un Nouvel Employé
+            </a>
+        </div>
+    </div>
 
     <div class="table-container mt-4">
-<table class="table">
-    <thead>
-        <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Nom d'utilisateur</th>
-            <th>Dernière connexion</th>
-            <th>Actif</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Model.Employees)
-        {
-            <tr>
-                <td>@employee.FirstName</td>
-                <td>@employee.LastName</td>
-                <td>@employee.UserName</td>
-                <td>@employee.LastLoginDate?.ToString("dd/MM/yyyy")</td>
-                <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary">Modifier</a>
-                    <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Supprimer</a>
-                </td>
-            </tr>
-        }
+        <table class="table">
+            <thead class="tableHeader">
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Nom d'utilisateur</th>
 
-    </tbody>
+                    <th>Actif</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.FirstName</td>
+                        <td>@employee.LastName</td>
+                        <td>@employee.UserName</td>
 
-    
-</table>
+                        <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-list-ul"></i> Détails</a>
+                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary">Modifier</a>
 
-<!-- Pagination -->
-<div class="d-flex justify-content-center">
-        <div class="pagination">
-            @if (Model.CurrentPage > 1)
-            {
+                            <!-- IL N'Y A PAS BESOIN DAVOIR DE DELETE POUR EMPLOYEE-->
+                            @* <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Employee", new { id = employee.Id })')" class="btn btn-danger ">
+                            <i class="bi bi-trash-fill"></i> Supprimer
+                            </a> *@
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+
+        </table>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center">
+            <div class="pagination">
+                @if (Model.CurrentPage > 1)
+                {
                     <a asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" class="btn   btn-dark m-1"><i class="bi bi-arrow-left"></i></a>
-            }
+                }
 
-            @for (var i = 1; i <= Model.TotalPages; i++)
-            {
-                if (i == Model.CurrentPage)
+                @for (var i = 1; i <= Model.TotalPages; i++)
                 {
+                    if (i == Model.CurrentPage)
+                    {
                         <span class="btn   btn-primary m-1">@i</span>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                         <a asp-action="Index" asp-route-page="@i" class="btn   btn-dark m-1">@i</a>
+                    }
                 }
-            }
 
-            @if (Model.CurrentPage < Model.TotalPages)
-            {
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
                     <a asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)" class="btn   btn-dark m-1"><i class="bi bi-arrow-right"></i></a>
-            }
+                }
+            </div>
         </div>
-</div>
-
-    
 
 
+
+
+    </div>
 </div>
-</div>
+
+<link rel="stylesheet" href="~/css/global/SweetAlert.css">
+
+<!-- SWEETALERT DELETE-->
+<script>
+
+    function Delete(url) {
+        Swal.fire({
+            title: "Êtes-vous certain?",
+            text: "Cette intervention sera supprimée définitivement!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Oui, supprimer!",
+            cancelButtonText: "Annuler",
+            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                content: 'custom-swal-content',
+                confirmButton: 'custom-swal-confirm-button',
+                cancelButton: 'custom-swal-cancel-button'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        // Vérifiez s'il reste des éléments sur la page actuelle
+                        if ($('tbody tr').length <= 1 && $('.pagination .active').text() != "1") {
+                            // S'il n'y a plus d'éléments, revenir à la page précédente
+                            let previousPage = parseInt($('.pagination .active').text()) - 1;
+                            window.location.href = `?page=${previousPage}`;
+                        } else {
+                            // Rafraîchir la page après la suppression
+                            Swal.fire({
+                                title: 'Supprimé!',
+                                text: 'L\'intervention a été supprimée.',
+                                icon: 'success',
+                                background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                                customClass: {
+                                    popup: 'custom-swal-popup',
+                                    title: 'custom-swal-title',
+                                    content: 'custom-swal-content',
+                                    confirmButton: 'custom-swal-confirm-button',
+                                }
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Erreur!',
+                            text: 'Une erreur est survenue lors de la suppression.',
+                            icon: 'error',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
+
+
+
+
+</script>
 

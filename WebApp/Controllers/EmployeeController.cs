@@ -299,7 +299,7 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
