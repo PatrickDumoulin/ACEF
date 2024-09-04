@@ -1,64 +1,71 @@
-﻿@model IEnumerable<WebApp.ViewModels.EmployeeViewModel>
+﻿@model WebApp.ViewModels.EmployeeIndexViewModel
 
-@{
-    ViewData["Title"] = "Employees";
-    Layout = "_Layout";
-}
+<div class="clientIndex Container">
+<h1>Liste des employés</h1>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - ACEF</title>
-    <link rel="stylesheet" href="~/css/employees.css">
-</head>
-<body>
-    <div class="clientIndex Container">
-        <div class="row pt-5">
-            <div class="col-6">
-                <h1 class="titreClientIndex pb-2">Liste des Employés</h1>
-                <hr />
-                
-            </div>
-            <div class="col-6 text-end mb-5">
-                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-person-plus-fill"></i> Créer un Nouvel Employé
-                </a>
-            </div>
-        </div>
+    <div class="table-container mt-4">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Nom d'utilisateur</th>
+            <th>Dernière connexion</th>
+            <th>Actif</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model.Employees)
+        {
+            <tr>
+                <td>@employee.FirstName</td>
+                <td>@employee.LastName</td>
+                <td>@employee.UserName</td>
+                <td>@employee.LastLoginDate?.ToString("dd/MM/yyyy")</td>
+                <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary">Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        }
 
-        <table class="table mt-3">
-            <thead class="tableHeader">
-                <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Nom d'utilisateur</th>
-                    <th>Actif</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var employee in Model)
+    </tbody>
+
+    
+</table>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-center">
+        <div class="pagination">
+            @if (Model.CurrentPage > 1)
+            {
+                    <a asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" class="btn   btn-dark m-1"><i class="bi bi-arrow-left"></i></a>
+            }
+
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                if (i == Model.CurrentPage)
                 {
-                    <tr>
-                        <td>@employee.FirstName</td>
-                        <td>@employee.LastName</td>
-                        <td>@employee.UserName</td>
-                        <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-list-ul"></i> Détails</a>
-                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modifier</a>
-                            <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Supprimer</a>
-                        </td>
-                    </tr>
+                        <span class="btn   btn-primary m-1">@i</span>
                 }
-            </tbody>
-        </table>
-    </div>
+                else
+                {
+                        <a asp-action="Index" asp-route-page="@i" class="btn   btn-dark m-1">@i</a>
+                }
+            }
 
-    @section Scripts {
-        <script src="~/js/your-custom-scripts.js"></script>
-    }
-</body>
-</html>
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                    <a asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)" class="btn   btn-dark m-1"><i class="bi bi-arrow-right"></i></a>
+            }
+        </div>
+</div>
+
+    
+
+
+</div>
+</div>
+

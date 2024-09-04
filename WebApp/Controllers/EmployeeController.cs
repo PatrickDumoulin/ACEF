@@ -23,12 +23,12 @@ namespace WebApp.Controllers
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, int page = 1, int pageSize = 6)
         {
             var response = bll.GetAllEmployees();
             if (response.Succeeded)
             {
-                var viewModelList = response.ElementList.Select(e => new EmployeeViewModel
+                var employeeList = response.ElementList.Select(e => new EmployeeViewModel
                 {
                     Id = e.Id,
                     FirstName = e.FirstName,
@@ -40,7 +40,20 @@ namespace WebApp.Controllers
 
                 }).ToList();
 
-                return View(viewModelList);
+                // Calculer le nombre total d'employés
+                var totalCount = employeeList.Count;
+                var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+                var pagedEmployees = employeeList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new EmployeeIndexViewModel
+                {
+                    Employees = pagedEmployees,  // Liste paginée
+                    CurrentPage = page,
+                    TotalPages = totalPages,
+                };
+
+                return View(viewModel);
             }
             return NotFound();
         }

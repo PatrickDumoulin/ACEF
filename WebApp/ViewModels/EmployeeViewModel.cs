@@ -40,6 +40,10 @@ namespace WebApp.ViewModels
         [Display(Name = "Administrateur CA")]
         public bool IsAdministrateurCA { get; set; }
 
+        //Pagination
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+
         //[Required(ErrorMessage = "Email is required")]
         //[Display(Name = "Email")]
         //public string Email { get; set; }
