@@ -37,8 +37,8 @@ namespace BusinessLayer.Logic
         public MDBLL(ProviderDALTypes dalType) : base(dalType) { }
         public MDBLL(IDAL externalDAL) : base(externalDAL) { }
 
-        
 
+        #region MdBank
         public GetItemResponse<IMdBankBOL> GetMdBank(int id)
         {
             IMdBankBOL mdBankBOL = base.dal.GetMdBank(id);
@@ -50,7 +50,9 @@ namespace BusinessLayer.Logic
             List<IMdBankBOL> mdBanksBOL = base.dal.GetAllMdBanks();
             return new GetListResponse<IMdBankBOL>(mdBanksBOL);
         }
+        #endregion
 
+        #region MdEmploymentSituation
         public GetItemResponse<IMdEmploymentSituationBOL> GetMdEmploymentSituation(int id)
         {
             IMdEmploymentSituationBOL mdEmploymentSituationBOL = base.dal.GetMdEmploymentSituation(id);
@@ -63,7 +65,9 @@ namespace BusinessLayer.Logic
                 GetAllMdEmploymentSituations();
             return new GetListResponse<IMdEmploymentSituationBOL>(mdEmploymentSituationsBOL);
         }
+        #endregion
 
+        #region MdMaritalStatus
         public GetItemResponse<IMdMaritalStatusBOL> GetMdMaritalStatus(int id)
         {
             IMdMaritalStatusBOL mdMaritalStatusBOL = base.dal.GetMdMaritalStatus(id);
@@ -76,7 +80,9 @@ namespace BusinessLayer.Logic
                 GetAllMdMaritalStatus();
             return new GetListResponse<IMdMaritalStatusBOL>(mdMaritalStatusBOL);
         }
+        #endregion
 
+        #region MdFamilySituation
         public GetItemResponse<IMdFamilySituationBOL> GetMdFamilySituation(int id)
         {
             IMdFamilySituationBOL mdFamilySituationBOL = base.dal.GetMdFamilySituation(id);
@@ -89,7 +95,9 @@ namespace BusinessLayer.Logic
                 GetAllMdFamilySituations();
             return new GetListResponse<IMdFamilySituationBOL>(mdFamilySituationBOL);
         }
+        #endregion
 
+        #region MdGenderDenomination
         public GetItemResponse<IMdGenderDenominationBOL> GetMdGenderDenomination(int id)
         {
             IMdGenderDenominationBOL mdGenderDenominationBOL = base.dal.GetMdGenderDenomination(id);
@@ -102,7 +110,9 @@ namespace BusinessLayer.Logic
                 GetAllMdGenderDenominations();
             return new GetListResponse<IMdGenderDenominationBOL>(mdGenderDenominationBOL);
         }
+        #endregion
 
+        #region MdHabitationType
         public GetItemResponse<IMdHabitationTypeBOL> GetMdHabitationType(int id)
         {
             IMdHabitationTypeBOL mdHabitationTypeBOL = base.dal.GetMdHabitationType(id);
@@ -115,7 +125,9 @@ namespace BusinessLayer.Logic
                 GetAllMdHabitationTypes();
             return new GetListResponse<IMdHabitationTypeBOL>(mdHabitationTypeBOL);
         }
+        #endregion
 
+        #region MdScholarshipType
         public GetItemResponse<IMdScholarshipTypeBOL> GetMdScholarshipType(int id)
         {
             IMdScholarshipTypeBOL mdScholarshipTypeBOL = base.dal.GetMdScholarshipType(id);
@@ -128,7 +140,9 @@ namespace BusinessLayer.Logic
                 GetAllMdScholarshipTypes();
             return new GetListResponse<IMdScholarshipTypeBOL>(mdScholarshipTypeBOL);
         }
+        #endregion
 
+        #region MdReferenceSource
         public GetItemResponse<IMdReferenceSourceBOL> GetMdReferenceSource(int id)
         {
             IMdReferenceSourceBOL mdReferenceSourceBOL = base.dal.GetMdReferenceSource(id);
@@ -149,7 +163,9 @@ namespace BusinessLayer.Logic
                 ? referenceResponse.Element.Name
                 : "Inconnu";
         }
+        #endregion
 
+        #region MdInterventionStatusType
         public GetItemResponse<IMdInterventionStatusTypeBOL> GetMdInterventionStatusType(int id)
         {
             IMdInterventionStatusTypeBOL mdInterventionStatusTypeBOL = base.dal.GetMdInterventionStatusType(id);
@@ -170,7 +186,9 @@ namespace BusinessLayer.Logic
                 ? statusResponse.Element.Name
                 : "Inconnu";
         }
+        #endregion
 
+        #region MdLoanReason
         public GetItemResponse<IMdLoanReasonBOL> GetMdLoanReason(int id)
         {
             IMdLoanReasonBOL mdLoanReasonBOL = base.dal.GetMdLoanReason(id);
@@ -191,7 +209,9 @@ namespace BusinessLayer.Logic
                 ? loanReasonResponse.Element.Name
                 : "Inconnu";
         }
+        #endregion
 
+        #region MdInterventionType
         public GetItemResponse<IMdInterventionTypeBOL> GetMdInterventionType(int id)
         {
             IMdInterventionTypeBOL mdInterventionTypeBOL = base.dal.GetMdInterventionType(id);
@@ -206,6 +226,16 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdInterventionTypeBOL>(mdInterventionTypeBOL);
         }
 
+        public string GetMdInterventionTypeName(int interventionTypeId)
+        {
+            var interventionResponse = GetMdInterventionType(interventionTypeId);
+            return interventionResponse.Succeeded && interventionResponse.Element != null
+                ? interventionResponse.Element.Name
+                : "Inconnu";
+        }
+        #endregion
+
+        #region MdInterventionSolution
         public GetItemResponse<IMdInterventionSolutionBOL> GetMdInterventionSolution(int id)
         {
             IMdInterventionSolutionBOL mdInterventionSolutionBOL = base.dal.GetMdInterventionSolution(id);
@@ -226,7 +256,9 @@ namespace BusinessLayer.Logic
                 ? solutionResponse.Element.Name
                 : "Inconnu";
         }
+        #endregion
 
+        #region MdIncomeType
         public GetItemResponse<IMdIncomeTypeBOL> GetMdIncomeType(int id)
         {
             IMdIncomeTypeBOL mdIncomeTypeBOL = base.dal.GetMdIncomeType(id);
@@ -238,7 +270,9 @@ namespace BusinessLayer.Logic
             List<IMdIncomeTypeBOL> mdIncomeTypeBOL = base.dal.GetAllMdIncomeTypes();
             return new GetListResponse<IMdIncomeTypeBOL>(mdIncomeTypeBOL);
         }
+        #endregion
 
+        #region MdSeminarTheme
         public GetItemResponse<IMdSeminarThemesBOL> GetMdSeminarTheme(int id)
         {
             IMdSeminarThemesBOL mdSeminarThemeBOL = base.dal.GetMdSeminarTheme(id);
@@ -250,13 +284,10 @@ namespace BusinessLayer.Logic
             List<IMdSeminarThemesBOL> mdSeminarThemeBOL = base.dal.GetAllMdSeminarThemes();
             return new GetListResponse<IMdSeminarThemesBOL>(mdSeminarThemeBOL);
         }
+        #endregion
 
-        public string GetMdInterventionTypeName(int interventionTypeId)
-        {
-            var interventionResponse = GetMdInterventionType(interventionTypeId);
-            return interventionResponse.Succeeded && interventionResponse.Element != null
-                ? interventionResponse.Element.Name
-                : "Inconnu";
-        }
+
+
+
     }
 }

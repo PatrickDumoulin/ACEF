@@ -37,7 +37,7 @@
                         <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
                         <td>
                             <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-list-ul"></i> Détails</a>
-                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary">Modifier</a>
+                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modifier</a>
 
                             <!-- IL N'Y A PAS BESOIN DAVOIR DE DELETE POUR EMPLOYEE-->
                             @* <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Employee", new { id = employee.Id })')" class="btn btn-danger ">
