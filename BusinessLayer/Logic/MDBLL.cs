@@ -47,14 +47,15 @@ namespace BusinessLayer.Logic
             {
                 { nameof(MdBank), "Banque" },
                 { nameof(MdEmploymentSituation), "Situation d'emploi" },
+                { nameof(MdMaritalStatus), "État civil" },
                 { nameof(MdFamilySituation), "Situation familiale" },
                 { nameof(MdGenderDenomination), "Genre" },
                 { nameof(MdHabitationType), "Type d'habitation" },
                 { nameof(MdIncomeType), "Type de revenu" },
                 { nameof(MdInterventionSolution), "Solution d'intervention" },
+                { nameof(MdInterventionStatusTypes), "Type de statut d'intervention" },
                 { nameof(MdInterventionType), "Type d'intervention" },
                 { nameof(MdLoanReason), "Raison de prêt" },
-                { nameof(MdMaritalStatus), "État matrimonial" },
                 { nameof(MdReferenceSource), "Source de référence" },
                 { nameof(MdScholarshipType), "Type de bourse" },
                 { nameof(MdSeminarThemes), "Thème de séminaire" }
@@ -67,14 +68,15 @@ namespace BusinessLayer.Logic
             {
                 { "Banque", () => GetAllMdBanks().ElementList.Select(b => b.Name).ToList() },
                 { "Situation d'emploi", () => GetAllMdEmploymentSituations().ElementList.Select(b => b.Name).ToList() },
+                { "État civil", () => GetAllMdMaritalStatus().ElementList.Select(b => b.Name).ToList() },
                 { "Situation familiale", () => GetAllMdFamilySituations().ElementList.Select(b => b.Name).ToList() },
                 { "Genre", () => GetAllMdGenderDenominations().ElementList.Select(b => b.Name).ToList() },
                 { "Type d'habitation", () => GetAllMdHabitationTypes().ElementList.Select(b => b.Name).ToList() },
                 { "Type de revenu", () => GetAllMdIncomeTypes().ElementList.Select(b => b.Name).ToList() },
                 { "Solution d'intervention", () => GetAllMdInterventionSolutions().ElementList.Select(b => b.Name).ToList() },
                 { "Type d'intervention", () => GetAllMdInterventionTypes().ElementList.Select(b => b.Name).ToList() },
+                { "Type de statut d'intervention", () => GetAllMdInterventionStatusTypes().ElementList.Select(b => b.Name).ToList() },
                 { "Raison de prêt", () => GetAllMdLoanReasons().ElementList.Select(b => b.Name).ToList() },
-                { "État matrimonial", () => GetAllMdMaritalStatus().ElementList.Select(b => b.Name).ToList() },
                 { "Source de référence", () => GetAllMdReferenceSources().ElementList.Select(b => b.Name).ToList() },
                 { "Type de bourse", () => GetAllMdScholarshipTypes().ElementList.Select(b => b.Name).ToList() },
                 { "Thème de séminaire", () => GetAllMdSeminarThemes().ElementList.Select(b => b.Name).ToList() }
@@ -93,8 +95,20 @@ namespace BusinessLayer.Logic
             var mappings = new Dictionary<string, Action<string, bool>>
             {
                 { "Banque", (itemName, active) => CreateBank(itemName, active) },
-                // Ajouter les autres types de MasterData ici,
-                // Ajouter les autres types de MasterData ici
+                { "Situation d'emploi", (itemName, active) => CreateMdEmploymentSituation(itemName, active) },
+                { "Genre", (itemName, active) => CreateMdGenderDenomination(itemName, active) },
+                { "État civil", (itemName, active) => CreateMdMaritalStatus(itemName, active) },
+                { "Situation familiale", (itemName, active) => CreateMdFamilySituation(itemName, active) },
+                { "Type d'habitation", (itemName, active) => CreateMdHabitationType(itemName, active) },
+                { "Type de revenu", (itemName, active) => CreateMdIncomeType(itemName, active) },
+                { "Solution d'intervention", (itemName, active) => CreateMdInterventionSolution(itemName, active) },
+                { "Type d'intervention", (itemName, active) => CreateMdInterventionType(itemName, active) },
+                { "Type de statut d'intervention", (itemName, active) => CreateMdInterventionStatusType(itemName, active) },
+                { "Raison de prêt", (itemName, active) => CreateMdLoanReason(itemName, active) },
+                { "Source de référence", (itemName, active) => CreateMdReferenceSource(itemName, active) },
+                { "Type de bourse", (itemName, active) => CreateMdScholarshipType(itemName, active) },
+                { "Thème de séminaire", (itemName, active) => CreateMdSeminarTheme(itemName, active) },
+                
             };
 
             if (mappings.ContainsKey(name))
