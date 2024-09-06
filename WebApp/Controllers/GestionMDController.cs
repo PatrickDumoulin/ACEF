@@ -53,7 +53,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 base.bll.CreateMasterDataItem(mdName, viewModel.Name, viewModel.Active);
-                
+                return RedirectToAction(nameof(Index));
             }
 
             return View(viewModel);
