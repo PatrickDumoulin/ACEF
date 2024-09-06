@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using BusinessLayer.Core.Definitions;
 using BusinessLayer.Logic.Interfaces;
-using BusinessLayer.Models;
 using CoreLib.Definitions;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.BOL.MdInterventionSolution;
@@ -143,6 +142,11 @@ namespace BusinessLayer.Logic
                 GetAllMdEmploymentSituations();
             return new GetListResponse<IMdEmploymentSituationBOL>(mdEmploymentSituationsBOL);
         }
+
+        public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string name, bool isActive)
+        {
+            return base.dal.CreateMdEmploymentSituation(name, isActive);
+        }
         #endregion
 
         #region MdMaritalStatus
@@ -157,6 +161,11 @@ namespace BusinessLayer.Logic
             List<IMdMaritalStatusBOL> mdMaritalStatusBOL = base.dal.
                 GetAllMdMaritalStatus();
             return new GetListResponse<IMdMaritalStatusBOL>(mdMaritalStatusBOL);
+        }
+
+        public IMdMaritalStatusBOL CreateMdMaritalStatus(string name, bool isActive)
+        {
+            return base.dal.CreateMdMaritalStatus(name, isActive);
         }
         #endregion
 
@@ -173,6 +182,11 @@ namespace BusinessLayer.Logic
                 GetAllMdFamilySituations();
             return new GetListResponse<IMdFamilySituationBOL>(mdFamilySituationBOL);
         }
+
+        public IMdFamilySituationBOL CreateMdFamilySituation(string name, bool isActive)
+        {
+            return base.dal.CreateMdFamilySituation(name, isActive);
+        }
         #endregion
 
         #region MdGenderDenomination
@@ -187,6 +201,11 @@ namespace BusinessLayer.Logic
             List<IMdGenderDenominationBOL> mdGenderDenominationBOL = base.dal.
                 GetAllMdGenderDenominations();
             return new GetListResponse<IMdGenderDenominationBOL>(mdGenderDenominationBOL);
+        }
+
+        public IMdGenderDenominationBOL CreateMdGenderDenomination(string name, bool isActive)
+        {
+            return base.dal.CreateMdGenderDenomination(name, isActive);
         }
         #endregion
 
@@ -203,6 +222,11 @@ namespace BusinessLayer.Logic
                 GetAllMdHabitationTypes();
             return new GetListResponse<IMdHabitationTypeBOL>(mdHabitationTypeBOL);
         }
+
+        public IMdHabitationTypeBOL CreateMdHabitationType(string name, bool isActive)
+        {
+            return base.dal.CreateMdHabitationType(name, isActive);
+        }
         #endregion
 
         #region MdScholarshipType
@@ -217,6 +241,11 @@ namespace BusinessLayer.Logic
             List<IMdScholarshipTypeBOL> mdScholarshipTypeBOL = base.dal.
                 GetAllMdScholarshipTypes();
             return new GetListResponse<IMdScholarshipTypeBOL>(mdScholarshipTypeBOL);
+        }
+
+        public IMdScholarshipTypeBOL CreateMdScholarshipType(string name, bool isActive)
+        {
+            return base.dal.CreateMdScholarshipType(name, isActive);
         }
         #endregion
 
@@ -241,6 +270,11 @@ namespace BusinessLayer.Logic
                 ? referenceResponse.Element.Name
                 : "Inconnu";
         }
+
+        public IMdReferenceSourceBOL CreateMdReferenceSource(string name, bool isActive)
+        {
+            return base.dal.CreateMdReferenceSource(name, isActive);
+        }
         #endregion
 
         #region MdInterventionStatusType
@@ -264,6 +298,11 @@ namespace BusinessLayer.Logic
                 ? statusResponse.Element.Name
                 : "Inconnu";
         }
+
+        public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string name, bool isActive)
+        {
+            return base.dal.CreateMdInterventionStatusType(name, isActive);
+        }
         #endregion
 
         #region MdLoanReason
@@ -286,6 +325,11 @@ namespace BusinessLayer.Logic
             return loanReasonResponse.Succeeded && loanReasonResponse.Element != null
                 ? loanReasonResponse.Element.Name
                 : "Inconnu";
+        }
+
+        public IMdLoanReasonBOL CreateMdLoanReason(string name, bool isActive)
+        {
+            return base.dal.CreateMdLoanReason(name, isActive);
         }
         #endregion
 
@@ -311,6 +355,11 @@ namespace BusinessLayer.Logic
                 ? interventionResponse.Element.Name
                 : "Inconnu";
         }
+
+        public IMdInterventionTypeBOL CreateMdInterventionType(string name, bool isActive)
+        {
+            return base.dal.CreateMdInterventionType(name, isActive);
+        }
         #endregion
 
         #region MdInterventionSolution
@@ -334,6 +383,11 @@ namespace BusinessLayer.Logic
                 ? solutionResponse.Element.Name
                 : "Inconnu";
         }
+
+        public IMdInterventionSolutionBOL CreateMdInterventionSolution(string name, bool isActive)
+        {
+            return base.dal.CreateMdInterventionSolution(name, isActive);
+        }
         #endregion
 
         #region MdIncomeType
@@ -348,6 +402,11 @@ namespace BusinessLayer.Logic
             List<IMdIncomeTypeBOL> mdIncomeTypeBOL = base.dal.GetAllMdIncomeTypes();
             return new GetListResponse<IMdIncomeTypeBOL>(mdIncomeTypeBOL);
         }
+
+        public IMdIncomeTypeBOL CreateMdIncomeType(string name, bool isActive)
+        {
+            return base.dal.CreateMdIncomeType(name, isActive);
+        }
         #endregion
 
         #region MdSeminarTheme
@@ -361,6 +420,11 @@ namespace BusinessLayer.Logic
         {
             List<IMdSeminarThemesBOL> mdSeminarThemeBOL = base.dal.GetAllMdSeminarThemes();
             return new GetListResponse<IMdSeminarThemesBOL>(mdSeminarThemeBOL);
+        }
+
+        public IMdSeminarThemesBOL CreateMdSeminarTheme(string name, bool isActive)
+        {
+            return base.dal.CreateMdSeminarTheme(name, isActive);
         }
         #endregion
 
