@@ -26,6 +26,7 @@ namespace DataAccess.Providers.Interfaces
         #region MdBank
         IMdBankBOL GetMdBank(int id);
         List<IMdBankBOL> GetAllMdBanks();
+        public IMdBankBOL CreateMdBank(string bankName, bool isActive);
         #endregion
 
         #region MdEmploymentSituation
@@ -92,6 +93,8 @@ namespace DataAccess.Providers.Interfaces
         IMdSeminarThemesBOL GetMdSeminarTheme(int id);
         List<IMdSeminarThemesBOL> GetAllMdSeminarThemes();
         #endregion
+
+
 
 
     }

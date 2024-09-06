@@ -43,6 +43,8 @@ namespace DataAccess.Providers.Entity
         public MDEntityDAL() { }
         public MDEntityDAL(AcefEntityDAL externalDal) : base(externalDal) { }
 
+        
+
         #region MdBank
         public IMdBankBOL GetMdBank(int id)
         {

@@ -24,9 +24,20 @@ namespace BusinessLayer.Logic.Interfaces
 {
     public interface IMDBLL : IBLL
     {
+        #region MDGESTION
+        public Dictionary<string, string> GetAllMDNames();
+
+        public List<string> GetAllMdNamesByName(string name);
+
+        public void CreateMasterDataItem(string name, string mdItemName, bool isActive);
+
+        #endregion
+
+
         #region MdBank
         GetItemResponse<IMdBankBOL> GetMdBank(int id);
         GetListResponse<IMdBankBOL> GetAllMdBanks();
+
         #endregion
 
         #region MdEmploymentSituation

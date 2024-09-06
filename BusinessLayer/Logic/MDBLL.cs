@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using BusinessLayer.Core.Definitions;
 using BusinessLayer.Logic.Interfaces;
+using BusinessLayer.Models;
 using CoreLib.Definitions;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.BOL.MdInterventionSolution;
@@ -38,6 +39,78 @@ namespace BusinessLayer.Logic
         public MDBLL(IDAL externalDAL) : base(externalDAL) { }
 
 
+
+
+        #region MDGESTION
+        public Dictionary<string, string> GetAllMDNames()
+        {
+            return new Dictionary<string, string>
+            {
+                { nameof(MdBank), "Banque" },
+                { nameof(MdEmploymentSituation), "Situation d'emploi" },
+                { nameof(MdFamilySituation), "Situation familiale" },
+                { nameof(MdGenderDenomination), "Genre" },
+                { nameof(MdHabitationType), "Type d'habitation" },
+                { nameof(MdIncomeType), "Type de revenu" },
+                { nameof(MdInterventionSolution), "Solution d'intervention" },
+                { nameof(MdInterventionType), "Type d'intervention" },
+                { nameof(MdLoanReason), "Raison de prêt" },
+                { nameof(MdMaritalStatus), "État matrimonial" },
+                { nameof(MdReferenceSource), "Source de référence" },
+                { nameof(MdScholarshipType), "Type de bourse" },
+                { nameof(MdSeminarThemes), "Thème de séminaire" }
+            };
+        }
+
+        public List<string> GetAllMdNamesByName(string name)
+        {
+            var mappings = new Dictionary<string, Func<IEnumerable<string>>>
+            {
+                { "Banque", () => GetAllMdBanks().ElementList.Select(b => b.Name).ToList() },
+                { "Situation d'emploi", () => GetAllMdEmploymentSituations().ElementList.Select(b => b.Name).ToList() },
+                { "Situation familiale", () => GetAllMdFamilySituations().ElementList.Select(b => b.Name).ToList() },
+                { "Genre", () => GetAllMdGenderDenominations().ElementList.Select(b => b.Name).ToList() },
+                { "Type d'habitation", () => GetAllMdHabitationTypes().ElementList.Select(b => b.Name).ToList() },
+                { "Type de revenu", () => GetAllMdIncomeTypes().ElementList.Select(b => b.Name).ToList() },
+                { "Solution d'intervention", () => GetAllMdInterventionSolutions().ElementList.Select(b => b.Name).ToList() },
+                { "Type d'intervention", () => GetAllMdInterventionTypes().ElementList.Select(b => b.Name).ToList() },
+                { "Raison de prêt", () => GetAllMdLoanReasons().ElementList.Select(b => b.Name).ToList() },
+                { "État matrimonial", () => GetAllMdMaritalStatus().ElementList.Select(b => b.Name).ToList() },
+                { "Source de référence", () => GetAllMdReferenceSources().ElementList.Select(b => b.Name).ToList() },
+                { "Type de bourse", () => GetAllMdScholarshipTypes().ElementList.Select(b => b.Name).ToList() },
+                { "Thème de séminaire", () => GetAllMdSeminarThemes().ElementList.Select(b => b.Name).ToList() }
+            };
+
+            if (mappings.ContainsKey(name))
+            {
+                return mappings[name]().ToList();
+            }
+
+            return new List<string>();
+        }
+
+        public void CreateMasterDataItem(string name, string mdItemName, bool isActive)
+        {
+            var mappings = new Dictionary<string, Action<string, bool>>
+            {
+                { "Banque", (itemName, active) => CreateBank(itemName, active) },
+                // Ajouter les autres types de MasterData ici,
+                // Ajouter les autres types de MasterData ici
+            };
+
+            if (mappings.ContainsKey(name))
+            {
+                mappings[name](mdItemName, isActive);
+            }
+            else
+            {
+                throw new Exception("Type de MasterData inconnu.");
+            }
+        }
+
+
+        #endregion
+
         #region MdBank
         public GetItemResponse<IMdBankBOL> GetMdBank(int id)
         {
@@ -49,6 +122,11 @@ namespace BusinessLayer.Logic
         {
             List<IMdBankBOL> mdBanksBOL = base.dal.GetAllMdBanks();
             return new GetListResponse<IMdBankBOL>(mdBanksBOL);
+        }
+
+        public IMdBankBOL CreateBank(string name, bool isActive)
+        {
+            return base.dal.CreateMdBank(name, isActive);
         }
         #endregion
 

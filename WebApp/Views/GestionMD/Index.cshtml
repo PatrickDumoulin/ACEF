@@ -1,0 +1,41 @@
+﻿@model WebApp.ViewModels.MdGestionIndexViewModel
+
+<partial name="_Notification" />
+
+
+<div class="interventionAttachmentsIndexContainer mt-3">
+
+    <h1 class="attachments-card-header mb-4">Gestion des Données</h1>
+
+    <div class="attachments-card-body">
+
+        <table class="table">
+            <thead class="tableHeader">
+                <tr>
+                    <th>Nom de la Donnée</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var nom in Model.MdNames)
+                {
+                    <tr>
+                        <td>@nom</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-controller="GestionMD" asp-action="Details" asp-route-mdName="@nom" class="btn btn-primary">
+                                    <i class="bi bi-list-ul"></i> Modifier
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
