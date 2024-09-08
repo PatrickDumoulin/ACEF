@@ -3,12 +3,12 @@
 <div class="container mt-4">
     <div class="row pt-5">
         <div class="col-6">
-            <h1 class="titreInterventionIndex pb-2">Détails de : MD @Model.MdName</h1>
+            <h1 class="titreInterventionIndex pb-2">Détails de : @Model.MdName</h1>
             <hr />
         </div>
         <div class="col-6 text-end">
             <a asp-action="Create" asp-route-name="@Model.MdName" class="btn btn-primary">
-                <i class="bi bi-file-earmark-plus-fill"></i> Créer une Nouvelle Donnée Maitresse
+                <i class="bi bi-file-earmark-plus-fill"></i> Créer une Nouvelle Donnée
             </a>
         </div>
     </div>
@@ -17,24 +17,36 @@
         <thead>
             <tr>
                 <th>Valeur</th>
+                <th>Statut</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @if (Model.MdValues != null && Model.MdValues.Any())
+            @if (Model.MdItems != null && Model.MdItems.Any())
             {
-                @foreach (var value in Model.MdValues)
+                @foreach (var item in Model.MdItems)
                 {
                     <tr>
-                        <td>@value</td>
+                        <td>@item.Name</td> <!-- Affiche le nom de la Master Data -->
+                        <td>@(item.IsActive.HasValue ? (item.IsActive.Value ? "Actif" : "Inactif") : "Indéterminé")</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a asp-action="Edit" asp-route-id="@value" class="btn btn-primary">
+                                <a asp-action="Edit" asp-route-oldName="@item.Name" asp-route-mdName="@Model.MdName" class="btn btn-primary">
                                     <i class="bi bi-pencil-square"></i> Modifier
                                 </a>
-                                <a asp-action="Activate" asp-route-id="@value" class="btn btn-primary">
-                                    <i class="bi bi-toggle-on"></i> Activer / Désactiver
-                                </a>
+                                @if(item.IsActive == true)
+                                {
+                                    <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                        <i class="bi bi-toggle-off"></i> Désactiver
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                        <i class="bi bi-toggle-on"></i> Activer
+                                    </a>
+                                }
+
                             </div>
                         </td>
                     </tr>
@@ -43,7 +55,7 @@
             else
             {
                 <tr>
-                    <td colspan="2">Aucune donnée disponible pour cette MasterData.</td>
+                    <td colspan="3">Aucune donnée disponible pour cette MasterData.</td>
                 </tr>
             }
         </tbody>

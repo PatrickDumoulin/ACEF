@@ -12,5 +12,7 @@ namespace DataModels.BOL.IMdInterventionStatusType
         public int Id { get; }
 
         public string Name { get; set; }
+
+        public bool? Active { get; set; }
     }
 }

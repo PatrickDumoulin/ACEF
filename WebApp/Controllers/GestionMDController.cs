@@ -24,14 +24,13 @@ namespace WebApp.Controllers
 
         public IActionResult Details(string mdName)
         {
-            // Récupération des détails de la MasterData par nom
-            var mdDetails = base.bll.GetAllMdNamesByName(mdName);
+            // Récupérer les détails des objets Master Data
+            var masterDataItems = base.bll.GetAllMasterDataItems()[mdName];
 
-            // Création du ViewModel à partir des détails récupérés
             var viewModel = new MdDetailViewModel
             {
                 MdName = mdName,
-                MdValues = mdDetails
+                MdItems = masterDataItems.ToList()  // Liste d'objets MasterDataViewModel
             };
 
             return View(viewModel);
@@ -53,10 +52,58 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 base.bll.CreateMasterDataItem(mdName, viewModel.Name, viewModel.Active);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { mdName = mdName });
             }
 
             return View(viewModel);
+        }
+
+        public IActionResult Edit(string oldName, string mdName)
+        {
+
+            var viewModel = new MdItemViewModel();
+
+            ViewData["MdName"] = mdName;
+            ViewData["OldName"] = oldName;
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(MdItemViewModel viewModel, string mdName, string oldName)
+        {
+
+            viewModel.Active = true;
+
+
+
+            if (ModelState.IsValid)
+            {
+                base.bll.EditMasterDataItem(mdName, oldName, viewModel.Name, viewModel.Active);
+                return RedirectToAction("Details", new { mdName = mdName });
+            }
+
+            return View(viewModel);
+        }
+
+        public IActionResult ToggleActive(string mdName, string mdItemName)
+        {
+            var masterDataItems = base.bll.GetAllMasterDataItems()[mdName];
+
+            var item = masterDataItems.FirstOrDefault(i => i.Name == mdItemName);
+
+            if (item == null)
+            {
+                return NotFound(); 
+            }
+
+            bool? newActiveState = !item.IsActive;
+
+            base.bll.EditMasterDataItem(mdName, mdItemName, mdItemName, newActiveState);
+
+            return RedirectToAction("Details", new { mdName = mdName });
+
+
         }
     }
 }

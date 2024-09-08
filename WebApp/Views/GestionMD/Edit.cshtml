@@ -1,0 +1,36 @@
+﻿@model WebApp.ViewModels.MdItemViewModel
+
+@{
+    ViewData["Title"] = "Modifier un élément MasterData";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" value="" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+
+    <input type="hidden" name="mdName" value="@ViewData["MdName"]" />
+    <input type="hidden" name="oldName" value="@ViewData["OldName"]" />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Modifier</button>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

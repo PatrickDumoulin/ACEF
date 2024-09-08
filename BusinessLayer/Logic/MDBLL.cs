@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using BusinessLayer.Core.Definitions;
 using BusinessLayer.Logic.Interfaces;
+using BusinessLayer.ViewModels;
 using CoreLib.Definitions;
 using DataAccess.BOL.MdGenderDenomination;
 using DataAccess.BOL.MdInterventionSolution;
@@ -90,9 +91,131 @@ namespace BusinessLayer.Logic
             return new List<string>();
         }
 
-        public void CreateMasterDataItem(string name, string mdItemName, bool isActive)
+        public Dictionary<string, IEnumerable<MasterDataViewModel>> GetAllMasterDataItems()
         {
-            var mappings = new Dictionary<string, Action<string, bool>>
+            var masterDataDictionary = new Dictionary<string, IEnumerable<MasterDataViewModel>>
+            {
+                { "Banque", GetAllMdBanks().ElementList.Select(b => new MasterDataViewModel
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    IsActive = b.Active,
+                    FrenchDisplayName = "Banque"
+                })},
+
+                { "Situation d'emploi", GetAllMdEmploymentSituations().ElementList.Select(b => new MasterDataViewModel
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    IsActive = b.Active,
+                    FrenchDisplayName = "Situation d'emploi"
+                })},
+
+                { "État civil", GetAllMdMaritalStatus().ElementList.Select(ms => new MasterDataViewModel
+                {
+                    Id = ms.Id,
+                    Name = ms.Name,
+                    IsActive = ms.Active,
+                    FrenchDisplayName = "État civil"
+                })},
+
+                { "Situation familiale", GetAllMdFamilySituations().ElementList.Select(fs => new MasterDataViewModel
+                {
+                    Id = fs.Id,
+                    Name = fs.Name,
+                    IsActive = fs.Active,
+                    FrenchDisplayName = "Situation familiale"
+                })},
+
+                { "Genre", GetAllMdGenderDenominations().ElementList.Select(gd => new MasterDataViewModel
+                {
+                    Id = gd.Id,
+                    Name = gd.Name,
+                    IsActive = gd.Active,
+                    FrenchDisplayName = "Genre"
+                })},
+
+                { "Type d'habitation", GetAllMdHabitationTypes().ElementList.Select(ht => new MasterDataViewModel
+                {
+                    Id = ht.Id,
+                    Name = ht.Name,
+                    IsActive = ht.Active,
+                    FrenchDisplayName = "Type d'habitation"
+                })},
+
+                { "Type de revenu", GetAllMdIncomeTypes().ElementList.Select(it => new MasterDataViewModel
+                {
+                    Id = it.Id,
+                    Name = it.Name,
+                    IsActive = it.Active,
+                    FrenchDisplayName = "Type de revenu"
+                })},
+
+                { "Solution d'intervention", GetAllMdInterventionSolutions().ElementList.Select(isol => new MasterDataViewModel
+                {
+                    Id = isol.Id,
+                    Name = isol.Name,
+                    IsActive = isol.Active,
+                    FrenchDisplayName = "Solution d'intervention"
+                })},
+
+                { "Type d'intervention", GetAllMdInterventionTypes().ElementList.Select(it => new MasterDataViewModel
+                {
+                    Id = it.Id,
+                    Name = it.Name,
+                    IsActive = it.Active,
+                    FrenchDisplayName = "Type d'intervention"
+                })},
+
+                { "Type de statut d'intervention", GetAllMdInterventionStatusTypes().ElementList.Select(ist => new MasterDataViewModel
+                {
+                    Id = ist.Id,
+                    Name = ist.Name,
+                    IsActive = ist.Active,
+                    FrenchDisplayName = "Type de statut d'intervention"
+                })},
+
+                { "Raison de prêt", GetAllMdLoanReasons().ElementList.Select(lr => new MasterDataViewModel
+                {
+                    Id = lr.Id,
+                    Name = lr.Name,
+                    IsActive = lr.Active,
+                    FrenchDisplayName = "Raison de prêt"
+                })},
+
+                { "Source de référence", GetAllMdReferenceSources().ElementList.Select(rs => new MasterDataViewModel
+                {
+                    Id = rs.Id,
+                    Name = rs.Name,
+                    IsActive = rs.Active,
+                    FrenchDisplayName = "Source de référence"
+                })},
+
+                { "Type de bourse", GetAllMdScholarshipTypes().ElementList.Select(st => new MasterDataViewModel
+                {
+                    Id = st.Id,
+                    Name = st.Name,
+                    IsActive = st.Active,
+                    FrenchDisplayName = "Type de bourse"
+                })},
+
+                { "Thème de séminaire", GetAllMdSeminarThemes().ElementList.Select(st => new MasterDataViewModel
+                {
+                    Id = st.Id,
+                    Name = st.Name,
+                    IsActive = st.Active,
+                    FrenchDisplayName = "Thème de séminaire"
+                })}
+             };
+
+            return masterDataDictionary;
+        }
+
+
+
+        public void CreateMasterDataItem(string name, string mdItemName, bool? isActive)
+        {
+            var mappings = new Dictionary<string, Action<string, bool?>>
             {
                 { "Banque", (itemName, active) => CreateBank(itemName, active) },
                 { "Situation d'emploi", (itemName, active) => CreateMdEmploymentSituation(itemName, active) },
@@ -108,7 +231,7 @@ namespace BusinessLayer.Logic
                 { "Source de référence", (itemName, active) => CreateMdReferenceSource(itemName, active) },
                 { "Type de bourse", (itemName, active) => CreateMdScholarshipType(itemName, active) },
                 { "Thème de séminaire", (itemName, active) => CreateMdSeminarTheme(itemName, active) },
-                
+
             };
 
             if (mappings.ContainsKey(name))
@@ -120,6 +243,38 @@ namespace BusinessLayer.Logic
                 throw new Exception("Type de MasterData inconnu.");
             }
         }
+
+        public void EditMasterDataItem(string mdName, string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            var mappings = new Dictionary<string, Action<string, bool?>>
+            {
+                { "Banque", (itemName, active) => EditMdBank(oldMdItemName, newMdItemName, isActive ) },
+                { "Situation d'emploi", (itemName, active) => EditMdEmploymentSituation(oldMdItemName, newMdItemName, active) },
+                { "Genre", (itemName, active) => EditMdGenderDenomination(oldMdItemName, newMdItemName, active) },
+                { "État civil", (itemName, active) => EditMdMaritalStatus(oldMdItemName, newMdItemName, active) },
+                { "Situation familiale", (itemName, active) => EditMdFamilySituation(oldMdItemName, newMdItemName, active) },
+                { "Type d'habitation", (itemName, active) => EditMdHabitationType(oldMdItemName, newMdItemName, active) },
+                { "Type de revenu", (itemName, active) => EditMdIncomeType(oldMdItemName, newMdItemName, active) },
+                { "Solution d'intervention", (itemName, active) => EditMdInterventionSolution(oldMdItemName, newMdItemName, active) },
+                { "Type d'intervention", (itemName, active) => EditMdInterventionType(oldMdItemName, newMdItemName, active) },
+                { "Type de statut d'intervention", (itemName, active) => EditMdInterventionStatusType(oldMdItemName, newMdItemName, active) },
+                { "Raison de prêt", (itemName, active) => EditMdLoanReason(oldMdItemName, newMdItemName, active) },
+                { "Source de référence", (itemName, active) => EditMdReferenceSource(oldMdItemName, newMdItemName, active) },
+                { "Type de bourse", (itemName, active) => EditMdScholarshipType(oldMdItemName, newMdItemName, active) },
+                { "Thème de séminaire", (itemName, active) => EditMdSeminarTheme(oldMdItemName, newMdItemName, active) },
+
+            };
+
+            if (mappings.ContainsKey(mdName))
+            {
+                mappings[mdName](newMdItemName, isActive);
+            }
+            else
+            {
+                throw new Exception("Type de MasterData inconnu.");
+            }
+        }
+
 
 
         #endregion
@@ -137,9 +292,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdBankBOL>(mdBanksBOL);
         }
 
-        public IMdBankBOL CreateBank(string name, bool isActive)
+        public IMdBankBOL CreateBank(string name, bool? isActive)
         {
             return base.dal.CreateMdBank(name, isActive);
+        }
+
+        public IMdBankBOL EditMdBank(string oldBankName, string newBankName, bool? isActive)
+        {
+            return base.dal.EditMdBank(oldBankName, newBankName, isActive);
         }
         #endregion
 
@@ -157,9 +317,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdEmploymentSituationBOL>(mdEmploymentSituationsBOL);
         }
 
-        public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string name, bool isActive)
+        public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string name, bool? isActive)
         {
             return base.dal.CreateMdEmploymentSituation(name, isActive);
+        }
+
+        public IMdEmploymentSituationBOL EditMdEmploymentSituation(string originalMdEmploymentSituationName, string newMdEmploymentSituationName, bool? isActive)
+        {
+            return base.dal.EditMdEmploymentSituation(originalMdEmploymentSituationName, newMdEmploymentSituationName, isActive);
         }
         #endregion
 
@@ -177,9 +342,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdMaritalStatusBOL>(mdMaritalStatusBOL);
         }
 
-        public IMdMaritalStatusBOL CreateMdMaritalStatus(string name, bool isActive)
+        public IMdMaritalStatusBOL CreateMdMaritalStatus(string name, bool? isActive)
         {
             return base.dal.CreateMdMaritalStatus(name, isActive);
+        }
+
+        public IMdMaritalStatusBOL EditMdMaritalStatus(string originalMdMaritalStatusName, string newMdMaritalStatusName, bool? isActive)
+        {
+            return base.dal.EditMdMaritalStatus(originalMdMaritalStatusName, newMdMaritalStatusName, isActive);
         }
         #endregion
 
@@ -197,9 +367,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdFamilySituationBOL>(mdFamilySituationBOL);
         }
 
-        public IMdFamilySituationBOL CreateMdFamilySituation(string name, bool isActive)
+        public IMdFamilySituationBOL CreateMdFamilySituation(string name, bool? isActive)
         {
             return base.dal.CreateMdFamilySituation(name, isActive);
+        }
+
+        public IMdFamilySituationBOL EditMdFamilySituation(string originalMdFamilySituationName, string newMdFamilySituationName, bool? isActive)
+        {
+            return base.dal.EditMdFamilySituation(originalMdFamilySituationName, newMdFamilySituationName, isActive);
         }
         #endregion
 
@@ -217,9 +392,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdGenderDenominationBOL>(mdGenderDenominationBOL);
         }
 
-        public IMdGenderDenominationBOL CreateMdGenderDenomination(string name, bool isActive)
+        public IMdGenderDenominationBOL CreateMdGenderDenomination(string name, bool? isActive)
         {
             return base.dal.CreateMdGenderDenomination(name, isActive);
+        }
+
+        public IMdGenderDenominationBOL EditMdGenderDenomination(string originalMdGenderDenominationName, string newMdGenderDenominationName, bool? isActive)
+        {
+            return base.dal.EditMdGenderDenomination(originalMdGenderDenominationName, newMdGenderDenominationName, isActive);
         }
         #endregion
 
@@ -237,9 +417,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdHabitationTypeBOL>(mdHabitationTypeBOL);
         }
 
-        public IMdHabitationTypeBOL CreateMdHabitationType(string name, bool isActive)
+        public IMdHabitationTypeBOL CreateMdHabitationType(string name, bool? isActive)
         {
             return base.dal.CreateMdHabitationType(name, isActive);
+        }
+
+        public IMdHabitationTypeBOL EditMdHabitationType(string originalMdHabitationTypeName, string newMdHabitationTypeName, bool? isActive)
+        {
+            return base.dal.EditMdHabitationType(originalMdHabitationTypeName, newMdHabitationTypeName, isActive);
         }
         #endregion
 
@@ -257,9 +442,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdScholarshipTypeBOL>(mdScholarshipTypeBOL);
         }
 
-        public IMdScholarshipTypeBOL CreateMdScholarshipType(string name, bool isActive)
+        public IMdScholarshipTypeBOL CreateMdScholarshipType(string name, bool? isActive)
         {
             return base.dal.CreateMdScholarshipType(name, isActive);
+        }
+
+        public IMdScholarshipTypeBOL EditMdScholarshipType(string originalMdScholarshipTypeName, string newMdScholarshipTypeName, bool? isActive)
+        {
+            return base.dal.EditMdScholarshipType(originalMdScholarshipTypeName, newMdScholarshipTypeName, isActive);
         }
         #endregion
 
@@ -285,9 +475,14 @@ namespace BusinessLayer.Logic
                 : "Inconnu";
         }
 
-        public IMdReferenceSourceBOL CreateMdReferenceSource(string name, bool isActive)
+        public IMdReferenceSourceBOL CreateMdReferenceSource(string name, bool? isActive)
         {
             return base.dal.CreateMdReferenceSource(name, isActive);
+        }
+
+        public IMdReferenceSourceBOL EditMdReferenceSource(string originalMdReferenceSourceName, string newMdReferenceSourceName, bool? isActive)
+        {
+            return base.dal.EditMdReferenceSource(originalMdReferenceSourceName, newMdReferenceSourceName, isActive);
         }
         #endregion
 
@@ -313,9 +508,14 @@ namespace BusinessLayer.Logic
                 : "Inconnu";
         }
 
-        public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string name, bool isActive)
+        public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string name, bool? isActive)
         {
             return base.dal.CreateMdInterventionStatusType(name, isActive);
+        }
+
+        public IMdInterventionStatusTypeBOL EditMdInterventionStatusType(string originalMdInterventionStatusTypeName, string newMdInterventionStatusTypeName, bool? isActive)
+        {
+            return base.dal.EditMdInterventionStatusType(originalMdInterventionStatusTypeName, newMdInterventionStatusTypeName, isActive);
         }
         #endregion
 
@@ -341,9 +541,14 @@ namespace BusinessLayer.Logic
                 : "Inconnu";
         }
 
-        public IMdLoanReasonBOL CreateMdLoanReason(string name, bool isActive)
+        public IMdLoanReasonBOL CreateMdLoanReason(string name, bool? isActive)
         {
             return base.dal.CreateMdLoanReason(name, isActive);
+        }
+
+        public IMdLoanReasonBOL EditMdLoanReason(string originalMdLoanReasonName, string newMdLoanReasonName, bool? isActive)
+        {
+            return base.dal.EditMdLoanReason(originalMdLoanReasonName, newMdLoanReasonName, isActive);
         }
         #endregion
 
@@ -370,9 +575,14 @@ namespace BusinessLayer.Logic
                 : "Inconnu";
         }
 
-        public IMdInterventionTypeBOL CreateMdInterventionType(string name, bool isActive)
+        public IMdInterventionTypeBOL CreateMdInterventionType(string name, bool? isActive)
         {
             return base.dal.CreateMdInterventionType(name, isActive);
+        }
+
+        public IMdInterventionTypeBOL EditMdInterventionType(string originalMdInterventionTypeName, string newMdInterventionTypeName, bool? isActive)
+        {
+            return base.dal.EditMdInterventionType(originalMdInterventionTypeName, newMdInterventionTypeName, isActive);
         }
         #endregion
 
@@ -398,9 +608,14 @@ namespace BusinessLayer.Logic
                 : "Inconnu";
         }
 
-        public IMdInterventionSolutionBOL CreateMdInterventionSolution(string name, bool isActive)
+        public IMdInterventionSolutionBOL CreateMdInterventionSolution(string name, bool? isActive)
         {
             return base.dal.CreateMdInterventionSolution(name, isActive);
+        }
+
+        public IMdInterventionSolutionBOL EditMdInterventionSolution(string originalMdInterventionSolutionName, string newMdInterventionSolutionName, bool? isActive)
+        {
+            return base.dal.EditMdInterventionSolution(originalMdInterventionSolutionName, newMdInterventionSolutionName, isActive);
         }
         #endregion
 
@@ -417,9 +632,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdIncomeTypeBOL>(mdIncomeTypeBOL);
         }
 
-        public IMdIncomeTypeBOL CreateMdIncomeType(string name, bool isActive)
+        public IMdIncomeTypeBOL CreateMdIncomeType(string name, bool? isActive)
         {
             return base.dal.CreateMdIncomeType(name, isActive);
+        }
+
+        public IMdIncomeTypeBOL EditMdIncomeType(string originalMdIncomeTypeName, string newMdIncomeTypeName, bool? isActive)
+        {
+            return base.dal.EditMdIncomeType(originalMdIncomeTypeName, newMdIncomeTypeName, isActive);
         }
         #endregion
 
@@ -436,9 +656,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdSeminarThemesBOL>(mdSeminarThemeBOL);
         }
 
-        public IMdSeminarThemesBOL CreateMdSeminarTheme(string name, bool isActive)
+        public IMdSeminarThemesBOL CreateMdSeminarTheme(string name, bool? isActive)
         {
             return base.dal.CreateMdSeminarTheme(name, isActive);
+        }
+
+        public IMdSeminarThemesBOL EditMdSeminarTheme(string originalMdSeminarThemesName, string newMdSeminarThemesName, bool? isActive)
+        {
+            return base.dal.EditMdSeminarTheme(originalMdSeminarThemesName, newMdSeminarThemesName, isActive);
         }
         #endregion
 

@@ -58,7 +58,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdBankBOL>(records).ToList<IMdBankBOL>();
         }
 
-        public IMdBankBOL CreateMdBank(string bankName, bool isActive)
+        public IMdBankBOL CreateMdBank(string bankName, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newBank = new MdBank
@@ -73,6 +73,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdBankBOL>(newBank);
+        }
+
+        public IMdBankBOL EditMdBank(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdBank bank = Db.MdBank.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (bank == null)
+            {
+                throw new Exception("Banque non trouvée.");
+            }
+
+            bank.Name = newMdItemName;
+            bank.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdBankBOL>(bank);
+
         }
         #endregion 
 
@@ -89,7 +107,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdEmploymentSituationBOL>(records).ToList<IMdEmploymentSituationBOL>();
         }
 
-        public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string employmentSituation, bool isActive)
+        public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string employmentSituation, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newEmploymentSituation= new MdEmploymentSituation
@@ -104,6 +122,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdEmploymentSituationBOL>(newEmploymentSituation);
+        }
+
+        public IMdEmploymentSituationBOL EditMdEmploymentSituation(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdEmploymentSituation mdEmploymentSituation = Db.MdEmploymentSituation.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdEmploymentSituation == null)
+            {
+                throw new Exception("mdEmploymentSituation non trouvée.");
+            }
+
+            mdEmploymentSituation.Name = newMdItemName;
+            mdEmploymentSituation.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdEmploymentSituationBOL>(mdEmploymentSituation);
+
         }
         #endregion
 
@@ -120,7 +156,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdMaritalStatusBOL>(records).ToList<IMdMaritalStatusBOL>();
         }
 
-        public IMdMaritalStatusBOL CreateMdMaritalStatus(string mdMaritalStatus, bool isActive)
+        public IMdMaritalStatusBOL CreateMdMaritalStatus(string mdMaritalStatus, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdMaritalStatus = new MdMaritalStatus
@@ -135,6 +171,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdMaritalStatusBOL>(newMdMaritalStatus);
+        }
+
+        public IMdMaritalStatusBOL EditMdMaritalStatus(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdMaritalStatus mdMaritalStatus = Db.MdMaritalStatus.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdMaritalStatus == null)
+            {
+                throw new Exception("mdMaritalStatus non trouvée.");
+            }
+
+            mdMaritalStatus.Name = newMdItemName;
+            mdMaritalStatus.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdMaritalStatusBOL>(mdMaritalStatus);
+
         }
         #endregion
 
@@ -151,7 +205,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdFamilySituationBOL>(records).ToList<IMdFamilySituationBOL>();
         }
 
-        public IMdFamilySituationBOL CreateMdFamilySituation(string mdFamilySituation, bool isActive)
+        public IMdFamilySituationBOL CreateMdFamilySituation(string mdFamilySituation, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdFamilySituation = new MdFamilySituation
@@ -166,6 +220,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdFamilySituationBOL>(newMdFamilySituation);
+        }
+
+        public IMdFamilySituationBOL EditMdFamilySituation(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdFamilySituation mdFamilySituation = Db.MdFamilySituation.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdFamilySituation == null)
+            {
+                throw new Exception("mdFamilySituation non trouvée.");
+            }
+
+            mdFamilySituation.Name = newMdItemName;
+            mdFamilySituation.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdFamilySituationBOL>(mdFamilySituation);
+
         }
         #endregion
 
@@ -182,7 +254,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdGenderDenominationBOL>(records).ToList<IMdGenderDenominationBOL>();
         }
 
-        public IMdGenderDenominationBOL CreateMdGenderDenomination(string mdGenderDenomination, bool isActive)
+        public IMdGenderDenominationBOL CreateMdGenderDenomination(string mdGenderDenomination, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdGenderDenomination = new MdGenderDenomination
@@ -197,6 +269,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdGenderDenominationBOL>(newMdGenderDenomination);
+        }
+
+        public IMdGenderDenominationBOL EditMdGenderDenomination(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdGenderDenomination mdGenderDenomination = Db.MdGenderDenomination.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdGenderDenomination == null)
+            {
+                throw new Exception("mdGenderDenomination non trouvée.");
+            }
+
+            mdGenderDenomination.Name = newMdItemName;
+            mdGenderDenomination.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdGenderDenominationBOL>(mdGenderDenomination);
+
         }
         #endregion
 
@@ -213,7 +303,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdHabitationTypeBOL>(records).ToList<IMdHabitationTypeBOL>();
         }
 
-        public IMdHabitationTypeBOL CreateMdHabitationType(string mdHabitationType, bool isActive)
+        public IMdHabitationTypeBOL CreateMdHabitationType(string mdHabitationType, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdHabitationType = new MdHabitationType
@@ -228,6 +318,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdHabitationTypeBOL>(newMdHabitationType);
+        }
+
+        public IMdHabitationTypeBOL EditMdHabitationType(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdHabitationType mdHabitationType = Db.MdHabitationType.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdHabitationType == null)
+            {
+                throw new Exception("mdHabitationType non trouvée.");
+            }
+
+            mdHabitationType.Name = newMdItemName;
+            mdHabitationType.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdHabitationTypeBOL>(mdHabitationType);
+
         }
         #endregion
 
@@ -244,7 +352,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdScholarshipTypeBOL>(records).ToList<IMdScholarshipTypeBOL>();
         }
 
-        public IMdScholarshipTypeBOL CreateMdScholarshipType(string mdScholarshipType, bool isActive)
+        public IMdScholarshipTypeBOL CreateMdScholarshipType(string mdScholarshipType, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdScholarshipType = new MdScholarshipType
@@ -260,6 +368,25 @@ namespace DataAccess.Providers.Entity
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdScholarshipTypeBOL>(newMdScholarshipType);
         }
+
+        public IMdScholarshipTypeBOL EditMdScholarshipType(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdScholarshipType mdScholarshipType = Db.MdScholarshipType.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdScholarshipType == null)
+            {
+                throw new Exception("mdScholarshipType non trouvée.");
+            }
+
+            mdScholarshipType.Name = newMdItemName;
+            mdScholarshipType.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdScholarshipTypeBOL>(mdScholarshipType);
+
+        }
+
         #endregion
 
         #region MdReferenceSource
@@ -275,7 +402,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdReferenceSourceBOL>(records).ToList<IMdReferenceSourceBOL>();
         }
 
-        public IMdReferenceSourceBOL CreateMdReferenceSource(string mdReferenceSource, bool isActive)
+        public IMdReferenceSourceBOL CreateMdReferenceSource(string mdReferenceSource, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdReferenceSource = new MdReferenceSource
@@ -290,6 +417,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdReferenceSourceBOL>(newMdReferenceSource);
+        }
+
+        public IMdReferenceSourceBOL EditMdReferenceSource(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdReferenceSource mdReferenceSource = Db.MdReferenceSource.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdReferenceSource == null)
+            {
+                throw new Exception("mdReferenceSource non trouvée.");
+            }
+
+            mdReferenceSource.Name = newMdItemName;
+            mdReferenceSource.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdReferenceSourceBOL>(mdReferenceSource);
+
         }
         #endregion
 
@@ -306,7 +451,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdInterventionStatusTypeBOL>(records).ToList<IMdInterventionStatusTypeBOL>();
         }
 
-        public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string mdInterventionStatusType, bool isActive)
+        public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string mdInterventionStatusType, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdInterventionStatusType = new MdInterventionStatusTypes
@@ -321,6 +466,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdInterventionStatusTypeBOL>(newMdInterventionStatusType);
+        }
+
+        public IMdInterventionStatusTypeBOL EditMdInterventionStatusType(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdInterventionStatusTypes mdInterventionStatusType = Db.MdInterventionStatusTypes.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdInterventionStatusType == null)
+            {
+                throw new Exception("mdInterventionStatusType non trouvée.");
+            }
+
+            mdInterventionStatusType.Name = newMdItemName;
+            mdInterventionStatusType.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdInterventionStatusTypeBOL>(mdInterventionStatusType);
+
         }
         #endregion
 
@@ -337,7 +500,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdLoanReasonBOL>(records).ToList<IMdLoanReasonBOL>();
         }
 
-        public IMdLoanReasonBOL CreateMdLoanReason(string mdLoanReason, bool isActive)
+        public IMdLoanReasonBOL CreateMdLoanReason(string mdLoanReason, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdLoanReason = new MdLoanReason
@@ -352,6 +515,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdLoanReasonBOL>(newMdLoanReason);
+        }
+
+        public IMdLoanReasonBOL EditMdLoanReason(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdLoanReason mdLoanReason = Db.MdLoanReason.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdLoanReason == null)
+            {
+                throw new Exception("mdLoanReason non trouvée.");
+            }
+
+            mdLoanReason.Name = newMdItemName;
+            mdLoanReason.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdLoanReasonBOL>(mdLoanReason);
+
         }
         #endregion
 
@@ -368,7 +549,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdInterventionTypeBOL>(records).ToList<IMdInterventionTypeBOL>();
         }
 
-        public IMdInterventionTypeBOL CreateMdInterventionType(string mdInterventionType, bool isActive)
+        public IMdInterventionTypeBOL CreateMdInterventionType(string mdInterventionType, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdInterventionType = new MdInterventionType
@@ -383,6 +564,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdInterventionTypeBOL>(newMdInterventionType);
+        }
+
+        public IMdInterventionTypeBOL EditMdInterventionType(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdInterventionType mdInterventionType = Db.MdInterventionType.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdInterventionType == null)
+            {
+                throw new Exception("mdInterventionType non trouvée.");
+            }
+
+            mdInterventionType.Name = newMdItemName;
+            mdInterventionType.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdInterventionTypeBOL>(mdInterventionType);
+
         }
         #endregion
 
@@ -399,7 +598,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdInterventionSolutionBOL>(records).ToList<IMdInterventionSolutionBOL>();
         }
 
-        public IMdInterventionSolutionBOL CreateMdInterventionSolution(string mdInterventionSolution, bool isActive)
+        public IMdInterventionSolutionBOL CreateMdInterventionSolution(string mdInterventionSolution, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdInterventionSolution = new MdInterventionSolution
@@ -414,6 +613,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdInterventionSolutionBOL>(newMdInterventionSolution);
+        }
+
+        public IMdInterventionSolutionBOL EditMdInterventionSolution(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdInterventionSolution mdInterventionSolution = Db.MdInterventionSolution.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdInterventionSolution == null)
+            {
+                throw new Exception("mdInterventionSolution non trouvée.");
+            }
+
+            mdInterventionSolution.Name = newMdItemName;
+            mdInterventionSolution.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdInterventionSolutionBOL>(mdInterventionSolution);
+
         }
         #endregion
 
@@ -430,7 +647,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdIncomeTypeBOL>(records).ToList<IMdIncomeTypeBOL>();
         }
 
-        public IMdIncomeTypeBOL CreateMdIncomeType(string mdIncomeType, bool isActive)
+        public IMdIncomeTypeBOL CreateMdIncomeType(string mdIncomeType, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdIncomeType = new MdIncomeType
@@ -445,6 +662,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdIncomeTypeBOL>(newMdIncomeType);
+        }
+
+        public IMdIncomeTypeBOL EditMdIncomeType(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdIncomeType mdIncomeType = Db.MdIncomeType.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdIncomeType == null)
+            {
+                throw new Exception("mdIncomeType non trouvée.");
+            }
+
+            mdIncomeType.Name = newMdItemName;
+            mdIncomeType.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdIncomeTypeBOL>(mdIncomeType);
+
         }
         #endregion
 
@@ -461,7 +696,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdSeminarThemesBOL>(records).ToList<IMdSeminarThemesBOL>();
         }
 
-        public IMdSeminarThemesBOL CreateMdSeminarTheme(string mdSeminarTheme, bool isActive)
+        public IMdSeminarThemesBOL CreateMdSeminarTheme(string mdSeminarTheme, bool? isActive)
         {
             // Créer un nouvel enregistrement MdBank
             var newMdSeminarTheme = new MdSeminarThemes
@@ -476,6 +711,24 @@ namespace DataAccess.Providers.Entity
 
             // Retourner le nouvel enregistrement sous forme de BOL
             return MapperWrapper.NewBol<MdSeminarThemesBOL>(newMdSeminarTheme);
+        }
+
+        public IMdSeminarThemesBOL EditMdSeminarTheme(string oldMdItemName, string newMdItemName, bool? isActive)
+        {
+            MdSeminarThemes mdSeminarThemes = Db.MdSeminarThemes.FirstOrDefault(x => x.Name == oldMdItemName);
+
+            if (mdSeminarThemes == null)
+            {
+                throw new Exception("mdSeminarThemes non trouvée.");
+            }
+
+            mdSeminarThemes.Name = newMdItemName;
+            mdSeminarThemes.Active = isActive;
+
+            Db.SaveChanges();
+
+            return MapperWrapper.NewBol<MdSeminarThemesBOL>(mdSeminarThemes);
+
         }
         #endregion
 
