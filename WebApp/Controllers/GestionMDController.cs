@@ -52,6 +52,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 base.bll.CreateMasterDataItem(mdName, viewModel.Name, viewModel.Active);
+                TempData["success"] = "Donnée créée avec succès";
                 return RedirectToAction(nameof(Details), new { mdName = mdName });
             }
 
@@ -80,6 +81,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 base.bll.EditMasterDataItem(mdName, oldName, viewModel.Name, viewModel.Active);
+                TempData["success"] = "Donnée modifiée avec succès";
                 return RedirectToAction("Details", new { mdName = mdName });
             }
 
@@ -100,13 +102,15 @@ namespace WebApp.Controllers
             bool? newActiveState = !item.IsActive;
 
             base.bll.EditMasterDataItem(mdName, mdItemName, mdItemName, newActiveState);
+            TempData["success"] = "Statut changé avec succès";
 
             return RedirectToAction("Details", new { mdName = mdName });
 
 
         }
-
-        public IActionResult Delete(string mdName, string mdItemName)
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(string mdName, string mdItemName)
         {
             base.bll.DeleteMasterDataItem(mdName, mdItemName);
 

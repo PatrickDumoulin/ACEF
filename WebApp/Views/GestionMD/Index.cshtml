@@ -5,15 +5,18 @@
 
 <div class="interventionAttachmentsIndexContainer mt-3">
 
-    <h1 class="attachments-card-header mb-4">Gestion des Données</h1>
+    <div class="col-6">
+        <h1 class="titreInterventionIndex pb-2 pt-2">Gestion des Données</h1>
+        <hr />
+    </div>
 
-    <div class="attachments-card-body">
+    <div class="attachments-card-body pt-3">
 
         <table class="table">
             <thead class="tableHeader">
                 <tr>
                     <th>Nom de la Donnée</th>
-                    <th>Actions</th>
+                    <th style="text-align:right;">Actions</th> <!-- Alignement à droite -->
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +24,8 @@
                 {
                     <tr>
                         <td>@nom</td>
-                        <td>
+                        <td style="text-align:right;">
+                            <!-- Alignement à droite -->
                             <div class="btn-group" role="group">
                                 <a asp-controller="GestionMD" asp-action="Details" asp-route-mdName="@nom" class="btn btn-primary">
                                     <i class="bi bi-list-ul"></i> Détails
@@ -36,6 +40,7 @@
     </div>
 
 </div>
+
 
 
 

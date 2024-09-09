@@ -1,9 +1,12 @@
 ﻿@model WebApp.ViewModels.MdDetailViewModel
 
+<partial name="_Notification" />
+
+<div class="interventionAttachmentsIndexContainer mt-3">
 <div class="container mt-4">
-    <div class="row pt-5">
+    <div class="row pt-2">
         <div class="col-6">
-            <h1 class="titreInterventionIndex pb-2">Détails de : @Model.MdName</h1>
+            <h1 class="titreInterventionIndex pb-2">@Model.MdName</h1>
             <hr />
         </div>
         <div class="col-6 text-end">
@@ -13,8 +16,10 @@
         </div>
     </div>
 
+        <a asp-action="Index" class="btn btn-secondary mb-4 mt-2"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
+
     <table class="table table-bordered">
-        <thead>
+        <thead class="tableHeader">
             <tr>
                 <th>Valeur</th>
                 <th>Réréfé par</th>
@@ -42,7 +47,7 @@
                         <td>@(item.IsActive.HasValue ? (item.IsActive.Value ? "Actif" : "Inactif") : "Indéterminé")</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a asp-action="Edit" asp-route-oldName="@item.Name" asp-route-mdName="@Model.MdName" class="btn btn-primary">
+                                <a asp-action="Edit" asp-route-oldName="@item.Name" asp-route-mdName="@Model.MdName" class="btn btn-primary me-3">
                                     <i class="bi bi-pencil-square"></i> Modifier
                                 </a>
                                 @if(item.ReferredCount >= 1)
@@ -62,9 +67,9 @@
                                 }
                                 else
                                 {
-                                    <a asp-action="Delete" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
-                                        <i class="bi bi-trash-fill"></i> Supprimer
-                                    </a>
+                                        <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "GestionMD", new { mdName = Model.MdName, mdItemName = item.Name })')" class="btn btn-sm btn-danger custom-btn custom-btn-delete">
+                                            <i class="bi bi-trash-fill"></i> Supprimer
+                                        </a>
                                 }
 
 
@@ -82,5 +87,74 @@
         </tbody>
     </table>
 
-    <a asp-action="Index" class="btn btn-secondary mt-3">Retour à la liste</a>
+    
 </div>
+</div>
+
+<link rel="stylesheet" href="~/css/global/SweetAlert.css">
+
+<!-- SWEETALERT DELETE-->
+<script>
+    function Delete(url) {
+        Swal.fire({
+            title: "Êtes-vous certain?",
+            text: "Cette donnée sera supprimée définitivement!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Oui, supprimer!",
+            cancelButtonText: "Annuler",
+            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                content: 'custom-swal-content',
+                confirmButton: 'custom-swal-confirm-button',
+                cancelButton: 'custom-swal-cancel-button'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (data) {
+                        // Afficher un message de confirmation et recharger la page après la suppression
+                        Swal.fire({
+                            title: 'Supprimé!',
+                            text: 'La donnée a été supprimée.',
+                            icon: 'success',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Erreur!',
+                            text: 'Une erreur est survenue lors de la suppression.',
+                            icon: 'error',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button',
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+
