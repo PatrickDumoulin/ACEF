@@ -10,23 +10,69 @@ namespace WebApp.Controllers
 {
     public class GestionMDController : AbstractBLLController<IMDBLL>
     {
-        public IActionResult Index()
+        public IActionResult Index(string sortColumn, string sortOrder)
         {
+            // Récupérer le dictionnaire des Master Data
             var masterDatas = base.bll.GetAllMDNames();
 
+            // Passer les informations de tri à la vue via ViewBag
+            sortColumn = string.IsNullOrEmpty(sortColumn) ? "Valeur" : sortColumn;
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "asc" : sortOrder;
+
+            // Passer les informations de tri à la vue
+            ViewBag.CurrentSortColumn = sortColumn;
+            ViewBag.CurrentSortOrder = sortOrder;
+
+            // Convertir le dictionnaire en une collection triable
+            var sortedMasterDatas = masterDatas.AsEnumerable();
+
+            // Appliquer le tri
+            switch (sortColumn)
+            {
+                case "Valeur":
+                    sortedMasterDatas = sortOrder == "asc"
+                        ? masterDatas.OrderBy(i => i.Value)  // Tri ascendant par valeur
+                        : masterDatas.OrderByDescending(i => i.Value);  // Tri descendant par valeur
+                    break;
+            }
+
+            // Créer le ViewModel avec les données triées
             var viewModel = new MdGestionIndexViewModel
             {
-                MdNames = masterDatas.Values.ToList(),
+                MdNames = sortedMasterDatas.Select(kv => kv.Value).ToList()  // Récupérer les valeurs triées
             };
-            return View(viewModel);
 
+            return View(viewModel);
         }
 
-        public IActionResult Details(string mdName)
+        public IActionResult Details(string mdName, string sortColumn, string sortOrder)
         {
-            // Récupérer les détails des objets Master Data
+
+            // Récupérer le dictionnaire des Master Data
             var masterDataItems = base.bll.GetAllMasterDataItems()[mdName];
 
+            // Passer les informations de tri à la vue via ViewBag
+            sortColumn = string.IsNullOrEmpty(sortColumn) ? "Valeur" : sortColumn;
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "asc" : sortOrder;
+
+            // Passer les informations de tri à la vue
+            ViewBag.CurrentSortColumn = sortColumn;
+            ViewBag.CurrentSortOrder = sortOrder;
+
+            // Convertir le dictionnaire en une collection triable
+            var sortedMasterDatas = masterDataItems.AsEnumerable();
+
+            // Appliquer le tri
+            switch (sortColumn)
+            {
+                case "Valeur":
+                    sortedMasterDatas = sortOrder == "asc"
+                        ? masterDataItems.OrderBy(i => i.Name)  // Tri ascendant par valeur
+                        : masterDataItems.OrderByDescending(i => i.Name);  // Tri descendant par valeur
+                    break;
+            }
+
+            // Créer le ViewModel avec les données triées
             var viewModel = new MdDetailViewModel
             {
                 MdName = mdName,

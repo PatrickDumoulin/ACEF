@@ -19,14 +19,29 @@
         <a asp-action="Index" class="btn btn-secondary mb-4 mt-2"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
 
     <table class="table table-bordered">
-        <thead class="tableHeader">
-            <tr>
-                <th>Valeur</th>
-                <th>Réréfé par</th>
-                <th>Statut</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>
+                        <a href="@Url.Action("Details", new { mdName = Model.MdName, sortColumn = "Valeur", sortOrder = ViewBag.CurrentSortOrder == "asc" ? "desc" : "asc" })">
+                            Valeur
+                            @if (ViewBag.CurrentSortColumn == "Valeur")
+                            {
+                                @if (ViewBag.CurrentSortOrder == "asc")
+                                {
+                                    <i class="bi bi-arrow-up"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-arrow-down"></i>
+                                }
+                            }
+                        </a>
+                    </th>
+                    <th>Référé par</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
         <tbody>
             @if (Model.MdItems != null && Model.MdItems.Any())
             {
