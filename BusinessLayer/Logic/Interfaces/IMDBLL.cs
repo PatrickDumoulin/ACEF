@@ -28,13 +28,12 @@ namespace BusinessLayer.Logic.Interfaces
         #region MDGESTION
         public Dictionary<string, string> GetAllMDNames();
 
-        public List<string> GetAllMdNamesByName(string name);
-
         public Dictionary<string, IEnumerable<MasterDataViewModel>> GetAllMasterDataItems();
 
         public void CreateMasterDataItem(string name, string mdItemName, bool? isActive);
 
         public void EditMasterDataItem(string mdName, string oldMdItemName, string newMdItemName, bool? isActive);
+        public void DeleteMasterDataItem(string mdName, string itemName);
         #endregion
 
 
@@ -43,6 +42,9 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdBankBOL> GetAllMdBanks();
         public IMdBankBOL CreateBank(string name, bool? isActive);
         public IMdBankBOL EditMdBank(string originalBankName, string newBankName, bool? isActive);
+        public int GetReferenceCountForMdBank(int bankId);
+        public void DeleteMdBank(string itemName);
+
 
 
         #endregion
@@ -52,6 +54,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdEmploymentSituationBOL> GetAllMdEmploymentSituations();
         public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string name, bool? isActive);
         public IMdEmploymentSituationBOL EditMdEmploymentSituation(string oldMdEmploymentSituationName, string newMdEmploymentSituationName, bool? isActive);
+        public int GetReferenceCountForMdEmploymentSituation(int id);
+        public void DeleteMdEmploymentSituation(string itemName);
         #endregion
 
         #region MdMaritalStatus
@@ -59,7 +63,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdMaritalStatusBOL> GetAllMdMaritalStatus();
         public IMdMaritalStatusBOL CreateMdMaritalStatus(string name, bool? isActive);
         public IMdMaritalStatusBOL EditMdMaritalStatus(string originalMdMaritalStatusName, string newMdMaritalStatusName, bool? isActive);
-
+        public int GetReferenceCountForMdMaritalStatus(int id);
+        public void DeleteMdMaritalStatus(string itemName);
         #endregion
 
         #region MdFamilySituation
@@ -67,6 +72,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdFamilySituationBOL> GetAllMdFamilySituations();
         public IMdFamilySituationBOL CreateMdFamilySituation(string name, bool? isActive);
         public IMdFamilySituationBOL EditMdFamilySituation(string originalMdFamilySituationName, string newMdFamilySituationName, bool? isActive);
+        public int GetReferenceCountForMdFamilySituation(int id);
+        public void DeleteMdFamilySituation(string itemName);
         #endregion
 
         #region MdGenderDenomination
@@ -74,6 +81,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdGenderDenominationBOL> GetAllMdGenderDenominations();
         public IMdGenderDenominationBOL CreateMdGenderDenomination(string name, bool? isActive);
         public IMdGenderDenominationBOL EditMdGenderDenomination(string originalMdGenderDenominationName, string newMdGenderDenominationName, bool? isActive);
+        public int GetReferenceCountForMdGenderDenomination(int id);
+        public void DeleteMdGenderDenomination(string itemName);
         #endregion
 
         #region MdHabitationType
@@ -81,6 +90,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdHabitationTypeBOL> GetAllMdHabitationTypes();
         public IMdHabitationTypeBOL CreateMdHabitationType(string name, bool? isActive);
         public IMdHabitationTypeBOL EditMdHabitationType(string originalMdHabitationTypeName, string newMdHabitationTypeName, bool? isActive);
+        public int GetReferenceCountForMdHabitationType(int id);
+        public void DeleteMdHabitationType(string itemName);
         #endregion
 
         #region MdScholarshipType
@@ -88,6 +99,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdScholarshipTypeBOL> GetAllMdScholarshipTypes();
         public IMdScholarshipTypeBOL CreateMdScholarshipType(string name, bool? isActive);
         public IMdScholarshipTypeBOL EditMdScholarshipType(string originalMdScholarshipTypeName, string newMdScholarshipTypeName, bool? isActive);
+        public int GetReferenceCountForMdScholarshipType(int id);
+        public void DeleteMdScholarshipType(string itemName);
         #endregion
 
         #region MdReferenceSource
@@ -96,6 +109,8 @@ namespace BusinessLayer.Logic.Interfaces
         string GetReferenceTypeName(int referenceTypeId);
         public IMdReferenceSourceBOL CreateMdReferenceSource(string name, bool? isActive);
         public IMdReferenceSourceBOL EditMdReferenceSource(string originalMdReferenceSourceName, string newMdReferenceSourceName, bool? isActive);
+        public int GetReferenceCountForMdReferenceSource(int id);
+        public void DeleteMdReferenceSource(string itemName);
         #endregion
 
         #region MdInterventionStatusType
@@ -104,6 +119,8 @@ namespace BusinessLayer.Logic.Interfaces
         string GetMdInterventionStatusTypeName(int statusId);
         public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string name, bool? isActive);
         public IMdInterventionStatusTypeBOL EditMdInterventionStatusType(string originalMdInterventionStatusTypeName, string newMdInterventionStatusTypeName, bool? isActive);
+        public int GetReferenceCountForMdInterventionStatusType(int id);
+        public void DeleteMdInterventionStatusType(string itemName);
         #endregion
 
         #region MdLoanReason
@@ -112,6 +129,8 @@ namespace BusinessLayer.Logic.Interfaces
         string GetMdLoanReasonName(int loanReasonId);
         public IMdLoanReasonBOL CreateMdLoanReason(string name, bool? isActive);
         public IMdLoanReasonBOL EditMdLoanReason(string originalMdLoanReasonName, string newMdLoanReasonName, bool? isActive);
+        public int GetReferenceCountForMdLoanReason(int id);
+        public void DeleteMdLoanReason(string itemName);
         #endregion
 
         #region MdInterventionType
@@ -120,6 +139,8 @@ namespace BusinessLayer.Logic.Interfaces
         string GetMdInterventionTypeName(int interventionTypeId);
         public IMdInterventionTypeBOL CreateMdInterventionType(string name, bool? isActive);
         public IMdInterventionTypeBOL EditMdInterventionType(string originalMdInterventionTypeName, string newMdInterventionTypeName, bool? isActive);
+        public int GetReferenceCountForMdInterventionType(int id);
+        public void DeleteMdInterventionType(string itemName);
         #endregion
 
         #region MdInterventionSolution
@@ -128,6 +149,8 @@ namespace BusinessLayer.Logic.Interfaces
         string GetSolutionName(int solutionId);
         public IMdInterventionSolutionBOL CreateMdInterventionSolution(string name, bool? isActive);
         public IMdInterventionSolutionBOL EditMdInterventionSolution(string originalMdInterventionSolutionName, string newMdInterventionSolutionName, bool? isActive);
+        public int GetReferenceCountForMdInterventionSolution(int id);
+        public void DeleteMdInterventionSolution(string itemName);
         #endregion
 
         #region MdIncomeType
@@ -135,6 +158,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdIncomeTypeBOL> GetAllMdIncomeTypes();
         public IMdIncomeTypeBOL CreateMdIncomeType(string name, bool? isActive);
         public IMdIncomeTypeBOL EditMdIncomeType(string originalMdIncomeTypeName, string newMdIncomeTypeName, bool? isActive);
+        public int GetReferenceCountForMdIncomeType(int id);
+        public void DeleteMdIncomeType(string itemName);
         #endregion
 
         #region MdSeminarTheme
@@ -142,6 +167,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IMdSeminarThemesBOL> GetAllMdSeminarThemes();
         public IMdSeminarThemesBOL CreateMdSeminarTheme(string name, bool? isActive);
         public IMdSeminarThemesBOL EditMdSeminarTheme(string originalMdSeminarThemesName, string newMdSeminarThemesName, bool? isActive);
+        public int GetReferenceCountForMdSeminarTheme(int id);
+        public void DeleteMdSeminarTheme(string itemName);
         #endregion
 
 

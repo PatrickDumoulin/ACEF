@@ -63,34 +63,6 @@ namespace BusinessLayer.Logic
             };
         }
 
-        public List<string> GetAllMdNamesByName(string name)
-        {
-            var mappings = new Dictionary<string, Func<IEnumerable<string>>>
-            {
-                { "Banque", () => GetAllMdBanks().ElementList.Select(b => b.Name).ToList() },
-                { "Situation d'emploi", () => GetAllMdEmploymentSituations().ElementList.Select(b => b.Name).ToList() },
-                { "État civil", () => GetAllMdMaritalStatus().ElementList.Select(b => b.Name).ToList() },
-                { "Situation familiale", () => GetAllMdFamilySituations().ElementList.Select(b => b.Name).ToList() },
-                { "Genre", () => GetAllMdGenderDenominations().ElementList.Select(b => b.Name).ToList() },
-                { "Type d'habitation", () => GetAllMdHabitationTypes().ElementList.Select(b => b.Name).ToList() },
-                { "Type de revenu", () => GetAllMdIncomeTypes().ElementList.Select(b => b.Name).ToList() },
-                { "Solution d'intervention", () => GetAllMdInterventionSolutions().ElementList.Select(b => b.Name).ToList() },
-                { "Type d'intervention", () => GetAllMdInterventionTypes().ElementList.Select(b => b.Name).ToList() },
-                { "Type de statut d'intervention", () => GetAllMdInterventionStatusTypes().ElementList.Select(b => b.Name).ToList() },
-                { "Raison de prêt", () => GetAllMdLoanReasons().ElementList.Select(b => b.Name).ToList() },
-                { "Source de référence", () => GetAllMdReferenceSources().ElementList.Select(b => b.Name).ToList() },
-                { "Type de bourse", () => GetAllMdScholarshipTypes().ElementList.Select(b => b.Name).ToList() },
-                { "Thème de séminaire", () => GetAllMdSeminarThemes().ElementList.Select(b => b.Name).ToList() }
-            };
-
-            if (mappings.ContainsKey(name))
-            {
-                return mappings[name]().ToList();
-            }
-
-            return new List<string>();
-        }
-
         public Dictionary<string, IEnumerable<MasterDataViewModel>> GetAllMasterDataItems()
         {
             var masterDataDictionary = new Dictionary<string, IEnumerable<MasterDataViewModel>>
@@ -100,7 +72,8 @@ namespace BusinessLayer.Logic
                     Id = b.Id,
                     Name = b.Name,
                     IsActive = b.Active,
-                    FrenchDisplayName = "Banque"
+                    FrenchDisplayName = "Banque",
+                    ReferredCount = GetReferenceCountForMdBank(b.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Situation d'emploi", GetAllMdEmploymentSituations().ElementList.Select(b => new MasterDataViewModel
@@ -108,7 +81,8 @@ namespace BusinessLayer.Logic
                     Id = b.Id,
                     Name = b.Name,
                     IsActive = b.Active,
-                    FrenchDisplayName = "Situation d'emploi"
+                    FrenchDisplayName = "Situation d'emploi",
+                    ReferredCount = GetReferenceCountForMdEmploymentSituation(b.Id) // Compter les références pour chaque banque
                 })},
 
                 { "État civil", GetAllMdMaritalStatus().ElementList.Select(ms => new MasterDataViewModel
@@ -116,7 +90,8 @@ namespace BusinessLayer.Logic
                     Id = ms.Id,
                     Name = ms.Name,
                     IsActive = ms.Active,
-                    FrenchDisplayName = "État civil"
+                    FrenchDisplayName = "État civil",
+                    ReferredCount = GetReferenceCountForMdMaritalStatus(ms.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Situation familiale", GetAllMdFamilySituations().ElementList.Select(fs => new MasterDataViewModel
@@ -124,7 +99,8 @@ namespace BusinessLayer.Logic
                     Id = fs.Id,
                     Name = fs.Name,
                     IsActive = fs.Active,
-                    FrenchDisplayName = "Situation familiale"
+                    FrenchDisplayName = "Situation familiale",
+                    ReferredCount = GetReferenceCountForMdFamilySituation(fs.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Genre", GetAllMdGenderDenominations().ElementList.Select(gd => new MasterDataViewModel
@@ -132,7 +108,8 @@ namespace BusinessLayer.Logic
                     Id = gd.Id,
                     Name = gd.Name,
                     IsActive = gd.Active,
-                    FrenchDisplayName = "Genre"
+                    FrenchDisplayName = "Genre",
+                    ReferredCount = GetReferenceCountForMdGenderDenomination(gd.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Type d'habitation", GetAllMdHabitationTypes().ElementList.Select(ht => new MasterDataViewModel
@@ -140,7 +117,8 @@ namespace BusinessLayer.Logic
                     Id = ht.Id,
                     Name = ht.Name,
                     IsActive = ht.Active,
-                    FrenchDisplayName = "Type d'habitation"
+                    FrenchDisplayName = "Type d'habitation",
+                    ReferredCount = GetReferenceCountForMdHabitationType(ht.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Type de revenu", GetAllMdIncomeTypes().ElementList.Select(it => new MasterDataViewModel
@@ -148,7 +126,8 @@ namespace BusinessLayer.Logic
                     Id = it.Id,
                     Name = it.Name,
                     IsActive = it.Active,
-                    FrenchDisplayName = "Type de revenu"
+                    FrenchDisplayName = "Type de revenu",
+                    ReferredCount = GetReferenceCountForMdIncomeType(it.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Solution d'intervention", GetAllMdInterventionSolutions().ElementList.Select(isol => new MasterDataViewModel
@@ -156,7 +135,8 @@ namespace BusinessLayer.Logic
                     Id = isol.Id,
                     Name = isol.Name,
                     IsActive = isol.Active,
-                    FrenchDisplayName = "Solution d'intervention"
+                    FrenchDisplayName = "Solution d'intervention",
+                    ReferredCount = GetReferenceCountForMdInterventionSolution(isol.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Type d'intervention", GetAllMdInterventionTypes().ElementList.Select(it => new MasterDataViewModel
@@ -164,7 +144,8 @@ namespace BusinessLayer.Logic
                     Id = it.Id,
                     Name = it.Name,
                     IsActive = it.Active,
-                    FrenchDisplayName = "Type d'intervention"
+                    FrenchDisplayName = "Type d'intervention",
+                    ReferredCount = GetReferenceCountForMdInterventionType(it.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Type de statut d'intervention", GetAllMdInterventionStatusTypes().ElementList.Select(ist => new MasterDataViewModel
@@ -172,7 +153,8 @@ namespace BusinessLayer.Logic
                     Id = ist.Id,
                     Name = ist.Name,
                     IsActive = ist.Active,
-                    FrenchDisplayName = "Type de statut d'intervention"
+                    FrenchDisplayName = "Type de statut d'intervention",
+                    ReferredCount = GetReferenceCountForMdInterventionStatusType(ist.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Raison de prêt", GetAllMdLoanReasons().ElementList.Select(lr => new MasterDataViewModel
@@ -180,7 +162,8 @@ namespace BusinessLayer.Logic
                     Id = lr.Id,
                     Name = lr.Name,
                     IsActive = lr.Active,
-                    FrenchDisplayName = "Raison de prêt"
+                    FrenchDisplayName = "Raison de prêt",
+                    ReferredCount = GetReferenceCountForMdLoanReason(lr.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Source de référence", GetAllMdReferenceSources().ElementList.Select(rs => new MasterDataViewModel
@@ -188,7 +171,8 @@ namespace BusinessLayer.Logic
                     Id = rs.Id,
                     Name = rs.Name,
                     IsActive = rs.Active,
-                    FrenchDisplayName = "Source de référence"
+                    FrenchDisplayName = "Source de référence",
+                    ReferredCount = GetReferenceCountForMdReferenceSource(rs.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Type de bourse", GetAllMdScholarshipTypes().ElementList.Select(st => new MasterDataViewModel
@@ -196,7 +180,8 @@ namespace BusinessLayer.Logic
                     Id = st.Id,
                     Name = st.Name,
                     IsActive = st.Active,
-                    FrenchDisplayName = "Type de bourse"
+                    FrenchDisplayName = "Type de bourse",
+                    ReferredCount = GetReferenceCountForMdScholarshipType(st.Id) // Compter les références pour chaque banque
                 })},
 
                 { "Thème de séminaire", GetAllMdSeminarThemes().ElementList.Select(st => new MasterDataViewModel
@@ -204,14 +189,13 @@ namespace BusinessLayer.Logic
                     Id = st.Id,
                     Name = st.Name,
                     IsActive = st.Active,
-                    FrenchDisplayName = "Thème de séminaire"
+                    FrenchDisplayName = "Thème de séminaire",
+                    ReferredCount = GetReferenceCountForMdSeminarTheme(st.Id) // Compter les références pour chaque banque
                 })}
              };
 
             return masterDataDictionary;
         }
-
-
 
         public void CreateMasterDataItem(string name, string mdItemName, bool? isActive)
         {
@@ -275,6 +259,36 @@ namespace BusinessLayer.Logic
             }
         }
 
+        public void DeleteMasterDataItem(string mdName, string itemName)
+        {
+            var mappings = new Dictionary<string, Action<string>>
+            {
+                { "Banque", (name) => DeleteMdBank(name) },
+                { "Situation d'emploi", (name) => DeleteMdEmploymentSituation(name) },
+                { "Genre", (name) => DeleteMdGenderDenomination(name) },
+                { "État civil", (name) => DeleteMdMaritalStatus(name) },
+                { "Situation familiale", (name) => DeleteMdFamilySituation(name) },
+                { "Type d'habitation", (name) => DeleteMdHabitationType(name) },
+                { "Type de revenu", (name) => DeleteMdIncomeType(name) },
+                { "Solution d'intervention", (name) => DeleteMdInterventionSolution(name) },
+                { "Type d'intervention", (name) => DeleteMdInterventionType(name) },
+                { "Type de statut d'intervention", (name) => DeleteMdInterventionStatusType(name) },
+                { "Raison de prêt", (name) => DeleteMdLoanReason(name) },
+                { "Source de référence", (name) => DeleteMdReferenceSource(name) },
+                { "Type de bourse", (name) => DeleteMdScholarshipType(name) },
+                { "Thème de séminaire", (name) => DeleteMdSeminarTheme(name) }
+            };
+
+            if (mappings.ContainsKey(mdName))
+            {
+                // Appel de la méthode de suppression spécifique
+                mappings[mdName](itemName);
+            }
+            else
+            {
+                throw new Exception("Type de MasterData inconnu.");
+            }
+        }
 
 
         #endregion
@@ -301,6 +315,19 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdBank(oldBankName, newBankName, isActive);
         }
+
+        public int GetReferenceCountForMdBank(int bankId)
+        {
+            return base.dal.GetReferenceCountForMdBank(bankId);
+        }
+
+        public void DeleteMdBank(string itemName)
+        {
+           base.dal.DeleteMdBank(itemName);
+        }
+
+
+
         #endregion
 
         #region MdEmploymentSituation
@@ -325,6 +352,16 @@ namespace BusinessLayer.Logic
         public IMdEmploymentSituationBOL EditMdEmploymentSituation(string originalMdEmploymentSituationName, string newMdEmploymentSituationName, bool? isActive)
         {
             return base.dal.EditMdEmploymentSituation(originalMdEmploymentSituationName, newMdEmploymentSituationName, isActive);
+        }
+
+        public int GetReferenceCountForMdEmploymentSituation(int id)
+        {
+            return base.dal.GetReferenceCountForMdEmploymentSituation(id);
+        }
+
+        public void DeleteMdEmploymentSituation(string itemName)
+        {
+            base.dal.DeleteMdEmploymentSituation(itemName);
         }
         #endregion
 
@@ -351,6 +388,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdMaritalStatus(originalMdMaritalStatusName, newMdMaritalStatusName, isActive);
         }
+
+        public int GetReferenceCountForMdMaritalStatus(int id)
+        {
+            return base.dal.GetReferenceCountForMdMaritalStatus(id);
+        }
+
+        public void DeleteMdMaritalStatus(string itemName)
+        {
+            base.dal.DeleteMdMaritalStatus(itemName);
+        }
         #endregion
 
         #region MdFamilySituation
@@ -375,6 +422,16 @@ namespace BusinessLayer.Logic
         public IMdFamilySituationBOL EditMdFamilySituation(string originalMdFamilySituationName, string newMdFamilySituationName, bool? isActive)
         {
             return base.dal.EditMdFamilySituation(originalMdFamilySituationName, newMdFamilySituationName, isActive);
+        }
+
+        public int GetReferenceCountForMdFamilySituation(int id)
+        {
+            return base.dal.GetReferenceCountForMdFamilySituation(id);
+        }
+
+        public void DeleteMdFamilySituation(string itemName)
+        {
+            base.dal.DeleteMdFamilySituation(itemName);
         }
         #endregion
 
@@ -401,6 +458,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdGenderDenomination(originalMdGenderDenominationName, newMdGenderDenominationName, isActive);
         }
+
+        public int GetReferenceCountForMdGenderDenomination(int id)
+        {
+            return base.dal.GetReferenceCountForMdGenderDenomination(id);
+        }
+
+        public void DeleteMdGenderDenomination(string itemName)
+        {
+            base.dal.DeleteMdGenderDenomination(itemName);
+        }
         #endregion
 
         #region MdHabitationType
@@ -426,6 +493,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdHabitationType(originalMdHabitationTypeName, newMdHabitationTypeName, isActive);
         }
+
+        public int GetReferenceCountForMdHabitationType(int id)
+        {
+            return base.dal.GetReferenceCountForMdHabitationType(id);
+        }
+
+        public void DeleteMdHabitationType(string itemName)
+        {
+            base.dal.DeleteMdHabitationType(itemName);
+        }
         #endregion
 
         #region MdScholarshipType
@@ -450,6 +527,16 @@ namespace BusinessLayer.Logic
         public IMdScholarshipTypeBOL EditMdScholarshipType(string originalMdScholarshipTypeName, string newMdScholarshipTypeName, bool? isActive)
         {
             return base.dal.EditMdScholarshipType(originalMdScholarshipTypeName, newMdScholarshipTypeName, isActive);
+        }
+
+        public int GetReferenceCountForMdScholarshipType(int id)
+        {
+            return base.dal.GetReferenceCountForMdScholarshipType(id);
+        }
+
+        public void DeleteMdScholarshipType(string itemName)
+        {
+            base.dal.DeleteMdScholarshipType(itemName);
         }
         #endregion
 
@@ -484,6 +571,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdReferenceSource(originalMdReferenceSourceName, newMdReferenceSourceName, isActive);
         }
+
+        public int GetReferenceCountForMdReferenceSource(int id)
+        {
+            return base.dal.GetReferenceCountForMdReferenceSource(id);
+        }
+
+        public void DeleteMdReferenceSource(string itemName)
+        {
+            base.dal.DeleteMdReferenceSource(itemName);
+        }
         #endregion
 
         #region MdInterventionStatusType
@@ -517,6 +614,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdInterventionStatusType(originalMdInterventionStatusTypeName, newMdInterventionStatusTypeName, isActive);
         }
+
+        public int GetReferenceCountForMdInterventionStatusType(int id)
+        {
+            return base.dal.GetReferenceCountForMdInterventionStatusType(id);
+        }
+
+        public void DeleteMdInterventionStatusType(string itemName)
+        {
+            base.dal.DeleteMdInterventionStatusType(itemName);
+        }
         #endregion
 
         #region MdLoanReason
@@ -549,6 +656,16 @@ namespace BusinessLayer.Logic
         public IMdLoanReasonBOL EditMdLoanReason(string originalMdLoanReasonName, string newMdLoanReasonName, bool? isActive)
         {
             return base.dal.EditMdLoanReason(originalMdLoanReasonName, newMdLoanReasonName, isActive);
+        }
+
+        public int GetReferenceCountForMdLoanReason(int id)
+        {
+            return base.dal.GetReferenceCountForMdLoanReason(id);
+        }
+
+        public void DeleteMdLoanReason(string itemName)
+        {
+            base.dal.DeleteMdLoanReason(itemName);
         }
         #endregion
 
@@ -584,6 +701,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdInterventionType(originalMdInterventionTypeName, newMdInterventionTypeName, isActive);
         }
+
+        public int GetReferenceCountForMdInterventionType(int id)
+        {
+            return base.dal.GetReferenceCountForMdInterventionType(id);
+        }
+
+        public void DeleteMdInterventionType(string itemName)
+        {
+            base.dal.DeleteMdInterventionType(itemName);
+        }
         #endregion
 
         #region MdInterventionSolution
@@ -617,6 +744,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdInterventionSolution(originalMdInterventionSolutionName, newMdInterventionSolutionName, isActive);
         }
+
+        public int GetReferenceCountForMdInterventionSolution(int id)
+        {
+            return base.dal.GetReferenceCountForMdInterventionSolution(id);
+        }
+
+        public void DeleteMdInterventionSolution(string itemName)
+        {
+            base.dal.DeleteMdInterventionSolution(itemName);
+        }
         #endregion
 
         #region MdIncomeType
@@ -641,6 +778,16 @@ namespace BusinessLayer.Logic
         {
             return base.dal.EditMdIncomeType(originalMdIncomeTypeName, newMdIncomeTypeName, isActive);
         }
+
+        public int GetReferenceCountForMdIncomeType(int id)
+        {
+            return base.dal.GetReferenceCountForMdIncomeType(id);
+        }
+
+        public void DeleteMdIncomeType(string itemName)
+        {
+            base.dal.DeleteMdIncomeType(itemName);
+        }
         #endregion
 
         #region MdSeminarTheme
@@ -664,6 +811,16 @@ namespace BusinessLayer.Logic
         public IMdSeminarThemesBOL EditMdSeminarTheme(string originalMdSeminarThemesName, string newMdSeminarThemesName, bool? isActive)
         {
             return base.dal.EditMdSeminarTheme(originalMdSeminarThemesName, newMdSeminarThemesName, isActive);
+        }
+
+        public int GetReferenceCountForMdSeminarTheme(int id)
+        {
+            return base.dal.GetReferenceCountForMdSeminarTheme(id);
+        }
+
+        public void DeleteMdSeminarTheme(string itemName)
+        {
+            base.dal.DeleteMdSeminarTheme(itemName);
         }
         #endregion
 

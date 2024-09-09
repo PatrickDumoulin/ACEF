@@ -28,6 +28,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdBankBOL> GetAllMdBanks();
         public IMdBankBOL CreateMdBank(string bankName, bool? isActive);
         public IMdBankBOL EditMdBank(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdBank(int bankId);
+        public void DeleteMdBank(string itemName);
         #endregion
 
         #region MdEmploymentSituation
@@ -35,6 +37,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdEmploymentSituationBOL> GetAllMdEmploymentSituations();
         public IMdEmploymentSituationBOL CreateMdEmploymentSituation(string employmentSituation, bool? isActive);
         public IMdEmploymentSituationBOL EditMdEmploymentSituation(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdEmploymentSituation(int id);
+        public void DeleteMdEmploymentSituation(string itemName);
         #endregion
 
         #region MdMaritalStatus
@@ -42,6 +46,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdMaritalStatusBOL> GetAllMdMaritalStatus();
         public IMdMaritalStatusBOL CreateMdMaritalStatus(string mdMaritalStatus, bool? isActive);
         public IMdMaritalStatusBOL EditMdMaritalStatus(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdMaritalStatus(int id);
+        public void DeleteMdMaritalStatus(string itemName);
         #endregion
 
         #region MdFamilySituation
@@ -49,7 +55,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdFamilySituationBOL> GetAllMdFamilySituations();
         public IMdFamilySituationBOL CreateMdFamilySituation(string mdFamilySituation, bool? isActive);
         public IMdFamilySituationBOL EditMdFamilySituation(string oldMdItemName, string newMdItemName, bool? isActive);
-
+        public int GetReferenceCountForMdFamilySituation(int id);
+        public void DeleteMdFamilySituation(string itemName);
         #endregion
 
         #region MdGenderDenomination
@@ -57,6 +64,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdGenderDenominationBOL> GetAllMdGenderDenominations();
         public IMdGenderDenominationBOL CreateMdGenderDenomination(string mdGenderDenomination, bool? isActive);
         public IMdGenderDenominationBOL EditMdGenderDenomination(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdGenderDenomination(int id);
+        public void DeleteMdGenderDenomination(string itemName);
         #endregion
 
         #region MdHabitationType
@@ -64,6 +73,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdHabitationTypeBOL> GetAllMdHabitationTypes();
         public IMdHabitationTypeBOL CreateMdHabitationType(string mdHabitationType, bool? isActive);
         public IMdHabitationTypeBOL EditMdHabitationType(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdHabitationType(int id);
+        public void DeleteMdHabitationType(string itemName);
         #endregion
 
         #region MdScholarshipType
@@ -71,6 +82,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdScholarshipTypeBOL> GetAllMdScholarshipTypes();
         public IMdScholarshipTypeBOL CreateMdScholarshipType(string mdScholarshipType, bool? isActive);
         public IMdScholarshipTypeBOL EditMdScholarshipType(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdScholarshipType(int id);
+        public void DeleteMdScholarshipType(string itemName);
         #endregion
 
         #region MdReferenceSource
@@ -78,6 +91,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdReferenceSourceBOL> GetAllMdReferenceSources();
         public IMdReferenceSourceBOL CreateMdReferenceSource(string mdReferenceSource, bool? isActive);
         public IMdReferenceSourceBOL EditMdReferenceSource(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdReferenceSource(int id);
+        public void DeleteMdReferenceSource(string itemName);
         #endregion
 
         #region MdInterventionStatusType
@@ -85,6 +100,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdInterventionStatusTypeBOL> GetAllMdInterventionStatusTypes();
         public IMdInterventionStatusTypeBOL CreateMdInterventionStatusType(string mdInterventionStatusType, bool? isActive);
         public IMdInterventionStatusTypeBOL EditMdInterventionStatusType(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdInterventionStatusType(int id);
+        public void DeleteMdInterventionStatusType(string itemName);
         #endregion
 
         #region MdLoanReason
@@ -92,6 +109,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdLoanReasonBOL> GetAllMdLoanReasons();
         public IMdLoanReasonBOL CreateMdLoanReason(string mdLoanReason, bool? isActive);
         public IMdLoanReasonBOL EditMdLoanReason(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdLoanReason(int id);
+        public void DeleteMdLoanReason(string itemName);
         #endregion
 
         #region MdInterventionType
@@ -99,6 +118,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdInterventionTypeBOL> GetAllMdInterventionTypes();
         public IMdInterventionTypeBOL CreateMdInterventionType(string mdInterventionType, bool? isActive);
         public IMdInterventionTypeBOL EditMdInterventionType(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdInterventionType(int id);
+        public void DeleteMdInterventionType(string itemName);
         #endregion
 
         #region MdInterventionSolution
@@ -106,6 +127,9 @@ namespace DataAccess.Providers.Interfaces
         List<IMdInterventionSolutionBOL> GetAllMdInterventionSolutions();
         public IMdInterventionSolutionBOL CreateMdInterventionSolution(string mdInterventionSolution, bool? isActive);
         public IMdInterventionSolutionBOL EditMdInterventionSolution(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdInterventionSolution(int id);
+        public void DeleteMdInterventionSolution(string itemName);
+
         #endregion
 
         #region MdIncomeType
@@ -113,6 +137,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdIncomeTypeBOL> GetAllMdIncomeTypes();
         public IMdIncomeTypeBOL CreateMdIncomeType(string mdIncomeType, bool? isActive);
         public IMdIncomeTypeBOL EditMdIncomeType(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdIncomeType(int id);
+        public void DeleteMdIncomeType(string itemName);
         #endregion
 
         #region MdSeminarTheme
@@ -120,6 +146,8 @@ namespace DataAccess.Providers.Interfaces
         List<IMdSeminarThemesBOL> GetAllMdSeminarThemes();
         public IMdSeminarThemesBOL CreateMdSeminarTheme(string mdSeminarTheme, bool? isActive);
         public IMdSeminarThemesBOL EditMdSeminarTheme(string oldMdItemName, string newMdItemName, bool? isActive);
+        public int GetReferenceCountForMdSeminarTheme(int id);
+        public void DeleteMdSeminarTheme(string itemName);
         #endregion
 
 

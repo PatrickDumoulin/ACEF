@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th>Valeur</th>
+                <th>Réréfé par</th>
                 <th>Statut</th>
                 <th>Action</th>
             </tr>
@@ -27,25 +28,45 @@
                 @foreach (var item in Model.MdItems)
                 {
                     <tr>
-                        <td>@item.Name</td> <!-- Affiche le nom de la Master Data -->
+                        <td>@item.Name</td>
+                        <td>
+                            @if (item.ReferredCount <= 1)
+                            {
+                                @item.ReferredCount @:élément
+                            }
+                            else
+                            {
+                                @item.ReferredCount @:éléments
+                            }
+                        </td><!-- Afficher le nombre de références -->
                         <td>@(item.IsActive.HasValue ? (item.IsActive.Value ? "Actif" : "Inactif") : "Indéterminé")</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <a asp-action="Edit" asp-route-oldName="@item.Name" asp-route-mdName="@Model.MdName" class="btn btn-primary">
                                     <i class="bi bi-pencil-square"></i> Modifier
                                 </a>
-                                @if(item.IsActive == true)
+                                @if(item.ReferredCount >= 1)
                                 {
-                                    <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
-                                        <i class="bi bi-toggle-off"></i> Désactiver
-                                    </a>
+                                    if (item.IsActive == true)
+                                    {
+                                        <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                            <i class="bi bi-toggle-off"></i> Désactiver
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                            <i class="bi bi-toggle-on"></i> Activer
+                                        </a>
+                                    }
                                 }
                                 else
                                 {
-                                    <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
-                                        <i class="bi bi-toggle-on"></i> Activer
+                                    <a asp-action="Delete" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                        <i class="bi bi-trash-fill"></i> Supprimer
                                     </a>
                                 }
+
 
                             </div>
                         </td>

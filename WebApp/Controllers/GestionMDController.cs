@@ -105,5 +105,13 @@ namespace WebApp.Controllers
 
 
         }
+
+        public IActionResult Delete(string mdName, string mdItemName)
+        {
+            base.bll.DeleteMasterDataItem(mdName, mdItemName);
+
+            return RedirectToAction("Details", new { mdName = mdName });
+
+        }
     }
 }

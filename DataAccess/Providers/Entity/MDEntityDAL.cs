@@ -92,6 +92,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdBankBOL>(bank);
 
         }
+
+        public int GetReferenceCountForMdBank(int bankId)
+        {
+            return Db.Clients.Count(c => c.IdBank == bankId);
+
+        }
+
+        public void DeleteMdBank(string itemName)
+        {
+            MdBank bank = Db.MdBank.FirstOrDefault(x => x.Name == itemName);
+            
+            if (bank != null)
+            {
+                Db.MdBank.Remove(bank);
+                Db.SaveChanges();
+            }
+            else
+            {
+                
+                throw new Exception($"La banque avec le nom '{itemName}' n'existe pas.");
+            }
+        }
         #endregion 
 
         #region MdEmploymentSituation
@@ -140,6 +162,28 @@ namespace DataAccess.Providers.Entity
 
             return MapperWrapper.NewBol<MdEmploymentSituationBOL>(mdEmploymentSituation);
 
+        }
+
+        public int GetReferenceCountForMdEmploymentSituation(int id)
+        {
+            return Db.Clients.Count(c => c.IdEmploymentSituation == id);
+
+        }
+
+        public void DeleteMdEmploymentSituation(string itemName)
+        {
+            MdEmploymentSituation mdEmploymentSituation = Db.MdEmploymentSituation.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdEmploymentSituation != null)
+            {
+                Db.MdEmploymentSituation.Remove(mdEmploymentSituation);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdEmploymentSituation avec le nom '{itemName}' n'existe pas.");
+            }
         }
         #endregion
 
@@ -190,6 +234,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdMaritalStatusBOL>(mdMaritalStatus);
 
         }
+
+        public int GetReferenceCountForMdMaritalStatus(int id)
+        {
+            return Db.Clients.Count(c => c.IdMaritalStatus == id);
+
+        }
+
+        public void DeleteMdMaritalStatus(string itemName)
+        {
+            MdMaritalStatus mdMaritalStatus = Db.MdMaritalStatus.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdMaritalStatus != null)
+            {
+                Db.MdMaritalStatus.Remove(mdMaritalStatus);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdEmploymentSituation avec le nom '{itemName}' n'existe pas.");
+            }
+        }
         #endregion
 
         #region MdFamilySituation
@@ -238,6 +304,28 @@ namespace DataAccess.Providers.Entity
 
             return MapperWrapper.NewBol<MdFamilySituationBOL>(mdFamilySituation);
 
+        }
+
+        public int GetReferenceCountForMdFamilySituation(int id)
+        {
+            return Db.Clients.Count(c => c.IdFamilySituation == id);
+
+        }
+
+        public void DeleteMdFamilySituation(string itemName)
+        {
+            MdFamilySituation mdFamilySituation = Db.MdFamilySituation.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdFamilySituation != null)
+            {
+                Db.MdFamilySituation.Remove(mdFamilySituation);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La MdFamilySituation avec le nom '{itemName}' n'existe pas.");
+            }
         }
         #endregion
 
@@ -288,6 +376,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdGenderDenominationBOL>(mdGenderDenomination);
 
         }
+
+        public int GetReferenceCountForMdGenderDenomination(int id)
+        {
+            return Db.Clients.Count(c => c.IdGenderDenomination == id);
+
+        }
+
+        public void DeleteMdGenderDenomination(string itemName)
+        {
+            MdGenderDenomination mdGenderDenomination = Db.MdGenderDenomination.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdGenderDenomination != null)
+            {
+                Db.MdGenderDenomination.Remove(mdGenderDenomination);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdGenderDenomination avec le nom '{itemName}' n'existe pas.");
+            }
+        }
         #endregion
 
         #region MdHabitationType
@@ -336,6 +446,28 @@ namespace DataAccess.Providers.Entity
 
             return MapperWrapper.NewBol<MdHabitationTypeBOL>(mdHabitationType);
 
+        }
+
+        public int GetReferenceCountForMdHabitationType(int id)
+        {
+            return Db.Clients.Count(c => c.IdHabitationType == id);
+
+        }
+
+        public void DeleteMdHabitationType(string itemName)
+        {
+            MdHabitationType mdHabitationType = Db.MdHabitationType.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdHabitationType != null)
+            {
+                Db.MdHabitationType.Remove(mdHabitationType);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdHabitationType avec le nom '{itemName}' n'existe pas.");
+            }
         }
         #endregion
 
@@ -387,6 +519,28 @@ namespace DataAccess.Providers.Entity
 
         }
 
+        public int GetReferenceCountForMdScholarshipType(int id)
+        {
+            return Db.Clients.Count(c => c.IdScholarshipType == id);
+
+        }
+
+        public void DeleteMdScholarshipType(string itemName)
+        {
+            MdScholarshipType mdScholarshipType = Db.MdScholarshipType.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdScholarshipType != null)
+            {
+                Db.MdScholarshipType.Remove(mdScholarshipType);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdScholarshipType avec le nom '{itemName}' n'existe pas.");
+            }
+        }
+
         #endregion
 
         #region MdReferenceSource
@@ -435,6 +589,28 @@ namespace DataAccess.Providers.Entity
 
             return MapperWrapper.NewBol<MdReferenceSourceBOL>(mdReferenceSource);
 
+        }
+
+        public int GetReferenceCountForMdReferenceSource(int id)
+        {
+            return Db.Interventions.Count(c => c.IdReferenceType == id);
+
+        }
+
+        public void DeleteMdReferenceSource(string itemName)
+        {
+            MdReferenceSource mdReferenceSource = Db.MdReferenceSource.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdReferenceSource != null)
+            {
+                Db.MdReferenceSource.Remove(mdReferenceSource);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdReferenceSource avec le nom '{itemName}' n'existe pas.");
+            }
         }
         #endregion
 
@@ -485,6 +661,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdInterventionStatusTypeBOL>(mdInterventionStatusType);
 
         }
+
+        public int GetReferenceCountForMdInterventionStatusType(int id)
+        {
+            return Db.Interventions.Count(c => c.IdStatusType == id);
+
+        }
+
+        public void DeleteMdInterventionStatusType(string itemName)
+        {
+            MdInterventionStatusTypes mdInterventionStatusType = Db.MdInterventionStatusTypes.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdInterventionStatusType != null)
+            {
+                Db.MdInterventionStatusTypes.Remove(mdInterventionStatusType);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdInterventionStatusType avec le nom '{itemName}' n'existe pas.");
+            }
+        }
         #endregion
 
         #region MdLoanReason
@@ -534,6 +732,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdLoanReasonBOL>(mdLoanReason);
 
         }
+        public int GetReferenceCountForMdLoanReason(int id)
+        {
+            return Db.Interventions.Count(c => c.IdLoanReason == id);
+
+        }
+
+        public void DeleteMdLoanReason(string itemName)
+        {
+            MdLoanReason mdLoanReason = Db.MdLoanReason.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdLoanReason != null)
+            {
+                Db.MdLoanReason.Remove(mdLoanReason);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdLoanReason avec le nom '{itemName}' n'existe pas.");
+            }
+        }
+
         #endregion
 
         #region MdInterventionType
@@ -582,6 +802,28 @@ namespace DataAccess.Providers.Entity
 
             return MapperWrapper.NewBol<MdInterventionTypeBOL>(mdInterventionType);
 
+        }
+
+        public int GetReferenceCountForMdInterventionType(int id)
+        {
+            return Db.Interventions.Count(c => c.IdInterventionType == id);
+
+        }
+
+        public void DeleteMdInterventionType(string itemName)
+        {
+            MdInterventionType mdInterventionType = Db.MdInterventionType.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdInterventionType != null)
+            {
+                Db.MdInterventionType.Remove(mdInterventionType);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdInterventionType avec le nom '{itemName}' n'existe pas.");
+            }
         }
         #endregion
 
@@ -632,6 +874,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdInterventionSolutionBOL>(mdInterventionSolution);
 
         }
+
+        public int GetReferenceCountForMdInterventionSolution(int id)
+        {
+            return Db.InterventionsInterventionSolutions.Count(c => c.IdInterventionSolution == id);
+
+        }
+
+        public void DeleteMdInterventionSolution(string itemName)
+        {
+            MdInterventionSolution mdInterventionSolution = Db.MdInterventionSolution.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdInterventionSolution != null)
+            {
+                Db.MdInterventionSolution.Remove(mdInterventionSolution);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdInterventionSolution avec le nom '{itemName}' n'existe pas.");
+            }
+        }
         #endregion
 
         #region MdIncomeType
@@ -681,6 +945,28 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdIncomeTypeBOL>(mdIncomeType);
 
         }
+
+        public int GetReferenceCountForMdIncomeType(int id)
+        {
+            return Db.ClientsIncomeTypes.Count(c => c.IdIncomeType == id);
+
+        }
+
+        public void DeleteMdIncomeType(string itemName)
+        {
+            MdIncomeType mdIncomeType = Db.MdIncomeType.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdIncomeType != null)
+            {
+                Db.MdIncomeType.Remove(mdIncomeType);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdIncomeType avec le nom '{itemName}' n'existe pas.");
+            }
+        }
         #endregion
 
         #region MdSeminarTheme
@@ -729,6 +1015,28 @@ namespace DataAccess.Providers.Entity
 
             return MapperWrapper.NewBol<MdSeminarThemesBOL>(mdSeminarThemes);
 
+        }
+
+        public int GetReferenceCountForMdSeminarTheme(int id)
+        {
+            return Db.Seminars.Count(c => c.IdSeminarTheme == id);
+
+        }
+
+        public void DeleteMdSeminarTheme(string itemName)
+        {
+            MdSeminarThemes mdSeminarTheme = Db.MdSeminarThemes.FirstOrDefault(x => x.Name == itemName);
+
+            if (mdSeminarTheme != null)
+            {
+                Db.MdSeminarThemes.Remove(mdSeminarTheme);
+                Db.SaveChanges();
+            }
+            else
+            {
+
+                throw new Exception($"La mdSeminarTheme avec le nom '{itemName}' n'existe pas.");
+            }
         }
         #endregion
 
