@@ -47,20 +47,22 @@
         align-items: center;
     }
 
-        .list-group-item .remove-participant {
+        .list-group-item .remove-participant,
+        .list-group-item .remove-intervenant {
             color: red;
             cursor: pointer;
         }
 
-            .list-group-item .remove-participant:hover {
+            .list-group-item .remove-participant:hover,
+            .list-group-item .remove-intervenant:hover {
                 color: darkred;
             }
 
-    #participantInput {
+    #participantInput, #intervenantInput {
         margin-bottom: 0.5rem;
     }
 
-    #addParticipantButton {
+    #addParticipantButton, #addIntervenantButton {
         margin-top: 0.5rem;
     }
 
@@ -93,11 +95,13 @@
         <input asp-for="DateSeminar" class="form-control" />
         <span asp-validation-for="DateSeminar" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="IdSeminarTheme" class="control-label">Thème de l'atelier</label>
         <select asp-for="IdSeminarTheme" class="form-control" asp-items="ViewBag.SeminarThemes"></select>
         <span asp-validation-for="IdSeminarTheme" class="text-danger"></span>
-    </div><br>
+    </div>
+
     <div class="form-group">
         <label asp-for="SelectedParticipants" class="control-label">Participants</label>
         <input type="text" class="form-control" id="participantInput" placeholder="Rechercher des participants" />
@@ -124,12 +128,42 @@
                 }
             }
         </ul>
-    </div><br>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedIntervenants" class="control-label">Intervenants</label>
+        <input type="text" class="form-control" id="intervenantInput" placeholder="Rechercher des intervenants" />
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#intervenantModal">
+            <i class="bi bi-search"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" id="addIntervenantButton">
+            <i class="bi bi-plus"></i>
+        </button>
+        <ul id="selectedIntervenantsList" class="list-group mt-2">
+            @{
+                var intervenants = ViewBag.Intervenants as IEnumerable<SelectListItem>;
+                foreach (var intervenantId in Model.SelectedIntervenants)
+                {
+                    var intervenant = intervenants?.FirstOrDefault(i => i.Value == intervenantId.ToString());
+                    if (intervenant != null)
+                    {
+                        <li class="list-group-item" data-id="@intervenantId">
+                            <a href="/Employee/Details/@intervenantId" target="_blank">@intervenant.Text (#@intervenantId)</a>
+                            <a href="#" class="remove-intervenant float-right"><i class="bi bi-trash"></i></a>
+                            <input type="hidden" name="SelectedIntervenants" value="@intervenantId" />
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+
     <div class="form-group">
         <label asp-for="Notes" class="control-label">Commentaire</label>
         <textarea asp-for="Notes" class="form-control"></textarea>
         <span asp-validation-for="Notes" class="text-danger"></span>
-    </div><br>
+    </div>
+
     <div class="form-group">
         <input type="submit" value="Sauvegarder" class="btn btn-primary" />
     </div>
@@ -149,9 +183,26 @@
             </div>
             <div class="modal-body">
                 <input type="text" id="searchParticipantInput" class="form-control" placeholder="Rechercher par nom ou prénom">
-                <ul id="participantSearchResults" class="list-group mt-2">
-                    <!-- Les résultats de la recherche seront ajoutés ici -->
-                </ul>
+                <ul id="participantSearchResults" class="list-group mt-2"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour la recherche d'intervenants -->
+<div class="modal fade" id="intervenantModal" tabindex="-1" role="dialog" aria-labelledby="intervenantModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="intervenantModalLabel">Rechercher des Intervenants</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchIntervenantInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <ul id="intervenantSearchResults" class="list-group mt-2"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -165,8 +216,24 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <script>
         $(document).ready(function () {
+
+            // Fonction pour gérer l'ouverture et la fermeture correcte des modals
+            function handleModalClose(modalId) {
+                $(modalId).modal('hide');
+                $('body').removeClass('modal-open'); // Assure que le corps ne reste pas bloqué
+                $('.modal-backdrop').remove(); // Supprimer le backdrop quand le modal se ferme
+            }
+
+            // Ouverture d'un modal sans problèmes de backdrops
+            function openModal(modalId) {
+                handleModalClose(modalId); // S'assurer qu'il n'y a pas de backdrop persistant
+                $(modalId).modal('show'); // Montrer le modal
+            }
+
+            // Gestion de la recherche de participants
             $('#searchParticipantInput').on('input', function () {
                 var searchTerm = $(this).val().toLowerCase();
                 if (searchTerm.length > 2) {
@@ -186,31 +253,74 @@
                 }
             });
 
+            // Gestion de la recherche d'intervenants
+            $('#searchIntervenantInput').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                if (searchTerm.length > 2) {
+                    $.ajax({
+                        url: '@Url.Action("SearchIntervenants", "Seminars")',
+                        data: { searchTerm: searchTerm },
+                        success: function (data) {
+                            $('#intervenantSearchResults').empty();
+                            data.forEach(function (intervenant) {
+                                $('#intervenantSearchResults').append('<li class="list-group-item" data-id="' + intervenant.id + '">' + intervenant.fullName + ' (#' + intervenant.id + ')</li>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Erreur lors de la recherche des intervenants:", status, error);
+                        }
+                    });
+                }
+            });
+
+            // Sélection d'un participant et ajout à la liste
             $('#participantSearchResults').on('click', 'li', function () {
                 var participantId = $(this).data('id');
                 var participantName = $(this).text();
-                $('#selectedParticipantsList').append('<li class="list-group-item" data-id="' + participantId + '"><a href="/Client/Details/' + participantId + '" target="_blank">' + participantName + '</a> <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a><input type="hidden" name="SelectedParticipants" value="' + participantId + '" /></li>');
-                $('#participantModal').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+                if ($('#selectedParticipantsList li[data-id="' + participantId + '"]').length === 0) {
+                    $('#selectedParticipantsList').append('<li class="list-group-item" data-id="' + participantId + '">' + participantName + ' <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a><input type="hidden" name="SelectedParticipants" value="' + participantId + '" /></li>');
+                }
+                handleModalClose('#participantModal');  // Fermer le modal et supprimer le backdrop
             });
 
+            // Sélection d'un intervenant et ajout à la liste
+            $('#intervenantSearchResults').on('click', 'li', function () {
+                var intervenantId = $(this).data('id');
+                var intervenantName = $(this).text();
+                if ($('#selectedIntervenantsList li[data-id="' + intervenantId + '"]').length === 0) {
+                    $('#selectedIntervenantsList').append('<li class="list-group-item" data-id="' + intervenantId + '">' + intervenantName + ' <a href="#" class="remove-intervenant float-right"><i class="bi bi-trash"></i></a><input type="hidden" name="SelectedIntervenants" value="' + intervenantId + '" /></li>');
+                }
+                handleModalClose('#intervenantModal');  // Fermer le modal et supprimer le backdrop
+            });
+
+            // Ajouter un participant manuellement
             $('#addParticipantButton').on('click', function () {
                 var participantName = $('#participantInput').val();
-                if (participantName) {
-                    $('#selectedParticipantsList').append('<li class="list-group-item">' + participantName + ' <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a></li>');
+                if (participantName && $('#selectedParticipantsList li[data-name="' + participantName + '"]').length === 0) {
+                    $('#selectedParticipantsList').append('<li class="list-group-item" data-name="' + participantName + '">' + participantName + ' <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a></li>');
                     $('#participantInput').val('');
                 }
             });
 
+            // Ajouter un intervenant manuellement
+            $('#addIntervenantButton').on('click', function () {
+                var intervenantName = $('#intervenantInput').val();
+                if (intervenantName && $('#selectedIntervenantsList li[data-name="' + intervenantName + '"]').length === 0) {
+                    $('#selectedIntervenantsList').append('<li class="list-group-item" data-name="' + intervenantName + '">' + intervenantName + ' <a href="#" class="remove-intervenant float-right"><i class="bi bi-trash"></i></a></li>');
+                    $('#intervenantInput').val('');
+                }
+            });
+
+            // Suppression des participants
             $('#selectedParticipantsList').on('click', '.remove-participant', function (e) {
                 e.preventDefault();
                 $(this).parent().remove();
             });
 
-            $('#participantModal').on('hidden.bs.modal', function () {
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+            // Suppression des intervenants
+            $('#selectedIntervenantsList').on('click', '.remove-intervenant', function (e) {
+                e.preventDefault();
+                $(this).parent().remove();
             });
         });
     </script>

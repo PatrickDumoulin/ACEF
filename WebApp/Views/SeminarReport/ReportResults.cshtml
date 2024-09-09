@@ -1,0 +1,34 @@
+﻿@model WebApp.ViewModels.SeminarReportViewModel
+
+@{
+    ViewBag.Title = "Rapport des Ateliers";
+}
+
+<h2>Résultats du Rapport des Ateliers</h2>
+
+@if (Model.ReportRows != null && Model.ReportRows.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Thème</th>
+                <th>Nombre de Participants</th>
+                <th>Nombre d'Ateliers</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.ReportRows)
+            {
+                <tr>
+                    <td>@row.Theme</td>
+                    <td>@row.ParticipantCount</td>
+                    <td>@row.SeminarCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucun rapport disponible pour la période sélectionnée.</p>
+}

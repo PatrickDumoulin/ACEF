@@ -15,8 +15,8 @@ namespace BusinessLayer.Logic.Interfaces
         GetListResponse<IClientBOL> GetClients();
         void CreateClient(IClientBOL clientBOL);
         void UpdateClient(IClientBOL clientBOL);
-
         string GetClientName(int clientId);
+        int GetClientAge(int clientId);
 
 
 

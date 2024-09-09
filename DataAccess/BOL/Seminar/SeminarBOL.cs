@@ -22,12 +22,38 @@ namespace DataAccess.BOL.Seminar
         {
         }
 
-        public int Id { get { return base.Record.Id; } }
-        public DateTime? DateSeminar { get { return base.Record.DateSeminar; } }
-        public int? IdSeminarTheme { get { return base.Record.IdSeminarTheme; } }
-        public string Notes { get { return base.Record.Notes; } }
-        public DateTime? CreatedDate { get { return base.Record.CreatedDate; } }
-        
+        // Ajout des setters pour permettre l'assignation
+        public int Id
+        {
+            get { return base.Record.Id; }
+            set { base.Record.Id = value; }  // Ajoutez un setter ici pour permettre l'assignation
+        }
+
+        public DateTime? DateSeminar
+        {
+            get { return base.Record.DateSeminar; }
+            set { base.Record.DateSeminar = value; }  // Ajout du setter
+        }
+
+        public int? IdSeminarTheme
+        {
+            get { return base.Record.IdSeminarTheme; }
+            set { base.Record.IdSeminarTheme = value; }  // Ajout du setter
+        }
+
+        public string Notes
+        {
+            get { return base.Record.Notes; }
+            set { base.Record.Notes = value; }  // Ajout du setter
+        }
+
+        public DateTime? CreatedDate
+        {
+            get { return base.Record.CreatedDate; }
+            set { base.Record.CreatedDate = value; }  // Ajout du setter (facultatif si nécessaire)
+        }
+
         public List<Clients> Participants { get; set; } = new List<Clients>();
+        public List<Employees> Intervenants { get; set; } = new List<Employees>();
     }
 }

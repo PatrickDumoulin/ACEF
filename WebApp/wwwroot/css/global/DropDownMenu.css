@@ -1,0 +1,23 @@
+﻿/* Style général pour le menu déroulant */
+.navbar .dropdown-menu {
+    background-color: #1b263b; /* Ajuster la couleur de fond pour correspondre au thème du site */
+    border: none; /* Enlever la bordure */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Ajouter une ombre subtile */
+}
+
+    /* Couleur des liens dans le menu déroulant */
+    .navbar .dropdown-menu .dropdown-item {
+        color: #ffffff; /* Couleur du texte */
+        padding: 10px 20px; /* Ajuster le padding pour plus d'espace */
+    }
+
+        /* Couleur au survol */
+        .navbar .dropdown-menu .dropdown-item:hover {
+            background-color: #14578e; /* Couleur de survol pour correspondre à ton thème */
+            color: #ffffff; /* Couleur du texte survolé */
+        }
+
+/* Pour aligner correctement le texte et éviter les espacements étranges */
+.navbar .dropdown-toggle::after {
+    margin-left: 10px;
+}

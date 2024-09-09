@@ -1,41 +1,43 @@
 ﻿@model DataAccess.BOL.Seminar.SeminarBOL
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails de l'Atelier";
     Layout = "_Layout";
 }
-<head>
-    <link rel="stylesheet" href="~/css/seminar.css">
-</head>
 
+@functions {
+    string GetThemeName(int? themeId)
+    {
+        var themes = ViewBag.SeminarThemes as IEnumerable<SelectListItem>;
+        var theme = themes?.FirstOrDefault(t => t.Value == themeId.ToString());
+        return theme?.Text ?? "Inconnu";
+    }
+}
 
-<h1> Visualiser un atelier</h1>
+<h1>Détails de l'Atelier</h1>
 
 <div>
-    <h4>Seminar</h4>
+    <h4>Atelier</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            Date Seminar
-        </dt>
-        <dd class="col-sm-10">
-            @Model.DateSeminar
-        </dd>
-        <dt class="col-sm-2">
-            Id Seminar Theme
-        </dt>
-        <dd class="col-sm-10">
-            @Model.IdSeminarTheme
-        </dd>
-        <dt class="col-sm-2">
-            Notes
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Notes
-        </dd>
+        <dt class="col-sm-2">Date</dt>
+        <dd class="col-sm-10">@Model.DateSeminar?.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-2">Thème</dt>
+        <dd class="col-sm-10">@GetThemeName(Model.IdSeminarTheme)</dd>
+
+        <dt class="col-sm-2">Intervenants</dt>
+        <dd class="col-sm-10">@string.Join(", ", Model.Intervenants.Select(i => i.FirstName + " " + i.LastName))</dd>
+
+        <dt class="col-sm-2">Participants</dt>
+        <dd class="col-sm-10">@string.Join(", ", Model.Participants.Select(p => p.FirstName + " " + p.LastName))</dd>
+
+        <dt class="col-sm-2">Commentaires</dt>
+        <dd class="col-sm-10">@Model.Notes</dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Modifier</a> |
+    <a asp-action="Index">Retour à la liste</a>
 </div>

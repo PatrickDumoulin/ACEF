@@ -4,35 +4,212 @@
     ViewData["Title"] = "Edit Seminar";
     Layout = "_Layout";
 }
+
 <head>
     <link rel="stylesheet" href="~/css/seminar.css">
 </head>
-
 
 <h1>Edit Seminar</h1>
 
 <form asp-action="Edit">
     <input type="hidden" asp-for="Id" />
+
+    <!-- Date de l'atelier -->
     <div class="form-group">
         <label asp-for="DateSeminar" class="control-label"></label>
-        <input asp-for="DateSeminar" class="form-control" />
+        <input asp-for="DateSeminar" class="form-control" type="date" value="@Model.DateSeminar.ToString("yyyy-MM-dd")" />
         <span asp-validation-for="DateSeminar" class="text-danger"></span>
     </div>
+
+    <!-- Thème de l'atelier -->
     <div class="form-group">
         <label asp-for="IdSeminarTheme" class="control-label"></label>
-        <input asp-for="IdSeminarTheme" class="form-control" />
+        <select asp-for="IdSeminarTheme" class="form-control" asp-items="ViewBag.SeminarThemes"></select>
         <span asp-validation-for="IdSeminarTheme" class="text-danger"></span>
     </div>
+
+    <!-- Participants -->
+    <div class="form-group">
+        <label asp-for="SelectedParticipants" class="control-label">Participants</label>
+        <input type="text" class="form-control" id="participantInput" placeholder="Rechercher des participants" />
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#participantModal">
+            <i class="bi bi-search"></i>
+        </button>
+        <ul id="selectedParticipantsList" class="list-group mt-2">
+            @foreach (var participantId in Model.SelectedParticipants)
+            {
+                <li class="list-group-item" data-id="@participantId">
+                    <a href="/Client/Details/@participantId" target="_blank">Participant #@participantId</a>
+                    <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a>
+                    <input type="hidden" name="SelectedParticipants" value="@participantId" />
+                </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Intervenants -->
+    <div class="form-group">
+        <label asp-for="SelectedIntervenants" class="control-label">Intervenants</label>
+        <input type="text" class="form-control" id="intervenantInput" placeholder="Rechercher des intervenants" />
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#intervenantModal">
+            <i class="bi bi-search"></i>
+        </button>
+        <ul id="selectedIntervenantsList" class="list-group mt-2">
+            @foreach (var intervenantId in Model.SelectedIntervenants)
+            {
+                <li class="list-group-item" data-id="@intervenantId">
+                    <a href="/Employee/Details/@intervenantId" target="_blank">Intervenant #@intervenantId</a>
+                    <a href="#" class="remove-intervenant float-right"><i class="bi bi-trash"></i></a>
+                    <input type="hidden" name="SelectedIntervenants" value="@intervenantId" />
+                </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Notes -->
     <div class="form-group">
         <label asp-for="Notes" class="control-label"></label>
         <textarea asp-for="Notes" class="form-control"></textarea>
         <span asp-validation-for="Notes" class="text-danger"></span>
     </div>
+
+    <!-- Bouton de sauvegarde -->
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
     </div>
 </form>
 
+<!-- Retour à la liste -->
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- Modal pour la recherche de participants -->
+<div class="modal fade" id="participantModal" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="participantModalLabel">Rechercher des Participants</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchParticipantInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <ul id="participantSearchResults" class="list-group mt-2"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour la recherche d'intervenants -->
+<div class="modal fade" id="intervenantModal" tabindex="-1" role="dialog" aria-labelledby="intervenantModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="intervenantModalLabel">Rechercher des Intervenants</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchIntervenantInput" class="form-control" placeholder="Rechercher par nom ou prénom">
+                <ul id="intervenantSearchResults" class="list-group mt-2"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Rechercher des participants
+    $('#searchParticipantInput').on('keyup', function () {
+        var searchTerm = $(this).val();
+        $.ajax({
+            url: '/Seminars/SearchParticipants',
+            type: 'GET',
+            data: { searchTerm: searchTerm },
+            success: function (response) {
+                var resultList = $('#participantSearchResults');
+                resultList.empty();
+                if (response.length > 0) {
+                    $.each(response, function (index, participant) {
+                        resultList.append(
+                            `<li class="list-group-item">
+                                    <a href="#" class="select-participant" data-id="${participant.Id}">${participant.FullName}</a>
+                                </li>`
+                        );
+                    });
+                } else {
+                    resultList.append('<li class="list-group-item">Aucun participant trouvé</li>');
+                }
+            }
+        });
+    });
+
+    // Rechercher des intervenants
+    $('#searchIntervenantInput').on('keyup', function () {
+        var searchTerm = $(this).val();
+        $.ajax({
+            url: '/Seminars/SearchIntervenants',
+            type: 'GET',
+            data: { searchTerm: searchTerm },
+            success: function (response) {
+                var resultList = $('#intervenantSearchResults');
+                resultList.empty();
+                if (response.length > 0) {
+                    $.each(response, function (index, intervenant) {
+                        resultList.append(
+                            `<li class="list-group-item">
+                                    <a href="#" class="select-intervenant" data-id="${intervenant.Id}">${intervenant.FullName}</a>
+                                </li>`
+                        );
+                    });
+                } else {
+                    resultList.append('<li class="list-group-item">Aucun intervenant trouvé</li>');
+                }
+            }
+        });
+    });
+
+    // Sélectionner un participant
+    $(document).on('click', '.select-participant', function (e) {
+        e.preventDefault();
+        var participantId = $(this).data('id');
+        $('#selectedParticipantsList').append(`
+                <li class="list-group-item" data-id="${participantId}">
+                    <a href="/Client/Details/${participantId}" target="_blank">Participant #${participantId}</a>
+                    <a href="#" class="remove-participant float-right"><i class="bi bi-trash"></i></a>
+                    <input type="hidden" name="SelectedParticipants" value="${participantId}" />
+                </li>
+            `);
+        $('#participantModal').modal('hide');
+    });
+
+    // Sélectionner un intervenant
+    $(document).on('click', '.select-intervenant', function (e) {
+        e.preventDefault();
+        var intervenantId = $(this).data('id');
+        $('#selectedIntervenantsList').append(`
+                <li class="list-group-item" data-id="${intervenantId}">
+                    <a href="/Employee/Details/${intervenantId}" target="_blank">Intervenant #${intervenantId}</a>
+                    <a href="#" class="remove-intervenant float-right"><i class="bi bi-trash"></i></a>
+                    <input type="hidden" name="SelectedIntervenants" value="${intervenantId}" />
+                </li>
+            `);
+        $('#intervenantModal').modal('hide');
+    });
+
+    // Supprimer un participant
+    $(document).on('click', '.remove-participant', function (e) {
+        e.preventDefault();
+        $(this).closest('li').remove();
+    });
+
+    // Supprimer un intervenant
+    $(document).on('click', '.remove-intervenant', function (e) {
+        e.preventDefault();
+        $(this).closest('li').remove();
+    });
+</script>

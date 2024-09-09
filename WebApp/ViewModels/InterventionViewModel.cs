@@ -64,5 +64,7 @@ namespace WebApp.ViewModels
             SelectedSolutions = new List<int>();
             SolutionNames = new List<string>();
         }
+        public decimal? Income { get; set; } // Revenu (dérivé de DebtAmount)
+        public int? Age { get; set; } // Âge du client
     }
 }

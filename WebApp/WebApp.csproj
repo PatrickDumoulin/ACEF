@@ -58,6 +58,8 @@
     <None Include="Views\Employee\Index.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\InterventionReport\Index.cshtml" />
+    <None Include="Views\InterventionReport\ReportResults.cshtml" />
     <None Include="Views\Intervention\Create.cshtml" />
     <None Include="Views\Intervention\Delete.cshtml" />
     <None Include="Views\Intervention\Details.cshtml" />
@@ -67,6 +69,8 @@
     <None Include="Views\Note\Delete.cshtml" />
     <None Include="Views\Note\Edit.cshtml" />
     <None Include="Views\Note\Index.cshtml" />
+    <None Include="Views\SeminarReport\Index.cshtml" />
+    <None Include="Views\SeminarReport\ReportResults.cshtml" />
     <None Include="Views\Seminars\Create.cshtml" />
     <None Include="Views\Seminars\Delete.cshtml" />
     <None Include="Views\Seminars\Details.cshtml" />

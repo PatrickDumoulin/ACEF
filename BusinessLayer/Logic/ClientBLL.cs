@@ -49,6 +49,24 @@ namespace BusinessLayer.Logic
                 ? $"{clientResponse.Element.FirstName} {clientResponse.Element.LastName}"
                 : "Inconnu";
         }
+        public int GetClientAge(int clientId)
+        {
+            var clientResponse = GetClient(clientId);
+            if (clientResponse.Succeeded && clientResponse.Element != null && clientResponse.Element.Birthdate.HasValue)
+            {
+                var today = DateTime.Today;
+                var birthdate = clientResponse.Element.Birthdate.Value;
+                var age = today.Year - birthdate.Year;
+
+                // Ajuster l'âge si l'anniversaire n'est pas encore passé cette année
+                if (birthdate.Date > today.AddYears(-age)) age--;
+
+                return age;
+            }
+
+            // Retourner -1 si l'âge ne peut être déterminé
+            return -1;
+        }
 
 
     }

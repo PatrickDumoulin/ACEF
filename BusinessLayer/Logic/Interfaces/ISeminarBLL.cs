@@ -4,23 +4,34 @@ using DataAccess.BOL.Client;
 using DataAccess.BOL.Employe;
 using DataAccess.BOL.Seminar;
 using DataAccess.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Logic.Interfaces
 {
     public interface ISeminarBLL : IBLL
     {
+        // Récupère la liste de tous les séminaires
         GetListResponse<SeminarBOL> GetAllSeminars();
+
+        // Récupère un séminaire spécifique par son ID
         GetItemResponse<SeminarBOL> GetSeminarById(int id);
-        void CreateSeminar(SeminarBOL seminar);
+
+        // Crée un nouveau séminaire avec une liste d'intervenants
+        void CreateSeminar(SeminarBOL seminar, List<Employees> intervenants);
+
+        // Met à jour un séminaire
         void UpdateSeminar(SeminarBOL seminar);
+
+        // Supprime un séminaire
         void DeleteSeminar(int id);
-        GetListResponse<MdSeminarThemes> GetSeminarThemes();        
+
+        // Récupère la liste des thèmes de séminaire
+        GetListResponse<MdSeminarThemes> GetSeminarThemes();
+
+        // Récupère la liste des participants
         GetListResponse<ClientBOL> GetParticipants();
 
+        // Récupère la liste des intervenants
+        GetListResponse<EmployeeBOL> GetIntervenants();
     }
 }

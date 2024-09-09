@@ -1,5 +1,6 @@
 ﻿/* Styles généraux appliqués à tous les utilisateurs */
 .container_HomeIndex {
+    position: relative;
     height: 70vh;
     display: flex;
     justify-content: center;
@@ -13,60 +14,84 @@
     outline: none;
     transition: transform 0.5s ease, box-shadow 0.5s ease, background 0.5s ease;
     perspective: 1000px;
-    box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Box-shadow par défaut */
-    0 6px 18px rgba(0, 0, 0, 0.4); /* Subtle dark shadow for depth */
+    box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), 0 6px 18px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
 }
 
-    /* Animation pour les utilisateurs non connectés */
-    .container_HomeIndex.with-animation:hover {
-        transform: scale(1.05) rotateY(5deg);
-        box-shadow: 0 0 50px 10px rgba(9, 132, 227, 0.9), 0 10px 30px rgba(0, 0, 0, 0.6);
-        background: linear-gradient(135deg, #14578e, #1b263b);
+    .container_HomeIndex::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0));
+        transform: translate(-50%, -50%) rotate(45deg);
+        transition: all 0.5s ease;
     }
 
-    /* Styles pour les utilisateurs connectés (sans animation mais avec box-shadow) */
-    .container_HomeIndex.no-animation {
-        transform: none;
-        box-shadow: 0 0 30px 5px rgba(9, 132, 227, 0.7), /* Box-shadow */
-        0 6px 18px rgba(0, 0, 0, 0.4); /* Subtle dark shadow */
-        background: linear-gradient(135deg, #1b263b, #14578e);
+    /* Effet de rotation 3D et effet de lumière mobile */
+    .container_HomeIndex:hover::before {
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0));
+        animation: lightMove 1.5s ease infinite;
     }
 
-    /* Autres styles restent inchangés */
-    .container_HomeIndex h1 {
-        color: #ffffff;
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-        text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+/* Animation pour déplacer la lumière */
+@keyframes lightMove {
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg);
     }
 
-    .container_HomeIndex p {
-        color: #d1e0ff;
-        font-size: 1.2rem;
-        line-height: 1.6;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    50% {
+        transform: translate(0%, 0%) rotate(45deg);
     }
 
-    .container_HomeIndex .btn-primary, .container_HomeIndex .btn-secondary {
-        padding: 10px 20px;
-        font-size: 1rem;
-        border-radius: 30px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+}
+
+/* Animation 3D lors du survol */
+.container_HomeIndex.with-animation:hover {
+    transform: /*rotateY(15deg) rotateX(10deg) */scale(1.05);
+    box-shadow: 0 0 50px 15px rgba(9, 132, 227, 1), 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* Autres styles restent inchangés */
+.container_HomeIndex h1 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+.container_HomeIndex p {
+    color: #d1e0ff;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.container_HomeIndex .btn-primary, .container_HomeIndex .btn-secondary {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .container_HomeIndex .btn-primary:hover, .container_HomeIndex .btn-secondary:hover {
+        transform: translateY(-3px) scale(1.1);
+        background-color: #0d3f73;
     }
 
-        .container_HomeIndex .btn-primary:hover, .container_HomeIndex .btn-secondary:hover {
-            transform: translateY(-3px) scale(1.1);
-            background-color: #0d3f73;
-        }
+.container_HomeIndex .btn-secondary {
+    background-color: #ffffff;
+    color: #14578e;
+}
 
-    .container_HomeIndex .btn-secondary {
-        background-color: #ffffff;
-        color: #14578e;
+    .container_HomeIndex .btn-secondary:hover {
+        background-color: #e0e0e0;
     }
-
-        .container_HomeIndex .btn-secondary:hover {
-            background-color: #e0e0e0;
-        }
 
 .container_HomeIndex2 {
     background: #1b263b;
@@ -78,4 +103,26 @@
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    perspective: 1000px;
+    transition: transform 0.5s;
+}
+
+    /* Effet de zoom sur le texte */
+    .container_HomeIndex2:hover {
+        transform: scale(1.03);
+    }
+
+/* Animation pour le logo */
+.container_HomeIndex img {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }

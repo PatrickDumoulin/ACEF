@@ -15,21 +15,99 @@ namespace WebApp.Controllers
     public class SeminarsController : AbstractBLLController<ISeminarBLL>
     {
         private readonly IClientBLL _clientBLL;
+        private readonly IEmployeeBLL _employeeBLL;
 
         public SeminarsController() : base()
         {
             _clientBLL = Injector.ImplementBll<IClientBLL>();
+            _employeeBLL = Injector.ImplementBll<IEmployeeBLL>();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(SeminarSearchViewModel searchModel)
         {
             var response = bll.GetAllSeminars();
             if (response.Succeeded)
             {
-                return View(response.ElementList);
+                var seminars = response.ElementList.AsQueryable();
+
+                // Filtrage par date
+                if (!string.IsNullOrEmpty(searchModel.DateFilter))
+                {
+                    var currentDate = DateTime.Now;
+                    switch (searchModel.DateFilter)
+                    {
+                        case "Semaine en cours":
+                            // Commencer la semaine au lundi (par défaut, DayOfWeek commence au dimanche)
+                            var startOfWeek = currentDate.AddDays(-(int)(currentDate.DayOfWeek == DayOfWeek.Sunday ? 6 : currentDate.DayOfWeek - DayOfWeek.Monday));
+                            var endOfWeek = startOfWeek.AddDays(6); // Dimanche de la même semaine
+                            seminars = seminars.Where(s => s.DateSeminar >= startOfWeek && s.DateSeminar <= endOfWeek);
+                            break;
+
+                        case "Mois en cours":
+                            // Définir le début et la fin du mois
+                            var startOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+                            var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Dernier jour du mois
+                            seminars = seminars.Where(s => s.DateSeminar >= startOfMonth && s.DateSeminar <= endOfMonth);
+                            break;
+
+                        case "Intervalle":
+                            if (searchModel.StartDate.HasValue && searchModel.EndDate.HasValue)
+                            {
+                                seminars = seminars.Where(s => s.DateSeminar >= searchModel.StartDate && s.DateSeminar <= searchModel.EndDate);
+                            }
+                            break;
+                    }
+                }
+
+                // Filtrage par thème
+                if (searchModel.IdSeminarTheme.HasValue)
+                {
+                    seminars = seminars.Where(s => s.IdSeminarTheme == searchModel.IdSeminarTheme);
+                }
+
+                // Filtrage par intervenant
+                if (!string.IsNullOrEmpty(searchModel.IntervenantFilter))
+                {
+                    seminars = seminars.Where(s => s.Intervenants.Any(i => (i.FirstName + " " + i.LastName).Contains(searchModel.IntervenantFilter, StringComparison.OrdinalIgnoreCase)));
+                }
+
+                // Récupération des thèmes pour la liste déroulante
+                var themesResponse = bll.GetSeminarThemes();
+                if (themesResponse.Succeeded)
+                {
+                    // Ajout à ViewBag pour l'utilisation dans la vue
+                    ViewBag.SeminarThemes = themesResponse.ElementList.Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Name
+                    }).ToList();
+
+                    // Assignation au modèle de vue
+                    searchModel.Themes = themesResponse.ElementList.Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Name
+                    }).ToList();
+                }
+
+                // Pagination (simple exemple)
+                int pageSize = 10; // nombre d'éléments par page
+                int currentPage = searchModel.CurrentPage;
+                int totalSeminars = seminars.Count();
+                searchModel.TotalPages = (int)Math.Ceiling(totalSeminars / (double)pageSize);
+
+                searchModel.Seminars = seminars
+                    .Skip((currentPage - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                return View(searchModel);
             }
+
             return NotFound();
         }
+
+
 
         public IActionResult Details(int id)
         {
@@ -37,22 +115,35 @@ namespace WebApp.Controllers
             if (response.Succeeded && response.Element != null)
             {
                 var seminar = response.Element;
-                seminar.Participants = GetParticipants().Select(c => new Clients { Id = c.Id, FirstName = c.FirstName, LastName = c.LastName }).ToList();
+
+                // Récupérer les thèmes pour ViewBag (comme dans la vue Index)
+                var themesResponse = bll.GetSeminarThemes();
+                if (themesResponse.Succeeded)
+                {
+                    ViewBag.SeminarThemes = themesResponse.ElementList.Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Name
+                    }).ToList();
+                }
 
                 return View(seminar);
             }
             return NotFound();
         }
 
+
+
         public IActionResult Create()
         {
-            var themes = GetSeminarThemes();
-            ViewBag.SeminarThemes = new SelectList(themes, "Id", "Name");
+            ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
+            ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName");
             ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
 
             var model = new SeminarViewModel
             {
-                SelectedParticipants = new List<int>()
+                SelectedParticipants = new List<int>(),
+                SelectedIntervenants = new List<int>()
             };
 
             return View(model);
@@ -72,15 +163,20 @@ namespace WebApp.Controllers
                     DateTime.Now
                 );
 
+                // Participants et Intervenants ajoutés au séminaire
                 seminar.Participants = model.SelectedParticipants.Select(id => new Clients { Id = id }).ToList();
+                seminar.Intervenants = model.SelectedIntervenants.Select(id => new Employees { Id = id }).ToList();
 
-                bll.CreateSeminar(seminar);
+                // Appel à la méthode BLL avec le séminaire, les intervenants ET les participants
+                bll.CreateSeminar(seminar, seminar.Intervenants);
+
                 return RedirectToAction(nameof(Index));
             }
 
-            var themes = GetSeminarThemes();
-            ViewBag.SeminarThemes = new SelectList(themes, "Id", "Name");
+            ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
+            ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName");
             ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
+
             return View(model);
         }
 
@@ -89,18 +185,23 @@ namespace WebApp.Controllers
             var response = bll.GetSeminarById(id);
             if (response.Succeeded && response.Element != null)
             {
+                var seminar = response.Element;
+
                 var model = new SeminarViewModel
                 {
-                    Id = response.Element.Id,
-                    DateSeminar = response.Element.DateSeminar ?? DateTime.MinValue,
-                    IdSeminarTheme = response.Element.IdSeminarTheme ?? 0,
-                    Notes = response.Element.Notes,
-                    SelectedParticipants = response.Element.Participants.Select(p => p.Id).ToList(),
+                    Id = seminar.Id,
+                    DateSeminar = seminar.DateSeminar ?? DateTime.Now,  // Utilisation de la date si elle est définie
+                    IdSeminarTheme = seminar.IdSeminarTheme ?? 0,
+                    Notes = seminar.Notes,
+                    SelectedParticipants = seminar.Participants.Select(p => p.Id).ToList(),
+                    SelectedIntervenants = seminar.Intervenants.Select(i => i.Id).ToList(),
                 };
 
-                var themes = GetSeminarThemes();
-                ViewBag.SeminarThemes = new SelectList(themes, "Id", "Name");
+                // Remplissage des ViewBag pour les listes déroulantes
+                ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
+                ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName");
                 ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
+
                 return View(model);
             }
             return NotFound();
@@ -108,30 +209,34 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, SeminarViewModel model)
+        public IActionResult Edit(SeminarViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var seminar = new SeminarBOL
-                (
-                    model.DateSeminar,
-                    model.IdSeminarTheme,
-                    model.Notes,
-                    DateTime.Now
-                )
                 {
-                    Participants = model.SelectedParticipants.Select(p => new Clients { Id = p }).ToList(),
+                    Id = model.Id,
+                    DateSeminar = model.DateSeminar,
+                    IdSeminarTheme = model.IdSeminarTheme,
+                    Notes = model.Notes,
+                    Participants = model.SelectedParticipants.Select(id => new Clients { Id = id }).ToList(),
+                    Intervenants = model.SelectedIntervenants.Select(id => new Employees { Id = id }).ToList()
                 };
 
+                // Appel au BLL pour mettre à jour le séminaire
                 bll.UpdateSeminar(seminar);
+
                 return RedirectToAction(nameof(Index));
             }
 
-            var themes = GetSeminarThemes();
-            ViewBag.SeminarThemes = new SelectList(themes, "Id", "Name");
+            // Si la validation échoue, on recharge les listes déroulantes
+            ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
+            ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName");
             ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
+
             return View(model);
         }
+
 
         public IActionResult Delete(int id)
         {
@@ -143,13 +248,24 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [Route("Seminars/DeleteConfirmed/{id}")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            bll.DeleteSeminar(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                bll.DeleteSeminar(id);
+                TempData["SuccessMessage"] = "Le séminaire a été supprimé avec succès.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Une erreur est survenue lors de la suppression : {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
         }
+
 
         private IEnumerable<MdSeminarThemes> GetSeminarThemes()
         {
@@ -172,6 +288,28 @@ namespace WebApp.Controllers
         private IEnumerable<ClientViewModel> GetParticipants()
         {
             var response = _clientBLL.GetClients();
+            if (response.Succeeded)
+            {
+                return response.ElementList.Select(c => new ClientViewModel
+                {
+                    Id = c.Id,
+                    FullName = $"{c.FirstName} {c.LastName}"
+                });
+            }
+            return new List<ClientViewModel>();
+        }
+
+        [HttpGet]
+        public JsonResult SearchIntervenants(string searchTerm)
+        {
+            var intervenants = GetIntervenants().Where(p =>
+                p.FullName.ToLower().Contains(searchTerm.ToLower())).ToList();
+            return Json(intervenants);
+        }
+
+        private IEnumerable<ClientViewModel> GetIntervenants()
+        {
+            var response = _employeeBLL.GetAllEmployees();
             if (response.Succeeded)
             {
                 return response.ElementList.Select(c => new ClientViewModel

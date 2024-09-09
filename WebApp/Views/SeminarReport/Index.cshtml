@@ -1,0 +1,27 @@
+﻿@model WebApp.ViewModels.SeminarReportViewModel
+
+@{
+    ViewBag.Title = "Générer un rapport sur les Ateliers";
+}
+
+<h2>Générer un rapport sur les Ateliers</h2>
+
+<form asp-action="GenerateReport" method="post">
+    <div class="form-group">
+        <label for="StartDate">Date de début</label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+    </div>
+    <div class="form-group">
+        <label for="EndDate">Date de fin</label>
+        <input asp-for="EndDate" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label for="IdSeminarTheme">Thème du séminaire</label>
+        <select asp-for="IdSeminarTheme" class="form-control" asp-items="ViewBag.SeminarThemes">
+            <option value="">Sélectionner un thème</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Générer le rapport</button>
+</form>

@@ -51,7 +51,6 @@ namespace DataAccess.Providers.Entity
                 Db.SaveChanges();
             }
         }
-
         
     }
 }
