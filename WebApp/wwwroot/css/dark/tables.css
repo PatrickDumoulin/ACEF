@@ -29,6 +29,7 @@
     background-color: black;
     color: white;
     text-transform: uppercase;
+    border-bottom: 3px solid #14578e; /* Bordure grise foncée */
 }
 
 /*.table th:last-child,
@@ -46,6 +47,8 @@
     justify-content: space-around; /* Pour s'assurer que les boutons ne sont pas trop espacés */
     gap: 5px; /* Espacement entre les boutons */
 }
+
+
 
 
 

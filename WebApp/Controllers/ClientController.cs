@@ -29,6 +29,8 @@ namespace WebApp.Controllers
         // GET: ClientController
         public IActionResult Index(ClientSearchViewModel searchModel, string sortOrder, int page = 1, int pageSize = 6)
         {
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "Id" : sortOrder;
+
             var clients = base.bll.GetClients().ElementList;
             var interventions = _interventionBLL.GetInterventions().ElementList;
 
@@ -64,11 +66,12 @@ namespace WebApp.Controllers
                 clients = clients.Where(c => clientIdsWithLoanStatus.Contains(c.Id)).ToList();
             }
 
-            // Apply sorting
-            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "Id";
             ViewBag.LastNameSortParm = sortOrder == "LastName" ? "lastName_desc" : "LastName";
             ViewBag.FirstNameSortParm = sortOrder == "FirstName" ? "firstName_desc" : "FirstName";
             ViewBag.EmailSortParm = sortOrder == "Email" ? "email_desc" : "Email";
+            ViewBag.CurrentSortColumn = sortOrder; // Set the current column being sorted
+            ViewBag.CurrentSortOrder = sortOrder.EndsWith("_desc") ? "desc" : "asc"; // Set the current order
 
             switch (sortOrder)
             {
@@ -97,6 +100,7 @@ namespace WebApp.Controllers
                     clients = clients.OrderBy(c => c.Id).ToList();
                     break;
             }
+
 
             var totalcount = clients.Count;
             var totalPages = (int)Math.Ceiling((decimal)totalcount / pageSize);

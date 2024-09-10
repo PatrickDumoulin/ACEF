@@ -96,18 +96,77 @@
         @if (Model != null && Model.Clients.Count > 0)
         {
             <table class="table table-striped">
-                <thead class="tableHeader">
+                <thead class="table-header">
                     <tr>
-                        <th>#Dossier</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>#Tel</th>
-                        @* <th>Email</th> <!-- Réduction de la taille de la colonne --> *@
-                        <th>Date Naissance</th>
-                        <th>Prêt Remboursé</th>
+                        <th>Dossier</th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@(ViewBag.LastNameSortParm)">
+                                Nom
+                                @if (ViewBag.CurrentSortColumn == "LastName" || ViewBag.CurrentSortColumn == "lastName_desc")
+                                {
+                                    if (ViewBag.CurrentSortOrder == "asc")
+                                    {
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    }
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@(ViewBag.FirstNameSortParm)">
+                                Prénom
+                                @if (ViewBag.CurrentSortColumn == "FirstName" || ViewBag.CurrentSortColumn == "firstName_desc")
+                                {
+                                    @if (ViewBag.CurrentSortOrder == "asc")
+                                    {
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    }
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>Tel</th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@(ViewBag.EmailSortParm)">
+                                Email
+                                @if (ViewBag.CurrentSortColumn == "Email" || ViewBag.CurrentSortColumn == "email_desc")
+                                {
+                                    @if (ViewBag.CurrentSortOrder == "asc")
+                                    {
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    }
+                                    if (ViewBag.CurrentSortOrder == "desc")
+                                    {
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    }
+                                }
+                                else
+                                {
+                                    <i class="bi bi-caret-up"></i> <!-- Icône par défaut pour montrer que c'est cliquable -->
+                                }
+                            </a>
+                        </th>
+                        <th>Prêt Payé</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
+
+
+
                 <tbody>
                     @foreach (var client in Model.Clients)
                     {
@@ -116,13 +175,13 @@
                             <td>@client.LastName</td>
                             <td>@client.FirstName</td>
                             <td>@client.PhoneNumber</td>
-                            @* <td>@client.Email</td> *@
-                            <td>@client.Birthdate?.ToString("dd/MM/yyyy")</td>
+                            <td>@client.Email</td>
+                            @* <td>@client.Birthdate?.ToString("dd/MM/yyyy")</td> *@
                             <td>@(client.IsLoanPaid.HasValue ? (client.IsLoanPaid.Value ? "Oui" : "Non") : "N/A")</td>
 
                             <td>
-                                <div class="btn-group" role="group">
-                                    <a asp-controller="Client" asp-action="Details" asp-route-id="@client.Id" class="btn btn-primary">
+                                <div class="btn-group-vertical" role="group">
+                                    <a asp-controller="Client" asp-action="Details" asp-route-id="@client.Id" class="btn btn-primary mb-2">
                                         <i class="bi bi-list-ul"></i> Détails
                                     </a>
                                     <a asp-controller="Client" asp-action="Edit" asp-route-id="@client.Id" class="btn btn-primary">
