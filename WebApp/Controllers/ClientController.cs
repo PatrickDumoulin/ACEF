@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
+using BusinessLayer.Logic;
 using BusinessLayer.Logic.Interfaces;
+using CoreLib.Injection;
 using DataAccess.BOL.Client;
 using DataAccess.Models;
 using DataModels.BOL.Client;
@@ -17,11 +19,18 @@ namespace WebApp.Controllers
     [Authorize(Roles = "Intervenant,Superutilisateur")]
     public class ClientController : AbstractBLLController<IClientBLL>
     {
+        private readonly IInterventionBLL _interventionBLL;
+
+        public ClientController() : base()
+        {
+            _interventionBLL = Injector.ImplementBll<IInterventionBLL>();
+        }
 
         // GET: ClientController
         public IActionResult Index(ClientSearchViewModel searchModel, string sortOrder, int page = 1, int pageSize = 6)
         {
             var clients = base.bll.GetClients().ElementList;
+            var interventions = _interventionBLL.GetInterventions().ElementList;
 
             // Apply search filters
             if (searchModel.Id.HasValue)
@@ -43,6 +52,16 @@ namespace WebApp.Controllers
             if (!string.IsNullOrEmpty(searchModel.Email))
             {
                 clients = clients.Where(c => c.Email.Contains(searchModel.Email)).ToList();
+            }
+            if (searchModel.isLoanPaid.HasValue)
+            {
+                // Filtrer les clients par le statut du prêt
+                var clientIdsWithLoanStatus = interventions
+                    .Where(i => i.IsLoanPaid == searchModel.isLoanPaid.Value)
+                    .Select(i => i.IdClient) // Supposons qu'il y a une relation entre l'intervention et le client
+                    .ToList();
+
+                clients = clients.Where(c => clientIdsWithLoanStatus.Contains(c.Id)).ToList();
             }
 
             // Apply sorting
@@ -91,6 +110,7 @@ namespace WebApp.Controllers
                 PhoneNumber = searchModel.PhoneNumber,
                 Email = searchModel.Email,
                 Clients = pagedClients.Select(MapToViewModel).ToList(),
+                isLoanPaid = searchModel.isLoanPaid,  // Passer la valeur du prêt remboursé dans le ViewModel
                 CurrentPage = page,
                 TotalPages = totalPages
             };
@@ -316,6 +336,8 @@ namespace WebApp.Controllers
 
         private ClientViewModel MapToViewModel(IClientBOL client)
         {
+            var intervention = _interventionBLL.GetInterventions().ElementList.FirstOrDefault(i => i.IdClient == client.Id); ;
+
             return new ClientViewModel
             {
                 Id = client.Id,
@@ -337,7 +359,8 @@ namespace WebApp.Controllers
                 IdBank = client.IdBank,
                 IdEmploymentSituation = client.IdEmploymentSituation,
                 IdScholarshipType = client.IdScholarshipType,
-                Income = BitConverter.ToInt32(client.Income, 0).ToString()
+                Income = BitConverter.ToInt32(client.Income, 0).ToString(),
+                IsLoanPaid = intervention?.IsLoanPaid // Null si aucune intervention trouvée
             };
         }
 

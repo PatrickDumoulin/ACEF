@@ -18,8 +18,9 @@ namespace WebApp.ViewModels
         public string PhoneNumber { get; set; }
 
         [Display(Name = "Courriel")]
-        public string Email { get; set; } 
+        public string Email { get; set; }
 
+        public bool? isLoanPaid { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 

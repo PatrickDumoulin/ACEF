@@ -10,6 +10,16 @@
         font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
     }
 
+.btn-group-vertical .btn {
+    padding: 5px 10px; /* Réduire le padding pour diminuer la taille des boutons */
+    font-size: 14px; /* Ajuster la taille de la police pour rendre le texte plus petit */
+    border-radius: 5px; /* Réduire légèrement le radius pour un look plus rectangulaire */
+}
+
+    .btn-group-vertical .btn i {
+        font-size: 12px; /* Ajuster la taille des icônes si nécessaire */
+    }
+
 
 
 .btn-primary, .btn-danger {

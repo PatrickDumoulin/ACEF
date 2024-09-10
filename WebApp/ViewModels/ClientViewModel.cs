@@ -44,6 +44,7 @@ namespace WebApp.ViewModels
         public int? IdScholarshipType { get; set; }
         [Display(Name = "Revenu")]
         public string Income { get; set; }
+        public bool? IsLoanPaid { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

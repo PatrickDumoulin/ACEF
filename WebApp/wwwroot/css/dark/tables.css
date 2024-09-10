@@ -5,6 +5,9 @@
     background-color: #1b263b;
     color: white;
     font-weight: bold;
+    
+    overflow: hidden; /* Cache le texte qui dépasse */
+    text-overflow: ellipsis; /* Ajoute les "..." si le texte dépasse */
 }
 
 .table-container {

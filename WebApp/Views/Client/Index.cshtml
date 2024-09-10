@@ -6,6 +6,9 @@
     ViewData["Title"] = "Index";
 }
 
+<style>
+
+</style>
 
 
 
@@ -56,6 +59,10 @@
                         <input type="text" name="Email" id="Email" class="form-control" value="@Model.Email">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="isLoanPaid">Petit prêt non remboursé</label>
+                    <input type="checkbox" name="isLoanPaid" id="isLoanPaid" value="false" @(Model.isLoanPaid.HasValue && Model.isLoanPaid.Value ? "checked" : "") />
+                </div>
 
             </div>
             <div class="row">
@@ -64,9 +71,16 @@
                         <button type="submit" class="btn btn-primary me-2">
                             <i class="bi bi-search"></i> Rechercher
                         </button>
-                        @if (!string.IsNullOrEmpty(Model.Id?.ToString()) || !string.IsNullOrEmpty(Model.LastName) || !string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.PhoneNumber) || !string.IsNullOrEmpty(Model.Email))
+                        @if (!string.IsNullOrEmpty(Model.Id?.ToString())
+                        || !string.IsNullOrEmpty(Model.LastName)
+                        || !string.IsNullOrEmpty(Model.FirstName)
+                        || !string.IsNullOrEmpty(Model.PhoneNumber)
+                        || !string.IsNullOrEmpty(Model.Email)
+                        || @Model.isLoanPaid.HasValue)
                         {
-                            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-eraser"></i> Effacer le filtre</a>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-eraser"></i> Effacer le filtre
+                            </a>
                         }
                     </div>
                 </div>
@@ -87,9 +101,10 @@
                         <th>#Dossier</th>
                         <th>Nom</th>
                         <th>Prénom</th>
-                        <th>Numéro de téléphone</th>
-                        <th>Adresse du domicile</th>
-                        @* <th>Courriel</th> *@
+                        <th>#Tel</th>
+                        @* <th>Email</th> <!-- Réduction de la taille de la colonne --> *@
+                        <th>Date Naissance</th>
+                        <th>Prêt Remboursé</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -101,8 +116,10 @@
                             <td>@client.LastName</td>
                             <td>@client.FirstName</td>
                             <td>@client.PhoneNumber</td>
-                            <td>@client.Address</td>
-                            @* <td>@client.Email</td>  *@
+                            @* <td>@client.Email</td> *@
+                            <td>@client.Birthdate?.ToString("dd/MM/yyyy")</td>
+                            <td>@(client.IsLoanPaid.HasValue ? (client.IsLoanPaid.Value ? "Oui" : "Non") : "N/A")</td>
+
                             <td>
                                 <div class="btn-group" role="group">
                                     <a asp-controller="Client" asp-action="Details" asp-route-id="@client.Id" class="btn btn-primary">
