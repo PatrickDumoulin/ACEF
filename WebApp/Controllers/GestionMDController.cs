@@ -76,7 +76,7 @@ namespace WebApp.Controllers
             var viewModel = new MdDetailViewModel
             {
                 MdName = mdName,
-                MdItems = masterDataItems.ToList()  // Liste d'objets MasterDataViewModel
+                MdItems = sortedMasterDatas.ToList()  // Liste d'objets MasterDataViewModel
             };
 
             return View(viewModel);
