@@ -11,10 +11,12 @@ namespace DataAccess.Providers.Interfaces
 {
 	public interface IClientDAL : IDAL
 	{
-		IClientBOL GetClient(int id);
+		public ClientBOL GetClient(int id);
 
-        List<IClientBOL> GetClients();
-		void CreateClient(IClientBOL client);
-		void UpdateClient(IClientBOL client);
+		public List<ClientBOL> GetClients();
+
+		public void CreateClient(ClientBOL clientBOL);
+
+        void UpdateClient(IClientBOL client);
     }
 }

@@ -125,6 +125,44 @@
                 <input asp-for="Income" class="form-control" />
                 <span asp-validation-for="Income" class="text-danger"></span>
             </div>
+
+            <div class="mb-3">
+                <label asp-for="SelectedIncomeType" class="form-label">Source Revenu</label>
+                <div class="input-group">
+                    <select id="AvailableIncomeType" class="form-control">
+                        <option value="">--Sélectionnez la Source de Revenu--</option>
+                        @if (Model.IncomeType != null)
+                        {
+                            @foreach (var incomeType in Model.IncomeType)
+                            {
+                                <option value="@incomeType.Value">@incomeType.Text</option>
+                            }
+                        }
+                    </select>
+                    <button type="button" id="addIncomeTypeButton" class="btn btn-primary ml-2">Ajouter</button>
+                </div>
+                <span asp-validation-for="SelectedIncomeType" class="text-danger"></span>
+            </div>
+
+
+            <div id="solutionsSection" class="mb-3">
+                <label class="form-label text-center">Sources de revenu proposées </label>
+                <ul id="selectedSolutionsList" class="list-group">
+                    @foreach (var incomeType in Model.SelectedIncomeType)
+                    {
+                        var incomeTypeText = Model.IncomeType.FirstOrDefault(s => s.Value == incomeType.ToString())?.Text;
+                        <li class="list-group-item" data-value="@incomeType">
+                            @incomeTypeText
+                            <button type="button" class="btn btn-sm btn-danger float-right remove-solution">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <input type="hidden" name="SelectedIncomeType" value="@incomeType" />
+                        </li>
+                    }
+                </ul>
+                <span asp-validation-for="SelectedIncomeType" class="text-danger"></span>
+            </div>
+
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
@@ -137,6 +175,51 @@
 
 @section Scripts {
     @{
+       
+
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+    <script>
+        document.getElementById('addIncomeTypeButton').addEventListener('click', function () {
+            var select = document.getElementById('AvailableIncomeType');
+            var selectedValue = select.value;
+            var selectedText = select.options[select.selectedIndex].text;
+
+            if (selectedValue) {
+                // Vérifier si l'élément existe déjà dans la liste
+                var existingItem = document.querySelector('li[data-value="' + selectedValue + '"]');
+                if (existingItem) {
+                    alert('Cette source de revenu a déjà été ajoutée.');
+                    return;
+                }
+
+                // Ajouter l'élément sélectionné à la liste
+                var list = document.getElementById('selectedSolutionsList');
+                var listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.setAttribute('data-value', selectedValue);
+                listItem.innerHTML = selectedText +
+                    '<button type="button" class="btn btn-sm btn-danger float-right remove-solution">' +
+                    '<i class="bi bi-trash"></i></button>' +
+                    '<input type="hidden" name="SelectedIncomeType" value="' + selectedValue + '" />';
+
+                list.appendChild(listItem);
+
+                // Réinitialiser la sélection après l'ajout
+                select.value = '';
+            } else {
+                alert('Veuillez sélectionner une source de revenu.');
+            }
+        });
+
+    // Gérer la suppression des éléments
+    document.getElementById('solutionsSection').addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('remove-solution')) {
+            var listItem = e.target.closest('li');
+            listItem.remove();
+        }
+    });
+
+</script>

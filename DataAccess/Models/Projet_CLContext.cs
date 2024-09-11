@@ -270,10 +270,12 @@ public partial class Projet_CLContext : DbContext
 
             entity.HasOne(d => d.IdClientNavigation).WithMany(p => p.ClientsIncomeTypes)
                 .HasForeignKey(d => d.IdClient)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Clients_IncomeTypes_Client");
 
             entity.HasOne(d => d.IdIncomeTypeNavigation).WithMany(p => p.ClientsIncomeTypes)
                 .HasForeignKey(d => d.IdIncomeType)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Clients_IncomeTypes_IncomeType");
         });
 
@@ -740,7 +742,7 @@ public partial class Projet_CLContext : DbContext
 
             entity.HasOne(d => d.IdSeminarThemeNavigation).WithMany(p => p.Seminars)
                 .HasForeignKey(d => d.IdSeminarTheme)
-                .HasConstraintName("FK__Seminars__IdSemi__67DE6983");
+                .HasConstraintName("FK_Seminars_MdSeminarThemes");
         });
 
         modelBuilder.Entity<SeminarsEmployees>(entity =>

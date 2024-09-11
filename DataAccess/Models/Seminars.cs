@@ -17,7 +17,7 @@ public partial class Seminars
 
     public DateTime? CreatedDate { get; set; }
 
-    public virtual MdInterventionType IdSeminarThemeNavigation { get; set; }
+    public virtual MdSeminarThemes IdSeminarThemeNavigation { get; set; }
 
     public virtual ICollection<SeminarsEmployees> SeminarsEmployees { get; set; } = new List<SeminarsEmployees>();
 

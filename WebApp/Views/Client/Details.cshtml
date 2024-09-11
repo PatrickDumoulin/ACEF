@@ -99,6 +99,29 @@
                 <div class="label">Salaire</div>
                 <div class="value">@Model.Income</div>
             </div>
+            <div>
+                <div class="label">Prêt remboursé</div>
+                <div class="value">@(Model.IsLoanPaid.HasValue ? (Model.IsLoanPaid.Value ? "Oui" : "Non") : "N/A")</div>
+            </div>
+            <div>
+                <div class="label">Source Revenu</div>
+                <div class="value">
+                    @if (Model.IncomeTypeNames != null && Model.IncomeTypeNames.Any())
+                    {
+                        <ul>
+                            @foreach (var incomeTypeName in Model.IncomeTypeNames)
+                            {
+                                <li>@incomeTypeName</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>Aucune source de revenu sélectionnée.</p>
+                    }
+                </div>
+            </div>
+
         </div>
 
         <div class="btn-container text-center">

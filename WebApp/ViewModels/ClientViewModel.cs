@@ -46,6 +46,21 @@ namespace WebApp.ViewModels
         public string Income { get; set; }
         public bool? IsLoanPaid { get; set; }
 
+        //SOURCE REVENUS
+        public IEnumerable<SelectListItem> IncomeType { get; set; } = new List<SelectListItem>();
+
+        public List<int> SelectedIncomeType { get; set; } = new List<int>();
+
+        // Ajouté pour afficher les noms des solutions
+        public List<string> IncomeTypeNames { get; set; } = new List<string>();
+
+        public ClientViewModel()
+        {
+            IncomeType = new List<SelectListItem>();
+            SelectedIncomeType = new List<int>();
+            IncomeTypeNames = new List<string>();
+        }
+
         public DateTime? CreatedDate { get; set; }
 
         public DateTime? LastModifiedDate { get; set; }

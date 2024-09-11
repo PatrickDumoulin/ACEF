@@ -9,9 +9,9 @@ public partial class ClientsIncomeTypes
 {
     public int Id { get; set; }
 
-    public int? IdClient { get; set; }
+    public int IdClient { get; set; }
 
-    public int? IdIncomeType { get; set; }
+    public int IdIncomeType { get; set; }
 
     public virtual Clients IdClientNavigation { get; set; }
 

@@ -15,8 +15,8 @@ namespace DataAccess.BOL.ClientIncomeType
 
         public int Id { get { return base.Record.Id; } }
 
-        public int? IdClient { get { return base.Record.IdClient; } set { base.Record.IdClient = value; } }
+        public int IdClient { get { return base.Record.IdClient; } set { base.Record.IdClient = value; } }
     
-        public int? IdIncomeType { get { return base.Record.IdIncomeType; } set { base.Record.IdIncomeType = value; } }
+        public int IdIncomeType { get { return base.Record.IdIncomeType; } set { base.Record.IdIncomeType = value; } }
     }
 }

@@ -156,6 +156,7 @@ namespace BusinessLayer.Logic.Interfaces
         #region MdIncomeType
         GetItemResponse<IMdIncomeTypeBOL> GetMdIncomeType(int id);
         GetListResponse<IMdIncomeTypeBOL> GetAllMdIncomeTypes();
+        string GetIncomeTypeName(int incomeTypeId);
         public IMdIncomeTypeBOL CreateMdIncomeType(string name, bool? isActive);
         public IMdIncomeTypeBOL EditMdIncomeType(string originalMdIncomeTypeName, string newMdIncomeTypeName, bool? isActive);
         public int GetReferenceCountForMdIncomeType(int id);

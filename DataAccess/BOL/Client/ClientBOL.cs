@@ -1,7 +1,11 @@
 ﻿
+using DataAccess.BOL.ClientIncomeType;
+using DataAccess.BOL.InterventionsInterventionSolutions;
 using DataAccess.Core.Definitions;
 using DataAccess.Models;
 using DataModels.BOL.Client;
+using DataModels.BOL.ClientIncomeType;
+using DataModels.BOL.InterventionsInterventionSolutions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +42,36 @@ namespace DataAccess.BOL.Client
         public DateTime? CreatedDate { get { return base.Record.CreatedDate; } set { base.Record.CreatedDate = value; } }
         public DateTime? LastModifiedDate { get { return base.Record.LastModifiedDate; } set { base.Record.LastModifiedDate = value; } }
 
+        public string FullName => $"{FirstName} {LastName}";
 
+        // Propriété pour les IDs des solutions d'intervention
+        public IEnumerable<int> ClientIncomeTypesIds
+        {
+            get
+            {
+                return (IEnumerable<int>)base.Record.ClientsIncomeTypes
+                .Select(x => x.IdIncomeType);
+            }
+        }
+
+        // Propriété pour la collection des income Types
+        public ICollection<IClientIncomeTypeBOL> ClientIncomeTypes
+        {
+            get
+            {
+                return base.Record.ClientsIncomeTypes
+                    .Select(x => new ClientIncomeTypeBOL(x))
+                    .Cast<IClientIncomeTypeBOL>()
+                    .ToList();
+            }
+            set
+            {
+                base.Record.ClientsIncomeTypes = value.Select(x => new ClientsIncomeTypes
+                {
+                    IdIncomeType = x.IdIncomeType,
+                    IdClient = this.Id
+                }).ToList();
+            }
+        }
     }
 }

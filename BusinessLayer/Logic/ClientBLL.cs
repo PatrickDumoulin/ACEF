@@ -19,20 +19,20 @@ namespace BusinessLayer.Logic
         public ClientBLL(ProviderDALTypes dalType) : base(dalType) { }
         public ClientBLL(IDAL externalDAL) : base(externalDAL) { }
 
-        public GetItemResponse<IClientBOL> GetClient(int id)
+        public GetItemResponse<ClientBOL> GetClient(int id)
         {
-            IClientBOL clientBOL = base.dal.GetClient(id);
-            return new GetItemResponse<IClientBOL>(clientBOL);
+            ClientBOL clientBOL = base.dal.GetClient(id);
+            return new GetItemResponse<ClientBOL>(clientBOL);
         }
 
-        public GetListResponse<IClientBOL> GetClients()
+        public GetListResponse<ClientBOL> GetClients()
         {
-            List<IClientBOL> clientsBOL = base.dal.GetClients();
-            return new GetListResponse<IClientBOL>(clientsBOL);
+            List<ClientBOL> clientsBOL = base.dal.GetClients();
+            return new GetListResponse<ClientBOL>(clientsBOL);
         }
 
 
-        public void CreateClient(IClientBOL clientBOL)
+        public void CreateClient(ClientBOL clientBOL)
         {
             base.dal.CreateClient(clientBOL);
         }

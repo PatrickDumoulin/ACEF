@@ -769,6 +769,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdIncomeTypeBOL>(mdIncomeTypeBOL);
         }
 
+        public string GetIncomeTypeName(int incomeTypeId)
+        {
+            var incomeTypeResponse = GetMdIncomeType(incomeTypeId);
+            return incomeTypeResponse.Succeeded && incomeTypeResponse.Element != null
+                ? incomeTypeResponse.Element.Name
+                : "Inconnu";
+        }
+
         public IMdIncomeTypeBOL CreateMdIncomeType(string name, bool? isActive)
         {
             return base.dal.CreateMdIncomeType(name, isActive);

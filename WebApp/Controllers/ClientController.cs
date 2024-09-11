@@ -1,8 +1,11 @@
 ﻿using BusinessLayer.Communication.Responses.Common;
 using BusinessLayer.Logic;
 using BusinessLayer.Logic.Interfaces;
+using CoreLib.Definitions;
 using CoreLib.Injection;
 using DataAccess.BOL.Client;
+using DataAccess.BOL.ClientIncomeType;
+using DataAccess.BOL.InterventionsInterventionSolutions;
 using DataAccess.Models;
 using DataModels.BOL.Client;
 using Microsoft.AspNetCore.Authorization;
@@ -20,10 +23,15 @@ namespace WebApp.Controllers
     public class ClientController : AbstractBLLController<IClientBLL>
     {
         private readonly IInterventionBLL _interventionBLL;
+        private readonly IClientIncomeTypeBLL _incometypeBLL;
+        private readonly IMDBLL _mdbBLL;
+        
 
         public ClientController() : base()
         {
             _interventionBLL = Injector.ImplementBll<IInterventionBLL>();
+            _mdbBLL = Injector.ImplementBll<IMDBLL>();
+            _incometypeBLL = Injector.ImplementBll<IClientIncomeTypeBLL>();
         }
 
         // GET: ClientController
@@ -154,7 +162,15 @@ namespace WebApp.Controllers
         {
             IMDBLL mdBLL = base.GetBLL<IMDBLL>();
             PopulateMdViewBags(mdBLL);
-            return View();
+            //ViewBag.Employees = GetEmployeesSelectList();
+            var model = new ClientViewModel
+            {
+                IncomeType = ViewBag.MdIncomeType != null
+                ? new SelectList(ViewBag.MdIncomeType, "Value", "Text")
+                : new SelectList(Enumerable.Empty<SelectListItem>()),
+                SelectedIncomeType = new List<int>()
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -189,6 +205,19 @@ namespace WebApp.Controllers
                 };
 
                 base.bll.CreateClient(newClient);
+
+                if (newClient.Id > 0 && viewModel.SelectedIncomeType != null && viewModel.SelectedIncomeType.Any())
+                {
+                    foreach (var incomeTypeId in viewModel.SelectedIncomeType)
+                    {
+                        var incomeTypeBOL = new ClientIncomeTypeBOL
+                        {
+                            IdClient = newClient.Id,
+                            IdIncomeType = incomeTypeId
+                        };
+                        _incometypeBLL.CreateClientIncomeType(incomeTypeBOL);
+                    }
+                }
                 TempData["success"] = "Client crée avec succès";
                 return RedirectToAction(nameof(Index));
             }
@@ -206,7 +235,12 @@ namespace WebApp.Controllers
                 IMDBLL mdBLL = base.GetBLL<IMDBLL>();
                 PopulateMdViewBags(mdBLL);
 
+                viewModel.IncomeType = ViewBag.MdIncomeType != null
+                    ? new SelectList(ViewBag.MdIncomeType, "Value", "Text")
+                    : new SelectList(Enumerable.Empty<SelectListItem>());
                 return View(viewModel);
+
+                
             }
 
             return NotFound();
@@ -234,6 +268,29 @@ namespace WebApp.Controllers
                     if (existingClient == null)
                     {
                         return NotFound();
+                    }
+
+                    //Mettre à jour les incomeTypes
+                    if (viewModel.SelectedIncomeType != null)
+                    {
+                        // Suppression des anciens incomeTypes
+                        var incomeTypesToRemove = existingClient.ClientIncomeTypes.ToList();
+                        foreach (var incomeType in incomeTypesToRemove)
+                        {
+                            _incometypeBLL.DeleteClientIncomeType(incomeType.Id);
+                        }
+
+                        // Creer un nouveau incomeType
+                        foreach (var incomeTypeId in viewModel.SelectedIncomeType)
+                        {
+                            var incomeTypeBOL = new ClientIncomeTypeBOL
+                            {
+                                IdClient = existingClient.Id,
+                                IdIncomeType = incomeTypeId
+                            };
+                            _incometypeBLL.CreateClientIncomeType(incomeTypeBOL);
+                        }
+
                     }
 
                     existingClient.IsMember = viewModel.IsMember;
@@ -294,6 +351,7 @@ namespace WebApp.Controllers
             var mdGenderDenomination = mdBLL.GetAllMdGenderDenominations();
             var mdHabitationType = mdBLL.GetAllMdHabitationTypes();
             var mdScholarshipType = mdBLL.GetAllMdScholarshipTypes();
+            var mdIncomeType = mdBLL.GetAllMdIncomeTypes();
 
             ViewBag.MdBanks = mdBanks.ElementList.Select(b => new SelectListItem
             {
@@ -336,11 +394,20 @@ namespace WebApp.Controllers
                 Value = b.Id.ToString(),
                 Text = b.Name
             });
+
+            ViewBag.MdIncomeType = mdIncomeType.ElementList.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name   
+            });
         }
 
         private ClientViewModel MapToViewModel(IClientBOL client)
         {
-            var intervention = _interventionBLL.GetInterventions().ElementList.FirstOrDefault(i => i.IdClient == client.Id); ;
+            var intervention = _interventionBLL.GetInterventions().ElementList.FirstOrDefault(i => i.IdClient == client.Id);
+            var incomeTypeNames = client.ClientIncomeTypes != null
+                ? client.ClientIncomeTypes.Select(r => _mdbBLL.GetIncomeTypeName(r.IdIncomeType)).ToList()
+                : new List<string>();
 
             return new ClientViewModel
             {
@@ -364,7 +431,9 @@ namespace WebApp.Controllers
                 IdEmploymentSituation = client.IdEmploymentSituation,
                 IdScholarshipType = client.IdScholarshipType,
                 Income = BitConverter.ToInt32(client.Income, 0).ToString(),
-                IsLoanPaid = intervention?.IsLoanPaid // Null si aucune intervention trouvée
+                IsLoanPaid = intervention?.IsLoanPaid, // Null si aucune intervention trouvée
+                SelectedIncomeType = client.ClientIncomeTypes?.Select(s => s.IdIncomeType).ToList(),
+                IncomeTypeNames = incomeTypeNames,
             };
         }
 

@@ -11,8 +11,8 @@ namespace DataModels.BOL.ClientIncomeType
     {
         public int Id { get; }
 
-        public int? IdClient { get; set; }
+        public int IdClient { get; set; }
 
-        public int? IdIncomeType { get; set; }
+        public int IdIncomeType { get; set; }
     }
 }

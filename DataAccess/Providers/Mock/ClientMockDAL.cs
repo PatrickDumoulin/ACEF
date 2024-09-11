@@ -72,5 +72,20 @@ namespace DataAccess.Providers.Mock
         {
             clients.RemoveAll(c => c.Id == id);
         }
+
+        ClientBOL IClientDAL.GetClient(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<ClientBOL> IClientDAL.GetClients()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateClient(ClientBOL clientBOL)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

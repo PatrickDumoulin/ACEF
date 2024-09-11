@@ -1,4 +1,6 @@
 ﻿using CoreLib.Definitions;
+using DataModels.BOL.ClientIncomeType;
+using DataModels.BOL.InterventionsInterventionSolutions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +53,10 @@ namespace DataModels.BOL.Client
 
         public DateTime? LastModifiedDate { get; set; }
         public string FullName => $"{FirstName} {LastName}";
+
+        IEnumerable<int> ClientIncomeTypesIds { get; }
+
+        ICollection<IClientIncomeTypeBOL> ClientIncomeTypes { get; }
     }
 }
 

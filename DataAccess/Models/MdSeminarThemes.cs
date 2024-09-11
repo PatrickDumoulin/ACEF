@@ -12,4 +12,6 @@ public partial class MdSeminarThemes
     public string Name { get; set; }
 
     public bool? Active { get; set; }
+
+    public virtual ICollection<Seminars> Seminars { get; set; } = new List<Seminars>();
 }

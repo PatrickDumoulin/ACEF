@@ -1,5 +1,6 @@
 ﻿using DataAccess.Core.Definitions;
 using DataModels.BOL.Client;
+using DataModels.BOL.ClientIncomeType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,10 @@ namespace DataAccess.BOL.Client
         public DateTime? CreatedDate { get; set; }
 
         public DateTime? LastModifiedDate { get; set; }
+
+        public IEnumerable<int> ClientIncomeTypesIds => throw new NotImplementedException();
+
+        public ICollection<IClientIncomeTypeBOL> ClientIncomeTypes => throw new NotImplementedException();
 
         private int GetNewSequence()
         {
