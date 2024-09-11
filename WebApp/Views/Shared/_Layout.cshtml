@@ -16,6 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="~/css/global/DropDownMenu.css"/>
     
+    
 
     <script>
         // Immédiatement appliquer le thème correct avant que la page ne soit rendue
@@ -85,20 +86,20 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Client" asp-action="Index">Clients</a>
+                                <a class="nav-link" asp-area="" asp-controller="Client" asp-action="Index"><i class="bi bi-person"></i> Client</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Seminars" asp-action="Index">Atelier</a>
+                                <a class="nav-link" asp-area="" asp-controller="Seminars" asp-action="Index"><i class="bi bi-hammer"></i> Atelier</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Intervention" asp-action="Index">Intervention</a>
+                                <a class="nav-link" asp-area="" asp-controller="Intervention" asp-action="Index"><i class="bi bi-activity"></i> Intervention</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index">Employés</a>
+                                <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index"><i class="bi bi-person-lines-fill"></i> Employé</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="rapportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Rapports
+                                    <i class="bi bi-bar-chart-fill"></i> Rapport
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="rapportDropdown">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="InterventionReport" asp-action="Index" style="font-weight:bold">Rapport Interventions</a></li>
@@ -106,7 +107,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="GestionMD" asp-action="Index">Gestion Données</a>
+                                <a class="nav-link" asp-area="" asp-controller="GestionMD" asp-action="Index"><i class="bi bi-database-fill-gear"></i> Données</a>
                             </li>
                         }
                     </ul>
@@ -114,12 +115,12 @@
                         <button id="themeToggleBtn" class="btn btn-secondary me-3">Thème</button>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <span class="nav-link text-white">@UserManager.GetUserName(User)</span>
-                            </li>
+                            </li> *@
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="form-inline">
-                                    <button type="submit" class="nav-link btn btn-link text-white">Déconnexion</button>
+                                    <button type="submit" class="nav-link btn btn-link text-white"><i class="bi bi-box-arrow-left"></i> Déconnexion</button>
                                 </form>
                             </li>
                         }

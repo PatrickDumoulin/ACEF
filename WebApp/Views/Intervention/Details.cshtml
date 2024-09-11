@@ -16,6 +16,7 @@
                 <div class="btn-group" role="group" aria-label="Intervention Actions">
                     <a asp-controller="InterventionNotes" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-journal-text"> </i>Notes (@ViewBag.NoteCount)</a>
                     <a asp-controller="InterventionAttachments" asp-action="Index" asp-route-interventionId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-paperclip"></i> Pièces jointes (@ViewBag.AttachmentCount)</a>
+                    <a asp-action="Index" class="btn btn-secondary">Retour</a>
                 </div>
             </div>
         </div>

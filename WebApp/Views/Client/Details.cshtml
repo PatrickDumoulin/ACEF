@@ -9,17 +9,25 @@
 <div class="container">
     <div class="details-container">
         <div class="details-header">
+
             <h1 class="text-center pb-2">Détails du Client</h1>
             <h4 class="text-center">@Model.FirstName @Model.LastName</h4><br />
             <div class="text-center">
                 <div class="btn-group" role="group" aria-label="Client Actions">
-                    <a  asp-controller="Intervention" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2">Interventions</a>
-                    <a asp-controller="Seminars" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2">Atelier</a>
-                    <a asp-controller="Note" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2">Notes (@ViewBag.NoteCount)</a>
-                    <a asp-controller="ClientsAttachments" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2">Pièces jointes (@ViewBag.AttachmentCount)</a>
+                    <a asp-controller="Intervention" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-activity"> </i>Interventions</a>
+                    <a asp-controller="Seminars" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-hammer"></i> Atelier</a>
+                    <a asp-controller="Note" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-journal-text"> </i> Notes (@ViewBag.NoteCount)</a>
+                    <a asp-controller="ClientsAttachments" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-paperclip"></i>  Pièces jointes (@ViewBag.AttachmentCount)</a>
+                    <a asp-action="Index" class="btn btn-secondary">Retour</a>
                 </div>
             </div>
+            
+                
+            
+            
         </div>
+
+        
 
 
         <div class="details-grid">

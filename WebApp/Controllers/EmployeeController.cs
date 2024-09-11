@@ -142,6 +142,7 @@ namespace WebApp.Controllers
                         await _userManager.AddToRoleAsync(user, "AdministrateurCA");
                     }
 
+                    TempData["success"] = "Employé crée avec succès";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -240,6 +241,7 @@ namespace WebApp.Controllers
                         // Mettre à jour les rôles
                         await UpdateRoles(user, model);
 
+                        TempData["success"] = "Employé modifié avec succès";
                         return RedirectToAction(nameof(Index));
                     }
 
