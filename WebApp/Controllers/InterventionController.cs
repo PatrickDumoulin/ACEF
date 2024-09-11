@@ -192,6 +192,8 @@ namespace WebApp.Controllers
                 intervalle = searchModel.DateFilter == "Intervalle",
                 CurrentPage = page,
                 TotalPages = totalPages,
+                StartDate = searchModel.StartDate,
+                EndDate = searchModel.EndDate,
             };
 
             return View(viewModel);

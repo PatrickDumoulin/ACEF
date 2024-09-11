@@ -140,7 +140,10 @@
         }
         else if (Model.intervalle)
         {
-            <h4 class="rechercheInterventionSousTitreInteractif pt-4"><i class="bi bi-search"></i>  Intervalle du ** au **</h4>
+            <h4 class="rechercheInterventionSousTitreInteractif pt-4">
+                <i class="bi bi-search"></i> Intervalle du
+                @Model.StartDate?.ToString("dd/MM/yyyy") au @Model.EndDate?.ToString("dd/MM/yyyy")
+            </h4>
         }
 
     </div>

@@ -90,3 +90,37 @@ body {
         margin-bottom: 5px; /* Ajouter un peu d'espace entre les éléments */
         border: 1px solid #939292; /* Bordure grise foncée */
     }
+
+
+/* Force un style sombre sur les suggestions d'autocomplétion */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    background-color: #1e1e1e; /* Couleur de fond sombre */
+    color: white; /* Couleur du texte */
+    font-weight: bold; /* Rendre le texte plus visible */
+    border: 1px solid #939292; /* Maintenir la bordure grise foncée */
+    box-shadow: 0 0 0px 1000px #1e1e1e inset !important; /* Masque le changement de couleur par défaut */
+    transition: background-color 5000s ease-in-out 0s; /* Empêche le changement rapide de couleur */
+}
+
+/* Pour d'autres navigateurs */
+input:-moz-autofill {
+    background-color: #1e1e1e !important;
+    color: white !important;
+    font-weight: bold;
+    border: 1px solid #939292 !important;
+    box-shadow: 0 0 0px 1000px #1e1e1e inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px white inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: white !important;
+}
+
+    input:-webkit-autofill:focus {
+        -webkit-box-shadow: /*your box-shadow*/,0 0 0 50px white inset;
+        -webkit-text-fill-color: white !important;
+    }

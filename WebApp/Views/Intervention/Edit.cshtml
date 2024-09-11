@@ -34,7 +34,7 @@
 
                 <div class="mb-3">
                     <label asp-for="DateIntervention" class="form-label">Date de l'intervention</label>
-                    <input asp-for="DateIntervention" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <input asp-for="DateIntervention" type="date" class="form-control date-input" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="DateIntervention" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
