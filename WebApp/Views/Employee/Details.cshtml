@@ -6,6 +6,7 @@
 
 
 
+
 <div class="container">
     <div class="details-container">
         <div class="details-header">
@@ -68,7 +69,17 @@
 
         <div class="btn-container text-center">
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier le client</a>
-            <a asp-action="Index" class="btn btn-secondary">Retour</a>
+            @if (ViewBag.ReturnToSeminarCreation != null && ViewBag.ReturnToSeminarCreation)
+            {
+                <a href="@Url.Action("Create", "Seminars")" class="btn btn-secondary">
+                    <i class="bi bi-arrow-90deg-left"></i> Retour à la Création du Séminaire
+                </a>
+            }
+            else
+            {
+                <a asp-action="Index" class="btn btn-secondary">Retour</a>
+            }
+            
         </div>
     </div>
 </div>

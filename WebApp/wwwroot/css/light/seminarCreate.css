@@ -1,0 +1,79 @@
+﻿/* Style général en mode Light */
+
+
+/* Style pour les résultats de recherche */
+.custom-search-results {
+    max-height: 150px;
+    overflow-y: auto;
+    border-radius: 5px;
+    padding: 10px;
+    background: white; /* Dégradé du bleu foncé vers un bleu encore plus sombre */
+}
+
+    .custom-search-results .custom-list-group-item {
+        background-color: white;
+        color: black;
+        border: 1px solid #939292;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Ajout d'une transition */
+    }
+
+        .custom-search-results .custom-list-group-item:hover {
+            
+            box-shadow: 0 0 5px rgba(9, 132, 227, 0.7); /* Lueur bleue */
+        }
+
+/* Style pour les éléments sélectionnés */
+.custom-selected-items {
+    margin-top: 1rem;
+}
+
+    .custom-selected-items .custom-list-group-item {
+        background-color: gray
+        color: white;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 5px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Ajout d'une transition */
+    }
+
+        .custom-selected-items .custom-list-group-item:hover {
+            
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* Lueur bleue plus intense */
+        }
+
+/* Style pour la suppression des éléments */
+.custom-remove-participant, .custom-remove-intervenant {
+    color: #ff4d4d;
+    cursor: pointer;
+}
+
+    .custom-remove-participant:hover, .custom-remove-intervenant:hover {
+        color: #ff1a1a;
+    }
+
+/* Style pour les contrôles de formulaire */
+.SemSearch form-control {
+    background-color: white;
+    border: 1px solid #939292;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+    .SemSearch form-control:focus {
+        border-color: #007bff;
+        background-color: white;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+    }
+
+/* Style pour le bouton de recherche */
+#searchClientInput {
+    background-color: white;
+    color: black;
+}

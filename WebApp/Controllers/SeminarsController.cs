@@ -320,5 +320,29 @@ namespace WebApp.Controllers
             }
             return new List<ClientViewModel>();
         }
+
+        [HttpPost]
+        public JsonResult AddParticipant(int clientId)
+        {
+            var newParticipant = _clientBLL.GetClient(clientId);
+            
+
+            return Json(new { id = newParticipant.Element.Id, name = newParticipant.Element.FirstName + newParticipant.Element.LastName });
+        }
+
+        [HttpPost]
+        public JsonResult AddIntervenant(string intervenantName)
+        {
+            // Remplacez ceci par la logique pour ajouter l'intervenant
+            // Exemple : var newIntervenantId = _intervenantService.Add(intervenantName);
+
+            // Ajoutez votre logique pour créer et sauvegarder un nouvel intervenant
+            // Pour l'exemple, nous allons juste simuler un nouvel ID
+            var newIntervenantId = 456; // Remplacez par votre logique pour obtenir un nouvel ID
+
+            // Retournez l'ID du nouvel intervenant et son nom au client
+            return Json(new { id = newIntervenantId, name = intervenantName });
+        }
+
     }
 }

@@ -62,8 +62,14 @@ namespace WebApp.Controllers
 
         
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int? employeeId = null)
         {
+            if (employeeId.HasValue)
+            {
+                // Indique que l'utilisateur vient de la page de création du séminaire
+                ViewBag.ReturnToSeminarCreation = true;
+            }
+
             var response = bll.GetEmployeeById(id);
             if (response.Succeeded && response.Element != null)
             {

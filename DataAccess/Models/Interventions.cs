@@ -29,6 +29,10 @@ public partial class Interventions
 
     public bool? IsLoanPaid { get; set; }
 
+    public byte[] LoanAmount { get; set; }
+
+    public byte[] LoanAmountBalance { get; set; }
+
     public virtual Clients IdClientNavigation { get; set; }
 
     public virtual Employees IdEmployeeNavigation { get; set; }

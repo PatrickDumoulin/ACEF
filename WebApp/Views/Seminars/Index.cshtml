@@ -5,9 +5,10 @@
 <partial name="_Notification" />
 
 @{
-    ViewData["Title"] = "Seminars";
+    ViewData["Title"] = "Ateliers";
     Layout = "_Layout";
 }
+
 @functions {
     string GetThemeName(int? themeId)
     {
@@ -20,12 +21,14 @@
 <!-- SWEETALERT DELETE STYLE-->
 <link rel="stylesheet" href="~/css/global/SweetAlert.css">
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-8">
-            <h1 class="mb-4">Liste des Ateliers</h1>
+<div class="index container">
+    <div class="row pt-5">
+        <div class="col-6">
+            <h1 class="titreInterventionIndex pb-2">Liste des Ateliers</h1>
+            <hr />
+            <h4 class="titreRechercheInterventionIndex pt-4 pb-3"><i class="bi bi-search"></i> Recherche</h4>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="col-6 text-end">
             <a asp-action="Create" class="btn btn-primary">
                 <i class="bi bi-file-earmark-plus-fill"></i> Créer un Nouvel Atelier
             </a>
@@ -33,34 +36,40 @@
     </div>
 
     <!-- Cartouche de recherche -->
-    <div class="searchForm card shadow-sm mt-4">
-        <div class="card-body">
-            <h4 class="card-title"><i class="bi bi-search"></i> Recherche</h4>
-            <form asp-action="Index" method="get" class="form-inline">
-                <div class="row">
-                    <!-- Date filter -->
-                    <div class="col-md-3 mb-3">
+    <div class="searchForm container">
+        <form asp-action="Index" method="get" class="form-inline search-form">
+            <div class="row">
+                <!-- Date filter -->
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
                         <label for="DateFilter">Date</label>
                         <select name="DateFilter" id="DateFilter" class="form-control">
-                            <option value="">Sélectionner</option>                            
+                            <option value="">Sélectionner</option>
                             <option value="Semaine en cours" selected="@(Model.DateFilter == "Semaine en cours")">Semaine en cours</option>
                             <option value="Mois en cours" selected="@(Model.DateFilter == "Mois en cours")">Mois en cours</option>
                             <option value="Intervalle" selected="@(Model.DateFilter == "Intervalle")">Intervalle</option>
                         </select>
                     </div>
+                </div>
 
-                    <!-- Date Range -->
-                    <div class="col-md-3 mb-3" id="date-range" style="display:none;">
+                <!-- Date Range -->
+                <div class="col-md-2 mb-3" id="date-range" style="display:none;">
+                    <div class="form-group">
                         <label for="StartDate">Du</label>
                         <input type="date" name="StartDate" id="StartDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")">
                     </div>
-                    <div class="col-md-3 mb-3" id="date-range-end" style="display:none;">
+                </div>
+
+                <div class="col-md-2 mb-3" id="date-range-end" style="display:none;">
+                    <div class="form-group">
                         <label for="EndDate">Au</label>
                         <input type="date" name="EndDate" id="EndDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")">
                     </div>
+                </div>
 
-                    <!-- Thème filter -->
-                    <div class="col-md-3 mb-3">
+                <!-- Thème filter -->
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
                         <label for="IdSeminarTheme">Thème</label>
                         <select name="IdSeminarTheme" id="IdSeminarTheme" class="form-control">
                             <option value="">Sélectionner</option>
@@ -70,29 +79,72 @@
                             }
                         </select>
                     </div>
-
-                    <!-- Intervenant filter -->
-                    <div class="col-md-3 mb-3">
-                        <label for="IntervenantFilter">Intervenant</label>
-                        <input type="text" name="IntervenantFilter" id="IntervenantFilter" class="form-control" value="@Model.IntervenantFilter" placeholder="Nom de l'intervenant">
-                    </div>
                 </div>
 
-                <!-- Boutons -->
-                <div class="row">
-                    <div class="col-md-3 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary">
+                <!-- Intervenant filter -->
+                <div class="col-md-2 mb-3">
+                    <div class="form-group">
+                        <label for="IntervenantFilter">Intervenant</label>
+                        <input type="text" name="IntervenantFilter" id="IntervenantFilter" class="form-control" value="@Model.IntervenantFilter" placeholder="Nom">
+                    </div>
+                </div>
+            </div>
+
+            @* <!-- Boutons -->
+            <div class="row">
+                <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
+                    <div class="form-group d-flex">
+                        <button type="submit" class="btn btn-primary me-2">
                             <i class="bi bi-search"></i> Rechercher
                         </button>
-                    </div>
-                    <div class="col-md-3 d-flex align-items-end">
-                        <a asp-action="Index" class="btn btn-secondary">
+                        <a asp-action="Index" class="btn btn-secondary me-2">
                             <i class="bi bi-eraser"></i> Effacer le filtre
                         </a>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div> *@
+
+            <div class="row">
+                <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
+                    <div class="form-group d-flex">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-search"></i> Rechercher
+                        </button>
+                        @if (Model.semaineEnCours || Model.moisEnCours || Model.intervalle || ViewBag.IntervenantId != null)
+                        {
+                            <a asp-action="Index" class="btn btn-secondary me-2"><i class="bi bi-eraser"></i> Effacer le filtre</a>
+                        }
+                        @if (ViewBag.ClientId != null)
+                        {
+                            <a asp-action="Details" asp-controller="Client" asp-route-id="@ViewBag.ClientId" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Retour au client
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="pt-2 pb-2">
+
+        @if (Model.semaineEnCours)
+        {
+            <h4 class="rechercheInterventionSousTitreInteractif pt-4"><i class="bi bi-search"></i> Semaine en cours</h4>
+        }
+        else if (Model.moisEnCours)
+        {
+            <h4 class="rechercheInterventionSousTitreInteractif pt-4"><i class="bi bi-search"></i>  Mois en cours</h4>
+        }
+        else if (Model.intervalle)
+        {
+            <h4 class="rechercheInterventionSousTitreInteractif pt-4">
+                <i class="bi bi-search"></i> Intervalle du
+                @Model.StartDate?.ToString("dd/MM/yyyy") au @Model.EndDate?.ToString("dd/MM/yyyy")
+            </h4>
+        }
+
     </div>
 
     <!-- Tableau des résultats -->
@@ -124,13 +176,12 @@
                                     <a asp-action="Details" asp-route-id="@seminar.Id" class="btn btn-primary">
                                         <i class="bi bi-list-ul"></i> Détails
                                     </a>
-                                    <a asp-action="Edit" asp-route-id="@seminar.Id" class="btn btn-warning">
+                                    <a asp-action="Edit" asp-route-id="@seminar.Id" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modifier
                                     </a>
                                     <a href="javascript:void(0);" onclick="DeleteSeminar('@seminar.Id')" class="btn btn-danger">
                                         <i class="bi bi-trash-fill"></i> Supprimer
                                     </a>
-
                                 </div>
                             </td>
                         </tr>
@@ -171,6 +222,7 @@
         }
     </div>
 </div>
+
 <script>
     // Affichage ou masquage de la plage de dates en fonction de la sélection de l'option
     document.getElementById("DateFilter").addEventListener("change", function () {
@@ -199,9 +251,18 @@
             text: "Cet atelier sera supprimé définitivement!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Oui, supprimer!'
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer!',
+            cancelButtonText: 'Annuler',
+            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                content: 'custom-swal-content',
+                confirmButton: 'custom-swal-confirm-button',
+                cancelButton: 'custom-swal-cancel-button'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -211,7 +272,7 @@
                         __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                     },
                     success: function (response) {
-                        Swal.fire('Supprimé!', 'Le séminaire a été supprimé avec succès.', 'success').then(() => {
+                        Swal.fire('Supprimé!', 'L\'atelier a été supprimé avec succès.', 'success').then(() => {
                             // Recharge la page après suppression réussie
                             location.reload();
                         });

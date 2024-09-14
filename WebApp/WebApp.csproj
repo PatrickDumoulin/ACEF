@@ -76,6 +76,7 @@
     <None Include="Views\Seminars\Details.cshtml" />
     <None Include="Views\Seminars\Edit.cshtml" />
     <None Include="Views\Seminars\Index.cshtml" />
+    <None Include="Views\Statistics\Index.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -60,10 +60,9 @@
             document.write('<link id="clientEditStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/clientEdit.css" asp-append-version="true" />');
 
             //atelier
-            document.write('<link id="seminarIndexStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarIndex.css" asp-append-version="true" />');
-            document.write('<link id="seminarDetailsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarDetails.css" asp-append-version="true" />');
+            
             document.write('<link id="seminarCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarCreate.css" asp-append-version="true" />');
-            document.write('<link id="seminarEditStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarEdit.css" asp-append-version="true" />');
+            
 
         })();
     </script>
@@ -103,6 +102,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="rapportDropdown">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="InterventionReport" asp-action="Index" style="font-weight:bold">Rapport Interventions</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="UserStatistics" asp-action="Index" style="font-weight:bold">Tableau des Usagers</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="SeminarReport" asp-action="Index" style="font-weight:bold">Rapport Ateliers</a></li>
                                 </ul>
                             </li>
@@ -194,10 +194,7 @@
 
             //atelier
             document.getElementById('seminarCreateStylesheet').setAttribute('href', `/css/${newTheme}/seminarCreate.css`);
-            document.getElementById('seminarEditStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarEdit.css`);
-            document.getElementById('seminarIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarIndex.css`);
-            document.getElementById('seminarDetailsStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarDetails.css`);
-            document.getElementById('seminarDeleteStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarDelete.css`);
+            
 
             localStorage.setItem('theme', newTheme);
         });

@@ -13,5 +13,7 @@ public partial class MdBank
 
     public bool? Active { get; set; }
 
+    public bool IsDesjardins { get; set; }
+
     public virtual ICollection<Clients> Clients { get; set; } = new List<Clients>();
 }

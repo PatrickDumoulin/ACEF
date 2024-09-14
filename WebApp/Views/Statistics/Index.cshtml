@@ -1,0 +1,274 @@
+﻿@model WebApp.ViewModels.UserStatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistiques des usagers";
+}
+
+<style>
+    /* Styles pour améliorer l'apparence des tableaux */
+    h2, h3 {
+        text-align: center;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .row {
+        margin-bottom: 40px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    td {
+        background-color: #fff;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* Ajout de bordures et ombrage pour une meilleure visibilité */
+    table.table {
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Espacement entre les titres et les tableaux */
+    h3 {
+        font-family: 'Arial', sans-serif;
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    p {
+        text-align: center;
+        color: #999;
+    }
+    
+
+    /* Espacement entre colonnes dans les tableaux */
+    th, td {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+
+<h2>Statistiques des usagers</h2>
+
+<div class="container">
+    <div class="row">
+        <!-- Répartition par Sexe -->
+        <div class="col-md-6">
+            <h3>Répartition par Sexe</h3>
+            <div class="table-responsive">
+                @if (Model.GenderStatistics != null && Model.GenderStatistics.Any())
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sexe</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.GenderStatistics)
+                            {
+                                <tr>
+                                    <td>@item.Label</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Aucune donnée disponible.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Répartition par Âge -->
+        <div class="col-md-6">
+            <h3>Répartition par Âge</h3>
+            <div class="table-responsive">
+                @if (Model.AgeStatistics != null && Model.AgeStatistics.Any())
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tranche d'âge</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.AgeStatistics)
+                            {
+                                <tr>
+                                    <td>@item.Label</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Aucune donnée disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Répartition par Situation familiale -->
+        <div class="col-md-6">
+            <h3>Répartition par Situation familiale</h3>
+            <div class="table-responsive">
+                @if (Model.FamilySituationStatistics != null && Model.FamilySituationStatistics.Any())
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Situation familiale</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.FamilySituationStatistics)
+                            {
+                                <tr>
+                                    <td>@item.Label</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Aucune donnée disponible.</p>
+                }
+            </div>
+        </div>        
+        <!-- Répartition par Source de revenu -->
+        <div class="col-md-6">
+            <h3>Répartition par Source de revenu</h3>
+            <div class="table-responsive">
+                @if (Model.IncomeSourceStatistics != null && Model.IncomeSourceStatistics.Any())
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Source de revenu</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.IncomeSourceStatistics)
+                            {
+                                <tr>
+                                    <td>@item.Label</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Aucune donnée disponible.</p>
+                }
+            </div>
+        </div>
+
+    <div class="row">
+        <!-- Répartition par Revenu net -->
+        <div class="col-md-6">
+            <h3>Répartition par Revenu net</h3>
+            <div class="table-responsive">
+                @if (Model.NetIncomeStatistics != null && Model.NetIncomeStatistics.Any())
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tranche de revenu</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.NetIncomeStatistics)
+                            {
+                                <tr>
+                                    <td>@item.Label</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Aucune donnée disponible.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Répartition par Motif de participation -->
+        <div class="col-md-6">
+            <h3>Répartition par Motif de participation</h3>
+            <div class="table-responsive">
+                @if (Model.ParticipationStatistics != null && Model.ParticipationStatistics.Any())
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Motif de participation</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ParticipationStatistics)
+                            {
+                                <tr>
+                                    <td>@item.Label</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Aucune donnée disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,7 +18,18 @@
                     <a asp-controller="Seminars" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-hammer"></i> Atelier</a>
                     <a asp-controller="Note" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-journal-text"> </i> Notes (@ViewBag.NoteCount)</a>
                     <a asp-controller="ClientsAttachments" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-paperclip"></i>  Pièces jointes (@ViewBag.AttachmentCount)</a>
-                    <a asp-action="Index" class="btn btn-secondary">Retour</a>
+                    @if (ViewBag.ReturnToSeminarCreation != null && ViewBag.ReturnToSeminarCreation)
+                    {
+                        <a href="@Url.Action("Create", "Seminars")" class="btn btn-secondary">
+                            <i class="bi bi-arrow-90deg-left"></i> Retour à la Création du Séminaire
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Index" class="btn btn-secondary">Retour</a>
+                    }
+
+                    
                 </div>
             </div>
             

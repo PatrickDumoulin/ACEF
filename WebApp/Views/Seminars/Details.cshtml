@@ -14,30 +14,40 @@
     }
 }
 
-<h1>Détails de l'Atelier</h1>
+<div class="container">
+    <div class="details-container">
+        <div class="details-header">
+            <h1 class="titreInterventionDetails text-center pb-2">Détails de l'Atelier</h1>
+            <h4 class="sousTitreInterventionDetails text-center">Atelier #@Model.Id - @Model.DateSeminar?.ToString("dd/MM/yyyy")</h4><br />
+            
+        </div>
 
-<div>
-    <h4>Atelier</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Date</dt>
-        <dd class="col-sm-10">@Model.DateSeminar?.ToString("dd/MM/yyyy")</dd>
+        <div class="details-grid mt-4">
+            <div>
+                <div class="label">Date de l'atelier :</div>
+                <div class="value">@Model.DateSeminar?.ToString("dd/MM/yyyy")</div>
+            </div>
+            <div>
+                <div class="label">Thème :</div>
+                <div class="value">@GetThemeName(Model.IdSeminarTheme)</div>
+            </div>
+            <div>
+                <div class="label">Intervenants :</div>
+                <div class="value">@string.Join(", ", Model.Intervenants.Select(i => i.FirstName + " " + i.LastName))</div>
+            </div>
+            <div>
+                <div class="label">Participants :</div>
+                <div class="value">@string.Join(", ", Model.Participants.Select(p => p.FirstName + " " + p.LastName))</div>
+            </div>
+            <div>
+                <div class="label">Commentaires :</div>
+                <div class="value">@Model.Notes</div>
+            </div>
+        </div>
 
-        <dt class="col-sm-2">Thème</dt>
-        <dd class="col-sm-10">@GetThemeName(Model.IdSeminarTheme)</dd>
-
-        <dt class="col-sm-2">Intervenants</dt>
-        <dd class="col-sm-10">@string.Join(", ", Model.Intervenants.Select(i => i.FirstName + " " + i.LastName))</dd>
-
-        <dt class="col-sm-2">Participants</dt>
-        <dd class="col-sm-10">@string.Join(", ", Model.Participants.Select(p => p.FirstName + " " + p.LastName))</dd>
-
-        <dt class="col-sm-2">Commentaires</dt>
-        <dd class="col-sm-10">@Model.Notes</dd>
-    </dl>
-</div>
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Modifier</a> |
-    <a asp-action="Index">Retour à la liste</a>
+        <div class="btn-container text-center mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modifier</a>
+            <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
+        </div>
+    </div>
 </div>

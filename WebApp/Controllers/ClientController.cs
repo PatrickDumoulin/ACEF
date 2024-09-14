@@ -19,12 +19,13 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = "Intervenant,Superutilisateur")]
+   
     public class ClientController : AbstractBLLController<IClientBLL>
     {
         private readonly IInterventionBLL _interventionBLL;
         private readonly IClientIncomeTypeBLL _incometypeBLL;
         private readonly IMDBLL _mdbBLL;
+        private readonly ISeminarBLL _seminarBLL;
         
 
         public ClientController() : base()
@@ -129,8 +130,14 @@ namespace WebApp.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, int? clientId = null)
         {
+            if (clientId.HasValue)
+            {
+                // Indique que l'utilisateur vient de la page de création du séminaire
+                ViewBag.ReturnToSeminarCreation = true;
+            }
+
             var response = base.bll.GetClient(id);
             if (response.Succeeded && response.Element != null)
             {
