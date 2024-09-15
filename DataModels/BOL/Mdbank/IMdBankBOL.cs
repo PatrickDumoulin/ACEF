@@ -14,6 +14,7 @@ namespace DataModels.BOL.MdBank
         public string Name { get; set; }
 
         public bool? Active { get; set; }
+        public bool IsDesjardins { get; set; }
 
     }
 }

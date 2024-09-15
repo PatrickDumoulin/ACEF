@@ -6,16 +6,7 @@
 
 <h2>Rapport des Interventions</h2>
 
-<!-- Afficher les filtres utilisés -->
-<div>
-    <h4>Filtres appliqués</h4>
-    <p>Date de début : @Model.StartDate.ToShortDateString()</p>
-    <p>Date de fin : @Model.EndDate.ToShortDateString()</p>
-    <p>Revenu minimum : @Model.MinIncome</p>
-    <p>Revenu maximum : @Model.MaxIncome</p>
-    <p>Âge minimum : @Model.AgeMin</p>
-    <p>Âge maximum : @Model.AgeMax</p>
-</div>
+
 
 <!-- Table des résultats -->
 @if (Model.Interventions != null && Model.Interventions.Any())

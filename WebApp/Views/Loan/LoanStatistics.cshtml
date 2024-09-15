@@ -1,0 +1,72 @@
+﻿@model WebApp.ViewModels.LoanStatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistiques des Prêts";
+}
+
+<h2>Prêts</h2>
+
+<form method="get" asp-action="LoanStatistics">
+    <div>
+        <label for="startDate">Date de début :</label>
+        <input type="date" id="startDate" name="startDate" />
+    </div>
+    <div>
+        <label for="endDate">Date de fin :</label>
+        <input type="date" id="endDate" name="endDate" />
+    </div>
+    <button type="submit">Filtrer</button>
+</form>
+
+<div>
+    <p><strong>Nombre de prêts demandés :</strong> @Model.NumberOfLoansRequested</p>
+    <p><strong>Nombre de prêts accordés :</strong> @Model.NumberOfLoansGranted</p>
+    <p><strong>Somme totale des prêts :</strong> @Model.TotalLoanAmount.ToString("C")</p>
+    <p><strong>Solde restant :</strong> @Model.RemainingBalance.ToString("C")</p>
+</div>
+
+<div style="display: flex;">
+    <!-- Tableau But d'emprunt -->
+    <div style="margin-right: 20px;">
+        <h3>But d'emprunt</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>But d'emprunt</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var loanReason in Model.LoanReasons)
+                {
+                    <tr>
+                        <td>@loanReason.Reason</td>
+                        <td>@loanReason.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tableau Prêt par caisse -->
+    <div>
+        <h3>Prêt par caisse</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Banque</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var loanByBank in Model.LoansByBank)
+                {
+                    <tr>
+                        <td>@loanByBank.Bank</td>
+                        <td>@loanByBank.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -46,18 +46,17 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 // Récupérer la liste des interventions à partir de la réponse
-                var interventionResponse = _interventionBLL.GetInterventions();
-                var interventions = interventionResponse.ElementList;
 
-                // Appliquer les filtres sur les dates, revenus et âge
+                var interventions = _interventionBLL.GetInterventions().ElementList;
+
+                // Appliquer les filtres sur les dates, revenus
                 var filteredInterventions = interventions
                     .Where(i => i.DateIntervention >= model.StartDate && i.DateIntervention <= model.EndDate)
                     .Where(i => _interventionBLL.DecryptDebtAmount(i.DebtAmount) >= model.MinIncome && _interventionBLL.DecryptDebtAmount(i.DebtAmount) <= model.MaxIncome)
-                    .Where(i => i.IdClient.HasValue && GetClientAge(i.IdClient.Value) >= model.AgeMin && GetClientAge(i.IdClient.Value) <= model.AgeMax)
                     .ToList();
 
-                // Mapper les résultats en InterventionViewModel
-                model.Interventions = filteredInterventions.Select(i => MapToViewModel(i)).ToList();
+                // Mapper les résultats en InterventionViewModel avec filtre âge
+                model.Interventions = filteredInterventions.Select(i => MapToViewModel(i)).Where(x => x.Age >= 18 && x.Age <= 75).ToList();
 
                 return View("ReportResults", model);
             }

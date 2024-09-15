@@ -6,6 +6,7 @@ using WebApp.ViewModels;
 using BusinessLayer.Logic.Interfaces;
 using CoreLib.Injection;
 using DataModels.BOL.Client;
+using DataAccess.Models;
 
 namespace WebApp.Controllers
 {
@@ -13,6 +14,7 @@ namespace WebApp.Controllers
     {
         private readonly IClientBLL _clientBLL;
         private readonly IClientIncomeTypeBLL _clientIncomeTypeBLL;
+        private readonly IInterventionBLL _interventionBLL;
         private readonly IMDBLL _mdBLL;
 
         public UserStatisticsController() : base()
@@ -20,67 +22,80 @@ namespace WebApp.Controllers
             _clientBLL = Injector.ImplementBll<IClientBLL>();
             _mdBLL = Injector.ImplementBll<IMDBLL>();
             _clientIncomeTypeBLL = Injector.ImplementBll<IClientIncomeTypeBLL>();
+            _interventionBLL = Injector.ImplementBll<IInterventionBLL>();
         }
 
         public ActionResult Index()
         {
             var clients = _clientBLL.GetClients().ElementList;
+            var interventions = _interventionBLL.GetInterventions().ElementList;
+            var interventionTypes = _mdBLL.GetAllMdInterventionTypes().ElementList;
             var clientIncomeTypes = clients.SelectMany(c => _clientIncomeTypeBLL.GetClientIncomeTypesByClientId(c.Id).ElementList).ToList();
 
+
             // Agrégation des données pour chaque catégorie
-            var genderStats = clients.Where(c => c.IdGenderDenomination.HasValue)
-                          .GroupBy(c => c.IdGenderDenomination.Value)
+            var genderStats = clients.Where(c => c.IdGenderDenomination.HasValue) // Vérifie que la valeur n'est pas null
+                          .GroupBy(c => c.IdGenderDenomination.Value) // Utilise la valeur de l'int après la vérification
                           .Select(g => new StatisticViewModel
                           {
                               Label = _mdBLL.GetMdGenderDenomination(g.Key)?.Element?.Name ?? "Inconnu",
                               Total = g.Count()
-                          }).OrderBy(g => g.Label).ToList();
+                          }).ToList();
 
             var ageStats = clients.GroupBy(c => GetAgeCategory(c.Birthdate))
-                                  .Select(g => new StatisticViewModel
-                                  {
-                                      Label = g.Key,
-                                      Total = g.Count()
-                                  })
-                                  .OrderBy(g => g.Label.Contains("Moins de") ? -1 : int.Parse(new string(g.Label.TakeWhile(char.IsDigit).ToArray()))) // Priorise "Moins de"
-                                  .ThenBy(g => g.Label)
-                                  .ToList();
+                       .OrderBy(g =>
+                       {
+                           switch (g.Key)
+                           {
+                               case "Moins de 18 ans": return 1;
+                               case "18 - 27 ans": return 2;
+                               case "28 - 37 ans": return 3;
+                               case "38 - 47 ans": return 4;
+                               case "48 - 57 ans": return 5;
+                               case "58 - 67 ans": return 6;
+                               case "68 - 74 ans": return 7;
+                               case "75 ans et plus": return 8;
+                               default: return 9;
+                           }
+                       })
+                       .Select(g => new StatisticViewModel
+                       {
+                           Label = g.Key,
+                           Total = g.Count()
+                       }).ToList();
 
-            var familySituationStats = clients.Where(c => c.IdFamilySituation.HasValue)
-                                   .GroupBy(c => c.IdFamilySituation.Value)
+            var familySituationStats = clients.Where(c => c.IdFamilySituation.HasValue) // Vérifie que la valeur n'est pas null
+                                   .GroupBy(c => c.IdFamilySituation.Value) // Utilise la valeur de l'int après la vérification
                                    .Select(g => new StatisticViewModel
                                    {
                                        Label = _mdBLL.GetMdFamilySituation(g.Key)?.Element?.Name ?? "Inconnu",
                                        Total = g.Count()
-                                   }).OrderBy(g => g.Label).ToList();
+                                   }).ToList();
 
             var incomeSourceStats = clientIncomeTypes
-                                    .GroupBy(c => c.IdIncomeType)
+                                    .GroupBy(c => c.IdIncomeType)  // Utilise directement l'int
                                     .Select(g => new StatisticViewModel
                                     {
                                         Label = _mdBLL.GetMdIncomeType(g.Key)?.Element?.Name ?? "Inconnu",
                                         Total = g.Count()
-                                    }).OrderBy(g => g.Label).ToList();
+                                    }).ToList();
 
             var netIncomeStats = clients.GroupBy(c => GetIncomeCategory(c.Income))
                                         .Select(g => new StatisticViewModel
                                         {
                                             Label = g.Key,
                                             Total = g.Count()
-                                        })
-                                        .OrderBy(g => g.Label.Contains("Moins de") ? -1 : int.Parse(new string(g.Label.TakeWhile(char.IsDigit).ToArray()))) // Priorise "Moins de"
-                                        .ThenBy(g => g.Label)
-                                        .ToList();
+                                        }).ToList();
 
-            var participationStats = new List<StatisticViewModel>
-            {
-                new StatisticViewModel { Label = "Demande de prêt", Total = 20 },
-                new StatisticViewModel { Label = "Endettement", Total = 50 },
-                new StatisticViewModel { Label = "Hydro-Québec", Total = 51 },
-                new StatisticViewModel { Label = "Méthode Budgétaire", Total = 31 },
-                new StatisticViewModel { Label = "Suivi Prêt", Total = 32 }
-            }.OrderBy(p => p.Label).ToList();
+            var participationStats = interventions.Where(i => i.IdInterventionType.HasValue) // Vérifie que l'intervention a un type
+                                    .GroupBy(i => i.IdInterventionType.Value) // Grouper par le type d'intervention
+                                    .Select(g => new StatisticViewModel
+                                    {
+                                        Label = interventionTypes.FirstOrDefault(it => it.Id == g.Key)?.Name ?? "Inconnu", // Récupère le nom du type
+                                        Total = g.Count() // Calculer le nombre d'interventions pour chaque type
+                                    }).ToList();
 
+            // Passer toutes les statistiques à la vue
             var model = new UserStatisticsViewModel
             {
                 GenderStatistics = genderStats,
@@ -94,6 +109,7 @@ namespace WebApp.Controllers
             return View("/Views/Statistics/Index.cshtml", model);
         }
 
+        // Méthode utilitaire pour obtenir la catégorie d'âge
         private string GetAgeCategory(DateTime? birthdate)
         {
             if (birthdate == null) return "Inconnu";
@@ -108,6 +124,7 @@ namespace WebApp.Controllers
             return "75 ans et plus";
         }
 
+        // Méthode utilitaire pour obtenir la catégorie de revenu
         private string GetIncomeCategory(byte[] income)
         {
             if (income == null) return "Inconnu";
@@ -127,3 +144,4 @@ namespace WebApp.Controllers
         }
     }
 }
+

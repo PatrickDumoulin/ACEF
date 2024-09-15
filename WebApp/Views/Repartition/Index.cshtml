@@ -1,0 +1,63 @@
+﻿@model WebApp.ViewModels.RepartitionViewModel
+
+<h2>Répartition</h2>
+
+<!-- Provenance par Référence -->
+<h3>Provenance par Référence</h3>
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Référence</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ReferenceDistribution)
+        {
+            <tr>
+                <td>@item.ReferenceName</td>
+                <td>@item.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Détails pour Desjardins -->
+<h3>Détails pour Desjardins</h3>
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Banque</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DesjardinsDetails)
+        {
+            <tr>
+                <td>@item.BankName</td>
+                <td>@item.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Usager par Caisse -->
+<h3>Usager par Caisse</h3>
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Banque</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ClientsByBank)
+        {
+            <tr>
+                <td>@item.BankName</td>
+                <td>@item.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
