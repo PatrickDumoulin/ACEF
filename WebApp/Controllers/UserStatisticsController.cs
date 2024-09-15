@@ -27,47 +27,51 @@ namespace WebApp.Controllers
             var clients = _clientBLL.GetClients().ElementList;
             var clientIncomeTypes = clients.SelectMany(c => _clientIncomeTypeBLL.GetClientIncomeTypesByClientId(c.Id).ElementList).ToList();
 
-
             // Agrégation des données pour chaque catégorie
-            var genderStats = clients.Where(c => c.IdGenderDenomination.HasValue) // Vérifie que la valeur n'est pas null
-                          .GroupBy(c => c.IdGenderDenomination.Value) // Utilise la valeur de l'int après la vérification
+            var genderStats = clients.Where(c => c.IdGenderDenomination.HasValue)
+                          .GroupBy(c => c.IdGenderDenomination.Value)
                           .Select(g => new StatisticViewModel
                           {
                               Label = _mdBLL.GetMdGenderDenomination(g.Key)?.Element?.Name ?? "Inconnu",
                               Total = g.Count()
-                          }).ToList();
+                          }).OrderBy(g => g.Label).ToList();
 
             var ageStats = clients.GroupBy(c => GetAgeCategory(c.Birthdate))
                                   .Select(g => new StatisticViewModel
                                   {
                                       Label = g.Key,
                                       Total = g.Count()
-                                  }).ToList();
+                                  })
+                                  .OrderBy(g => g.Label.Contains("Moins de") ? -1 : int.Parse(new string(g.Label.TakeWhile(char.IsDigit).ToArray()))) // Priorise "Moins de"
+                                  .ThenBy(g => g.Label)
+                                  .ToList();
 
-            var familySituationStats = clients.Where(c => c.IdFamilySituation.HasValue) // Vérifie que la valeur n'est pas null
-                                   .GroupBy(c => c.IdFamilySituation.Value) // Utilise la valeur de l'int après la vérification
+            var familySituationStats = clients.Where(c => c.IdFamilySituation.HasValue)
+                                   .GroupBy(c => c.IdFamilySituation.Value)
                                    .Select(g => new StatisticViewModel
                                    {
                                        Label = _mdBLL.GetMdFamilySituation(g.Key)?.Element?.Name ?? "Inconnu",
                                        Total = g.Count()
-                                   }).ToList();
+                                   }).OrderBy(g => g.Label).ToList();
 
             var incomeSourceStats = clientIncomeTypes
-                                    .GroupBy(c => c.IdIncomeType)  // Utilise directement l'int
+                                    .GroupBy(c => c.IdIncomeType)
                                     .Select(g => new StatisticViewModel
                                     {
                                         Label = _mdBLL.GetMdIncomeType(g.Key)?.Element?.Name ?? "Inconnu",
                                         Total = g.Count()
-                                    }).ToList();
+                                    }).OrderBy(g => g.Label).ToList();
 
             var netIncomeStats = clients.GroupBy(c => GetIncomeCategory(c.Income))
                                         .Select(g => new StatisticViewModel
                                         {
                                             Label = g.Key,
                                             Total = g.Count()
-                                        }).ToList();
+                                        })
+                                        .OrderBy(g => g.Label.Contains("Moins de") ? -1 : int.Parse(new string(g.Label.TakeWhile(char.IsDigit).ToArray()))) // Priorise "Moins de"
+                                        .ThenBy(g => g.Label)
+                                        .ToList();
 
-            // Motif participation (exemple statique ici, à ajuster selon tes besoins)
             var participationStats = new List<StatisticViewModel>
             {
                 new StatisticViewModel { Label = "Demande de prêt", Total = 20 },
@@ -75,9 +79,8 @@ namespace WebApp.Controllers
                 new StatisticViewModel { Label = "Hydro-Québec", Total = 51 },
                 new StatisticViewModel { Label = "Méthode Budgétaire", Total = 31 },
                 new StatisticViewModel { Label = "Suivi Prêt", Total = 32 }
-            };
+            }.OrderBy(p => p.Label).ToList();
 
-            // Passer toutes les statistiques à la vue
             var model = new UserStatisticsViewModel
             {
                 GenderStatistics = genderStats,
@@ -91,7 +94,6 @@ namespace WebApp.Controllers
             return View("/Views/Statistics/Index.cshtml", model);
         }
 
-        // Méthode utilitaire pour obtenir la catégorie d'âge
         private string GetAgeCategory(DateTime? birthdate)
         {
             if (birthdate == null) return "Inconnu";
@@ -106,7 +108,6 @@ namespace WebApp.Controllers
             return "75 ans et plus";
         }
 
-        // Méthode utilitaire pour obtenir la catégorie de revenu
         private string GetIncomeCategory(byte[] income)
         {
             if (income == null) return "Inconnu";
@@ -124,6 +125,5 @@ namespace WebApp.Controllers
             if (netIncome <= 59999) return "55 000 $ - 59 999 $";
             return "60 000 $ et plus";
         }
-    }    
+    }
 }
-

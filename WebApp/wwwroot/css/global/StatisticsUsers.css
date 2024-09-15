@@ -1,0 +1,94 @@
+﻿/* DARK THEME FOR StatisticsUsers */
+
+.StatisticsUsers-container {
+    background: linear-gradient(135deg, #1b263b, #14578e);
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px 2px rgba(9, 132, 227, 0.8), 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: none;
+    outline: none;
+}
+
+.StatisticsUsers-title,
+.StatisticsUsers-subtitle {
+    color: white;
+}
+
+.StatisticsUsers-row {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: stretch;
+}
+
+.StatisticsUsers-col-md-6 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.StatisticsUsers-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #1b263b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.StatisticsUsers-th, .StatisticsUsers-td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.StatisticsUsers-th {
+    background-color: #14578e;
+    color: white; /* Texte blanc pour les en-têtes */
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.StatisticsUsers-td {
+    background-color: #1b263b;
+    color: white; /* Texte blanc pour les cellules */
+    font-size: 14px;
+}
+
+.StatisticsUsers-table-responsive {
+    overflow-x: auto;
+}
+
+/* Ajout de bordures et ombrage pour une meilleure visibilité */
+.StatisticsUsers-table-bordered {
+    border: 1px solid #14578e;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.StatisticsUsers-text {
+    text-align: center;
+    color: white; /* Texte blanc */
+}
+
+/* Style pour les graphiques */
+.StatisticsUsers-chart-container {
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.StatisticsUsers-chart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Légende des graphiques */
+.chartjs-render-monitor .legend {
+    color: white; /* Couleur blanche pour la légende */
+}

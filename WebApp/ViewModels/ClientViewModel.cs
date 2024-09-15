@@ -65,6 +65,8 @@ namespace WebApp.ViewModels
 
         public DateTime? LastModifiedDate { get; set; }
 
+        public Dictionary<string, int> IncomeTypeDistribution { get; set; }
+
         //public IEnumerable<SelectListItem> MaritalStatus { get; set; }
         //public IEnumerable<SelectListItem> FamilySituation { get; set; }
         //public IEnumerable<SelectListItem> HomeType { get; set; }
