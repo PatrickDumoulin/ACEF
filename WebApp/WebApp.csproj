@@ -9,6 +9,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\dark\homeIndex.css" />
     <_ContentIncludedByDefault Remove="wwwroot\css\dark\tables.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\global\statisticsLoans.css" />
   </ItemGroup>
 
   <ItemGroup>

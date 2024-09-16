@@ -4,69 +4,106 @@
     ViewData["Title"] = "Statistiques des Prêts";
 }
 
-<h2>Prêts</h2>
 
-<form method="get" asp-action="LoanStatistics">
-    <div>
-        <label for="startDate">Date de début :</label>
-        <input type="date" id="startDate" name="startDate" />
-    </div>
-    <div>
-        <label for="endDate">Date de fin :</label>
-        <input type="date" id="endDate" name="endDate" />
-    </div>
-    <button type="submit">Filtrer</button>
-</form>
 
-<div>
-    <p><strong>Nombre de prêts demandés :</strong> @Model.NumberOfLoansRequested</p>
-    <p><strong>Nombre de prêts accordés :</strong> @Model.NumberOfLoansGranted</p>
-    <p><strong>Somme totale des prêts :</strong> @Model.TotalLoanAmount.ToString("C")</p>
-    <p><strong>Solde restant :</strong> @Model.RemainingBalance.ToString("C")</p>
+<div class="StatisticsLoans-container">
+    <h1 class="StatisticsLoans-title ">Statistiques des Prêts</h1>
+    <hr class="mb-5"/>
+
+    <!-- Formulaire de filtre -->
+    <div class="StatisticsLoans-filter-container">
+        <form method="get" asp-action="LoanStatistics" class="form-inline">
+            <div class="StatisticsLoans-row">
+                <div class="StatisticsLoans-col-md-4">
+                    <div class="form-group">
+                        <label class="StatisticsLoans-dateLabels" for="startDate">Date de début :</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="StatisticsLoans-col-md-4">
+                    <div class="form-group">
+                        <label class="StatisticsLoans-dateLabels" for="endDate">Date de fin :</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="StatisticsLoans-col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary StatisticsLoans-filter-button">
+                        <i class="bi bi-filter"></i> Filtrer
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Statistiques des prêts -->
+    <div class="StatisticsLoans-stats-container">
+        <div class="StatisticsLoans-stat">
+            <p class="StatisticsLoans-stat-title">Nombre de prêts demandés</p>
+            <p class="StatisticsLoans-stat-value">@Model.NumberOfLoansRequested</p>
+        </div>
+        <div class="StatisticsLoans-stat">
+            <p class="StatisticsLoans-stat-title">Nombre de prêts accordés</p>
+            <p class="StatisticsLoans-stat-value">@Model.NumberOfLoansGranted</p>
+        </div>
+        <div class="StatisticsLoans-stat">
+            <p class="StatisticsLoans-stat-title">Somme totale des prêts</p>
+            <p class="StatisticsLoans-stat-value">@Model.TotalLoanAmount.ToString("C")</p>
+        </div>
+        <div class="StatisticsLoans-stat">
+            <p class="StatisticsLoans-stat-title">Solde restant</p>
+            <p class="StatisticsLoans-stat-value">@Model.RemainingBalance.ToString("C")</p>
+        </div>
+    </div>
+
+    <div class="StatisticsLoans-table-row">
+        <!-- Tableau But d'emprunt -->
+        <div class="StatisticsLoans-table-container">
+            <h3 class="StatisticsLoans-subtitle">But d'emprunt</h3>
+            <div class="StatisticsLoans-table-responsive">
+                <table class="StatisticsLoans-table StatisticsLoans-table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="StatisticsLoans-th">But d'emprunt</th>
+                            <th class="StatisticsLoans-th">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var loanReason in Model.LoanReasons)
+                        {
+                            <tr>
+                                <td class="StatisticsLoans-td">@loanReason.Reason</td>
+                                <td class="StatisticsLoans-td">@loanReason.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tableau Prêt par caisse -->
+        <div class="StatisticsLoans-table-container">
+            <h3 class="StatisticsLoans-subtitle">Prêt par caisse</h3>
+            <div class="StatisticsLoans-table-responsive">
+                <table class="StatisticsLoans-table StatisticsLoans-table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="StatisticsLoans-th">Banque</th>
+                            <th class="StatisticsLoans-th">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var loanByBank in Model.LoansByBank)
+                        {
+                            <tr>
+                                <td class="StatisticsLoans-td">@loanByBank.Bank</td>
+                                <td class="StatisticsLoans-td">@loanByBank.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div style="display: flex;">
-    <!-- Tableau But d'emprunt -->
-    <div style="margin-right: 20px;">
-        <h3>But d'emprunt</h3>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>But d'emprunt</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var loanReason in Model.LoanReasons)
-                {
-                    <tr>
-                        <td>@loanReason.Reason</td>
-                        <td>@loanReason.Count</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
 
-    <!-- Tableau Prêt par caisse -->
-    <div>
-        <h3>Prêt par caisse</h3>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Banque</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var loanByBank in Model.LoansByBank)
-                {
-                    <tr>
-                        <td>@loanByBank.Bank</td>
-                        <td>@loanByBank.Count</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>

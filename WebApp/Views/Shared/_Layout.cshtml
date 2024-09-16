@@ -65,6 +65,9 @@
             document.write('<link id="seminarCreateStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarCreate.css" asp-append-version="true" />');
             document.write('<link id="seminarEditStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarEdit.css" asp-append-version="true" />');
 
+            //Rapports et Statistiques
+            document.write('<link id="loanStatisticsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/loanStatistics.css" asp-append-version="true" />');
+
         })();
     </script>
 
@@ -202,6 +205,10 @@
             document.getElementById('seminarIndexStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarIndex.css`);
             document.getElementById('seminarDetailsStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarDetails.css`);
             document.getElementById('seminarDeleteStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarDelete.css`);
+
+            //Rapports et Statistiques
+            document.getElementById('loanStatisticsStylesheet')?.setAttribute('href', `/css/${newTheme}/loanStatistics.css`);
+
 
             localStorage.setItem('theme', newTheme);
         });
