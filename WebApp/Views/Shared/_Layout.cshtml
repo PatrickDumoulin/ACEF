@@ -114,13 +114,14 @@
                             </li>
                         }
                     </ul>
-                    <<ul class="navbar-nav">
+                    <ul class="navbar-nav">
+                        <button id="themeToggleBtn" class="btn btn-secondary me-3">Thème</button>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            var user = await UserManager.GetUserAsync(User); // Récupère l'utilisateur connecté
+                            @* var user = await UserManager.GetUserAsync(User); // Récupère l'utilisateur connecté
                             <li class="nav-item">
                                 <span class="nav-link text-white">Bienvenue, @user.Email</span>
-                            </li>
+                            </li> *@
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="form-inline">
                                     <button type="submit" class="nav-link btn btn-link text-white"><i class="bi bi-box-arrow-left"></i> Déconnexion</button>
