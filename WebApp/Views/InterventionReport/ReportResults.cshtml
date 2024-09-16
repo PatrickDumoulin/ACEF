@@ -4,43 +4,63 @@
     ViewBag.Title = "Rapport des Interventions";
 }
 
-<h2>Rapport des Interventions</h2>
+<div class="index container">
+    <div class="row pt-5">
+        <div class="col-6">
+            <h1 class="titreInterventionIndex pb-2">Rapport des Interventions</h1>
+            <hr />
+        </div>
+    </div>
 
+    <!-- Table des résultats -->
+    @if (Model.Interventions != null && Model.Interventions.Any())
+    {
+        <div class="table-container mt-4">
+            <table class="table table-striped">
+                <thead class="table-header">
+                    <tr>
+                        <th>Intervention ID</th>
+                        <th>Date de l'intervention</th>
+                        <th>Nom du client</th>
+                        <th>Nom de l'employé</th>
+                        <th>Revenu</th>
+                        <th>Âge</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var intervention in Model.Interventions)
+                    {
+                        <tr>
+                            <td>@intervention.Id</td>
+                            <td>@intervention.DateIntervention?.ToShortDateString()</td>
+                            <td>@intervention.ClientName</td>
+                            <td>@intervention.EmployeeName</td>
+                            <td>@intervention.Income?.ToString("C")</td>
+                            <td>@intervention.Age</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-controller="Intervention" asp-route-id="@intervention.Id" class="btn btn-primary">
+                                        <i class="bi bi-list-ul"></i> Détails
+                                    </a>
+                                    <a asp-action="Edit" asp-controller="Intervention" asp-route-id="@intervention.Id" class="btn btn-primary">
+                                        <i class="bi bi-pencil-square"></i> Modifier
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-center">Aucune intervention ne correspond aux filtres appliqués.</p>
+    }
 
-
-<!-- Table des résultats -->
-@if (Model.Interventions != null && Model.Interventions.Any())
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Intervention ID</th>
-                <th>Date de l'intervention</th>
-                <th>Nom du client</th>
-                <th>Nom de l'employé</th>
-                <th>Revenu</th>
-                <th>Âge</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var intervention in Model.Interventions)
-            {
-                <tr>
-                    <td>@intervention.Id</td>
-                    <td>@intervention.DateIntervention?.ToShortDateString()</td>
-                    <td>@intervention.ClientName</td>
-                    <td>@intervention.EmployeeName</td>
-                    <td>@intervention.Income?.ToString("C")</td>
-                    <td>@intervention.Age</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>Aucune intervention ne correspond aux filtres appliqués.</p>
-}
-
-<!-- Bouton pour retourner au formulaire de rapport -->
-<a href="@Url.Action("Index", "InterventionReport")" class="btn btn-primary">Retour</a>
+    <!-- Bouton pour retourner au formulaire de rapport -->
+    <div class="pt-3">
+        <a href="@Url.Action("Index", "InterventionReport")" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Retour</a>
+    </div>
+</div>

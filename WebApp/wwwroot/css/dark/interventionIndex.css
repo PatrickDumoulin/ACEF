@@ -32,6 +32,13 @@ h1, h4 {
     outline: none; /* Supprime tout contour */
 }
 
+.date-input {
+    color-scheme: dark; /* Rend l'icône et le texte blanc dans les navigateurs supportés */
+    position: relative;
+    background-color: #fff; /* Couleur du fond */
+    color: #000; /* Couleur du texte */
+}
+
 
 
 

@@ -51,6 +51,7 @@ body {
     border-radius: 4px;
     box-shadow: none;
     transition: border-color 0.3s, background-color 0.3s;
+    color-scheme: dark !important; /* Rend l'icône et le texte blanc dans les navigateurs supportés */
 }
 
     .form-control:focus {

@@ -4,42 +4,77 @@
     ViewBag.Title = "Générer un rapport d'interventions";
 }
 
-<h2>Générer un rapport d'interventions</h2>
+<div class="index container">
+    <div class="row pt-5">
+        <div class="col-6">
+            <h1 class="titreInterventionIndex pb-2">Générer un rapport d'interventions</h1>
+            <hr />
+        </div>
+    </div>
 
-<form asp-action="GenerateReport" method="post">
-    <div class="form-group">
-        <label>Date de début</label>
-        <input asp-for="StartDate" class="form-control" type="date" />
+    <div class="searchForm container">
+        <form asp-action="GenerateReport" method="post" class="form-inline search-form">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Date de début</label>
+                        <input asp-for="StartDate" class="form-control" type="date" />
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Date de fin</label>
+                        <input asp-for="EndDate" class="form-control" type="date" />
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Revenu minimum</label>
+                        <input asp-for="MinIncome" class="form-control" type="number" />
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Revenu maximum</label>
+                        <input asp-for="MaxIncome" class="form-control" type="number" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Interval Revenu</label>
+                        <input asp-for="IncomeInterval" class="form-control" type="number" />
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Âge minimum</label>
+                        <input asp-for="AgeMin" class="form-control" type="number" />
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Âge maximum</label>
+                        <input asp-for="AgeMax" class="form-control" type="number" />
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
+                        <label>Interval Âge</label>
+                        <input asp-for="AgeInterval" class="form-control" type="number" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 mb-3 d-flex align-items-end pt-3">
+                    <div class="form-group d-flex">
+                        <input type="submit" value="Générer le rapport" class="btn btn-primary me-2" />
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label>Date de fin</label>
-        <input asp-for="EndDate" class="form-control" type="date" />
-    </div>
-    <div class="form-group">
-        <label>Revenu minimum</label>
-        <input asp-for="MinIncome" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label>Revenu maximum</label>
-        <input asp-for="MaxIncome" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label>Interval Revenu</label>
-        <input asp-for="IncomeInterval" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label>Âge minimum</label>
-        <input asp-for="AgeMin" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label>Âge maximum</label>
-        <input asp-for="AgeMax" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label>Interval Âge</label>
-        <input asp-for="AgeInterval" class="form-control" type="number" />
-    </div><br />
-    <div class="form-group">
-        <input type="submit" value="Générer le rapport" class="btn btn-primary" />
-    </div>
-</form>
+</div>
