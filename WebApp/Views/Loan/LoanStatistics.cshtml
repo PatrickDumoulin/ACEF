@@ -75,6 +75,10 @@
                                 <td class="StatisticsLoans-td">@loanReason.Count</td>
                             </tr>
                         }
+                        <tr>
+                            <td></td>
+                            <td class="StatisticsLoans-td"><strong>@Model.LoanReasons.Sum(x => x.Count)</strong></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -99,6 +103,10 @@
                                 <td class="StatisticsLoans-td">@loanByBank.Count</td>
                             </tr>
                         }
+                        <tr>
+                            <td></td>
+                            <td class="StatisticsLoans-td"><strong>@Model.LoansByBank.Sum(x => x.Count)</strong></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

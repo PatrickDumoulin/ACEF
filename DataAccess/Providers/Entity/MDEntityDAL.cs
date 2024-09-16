@@ -58,13 +58,14 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBols<MdBankBOL>(records).ToList<IMdBankBOL>();
         }
 
-        public IMdBankBOL CreateMdBank(string bankName, bool? isActive)
+        public IMdBankBOL CreateMdBank(string bankName, bool? isActive,bool isDesjardins)
         {
             // Créer un nouvel enregistrement MdBank
             var newBank = new MdBank
             {
                 Name = bankName,
                 Active = isActive,
+                IsDesjardins = isDesjardins
             };
 
             // Ajouter la nouvelle banque à la base de données
@@ -75,7 +76,7 @@ namespace DataAccess.Providers.Entity
             return MapperWrapper.NewBol<MdBankBOL>(newBank);
         }
 
-        public IMdBankBOL EditMdBank(string oldMdItemName, string newMdItemName, bool? isActive)
+        public IMdBankBOL EditMdBank(string oldMdItemName, string newMdItemName, bool? isActive, bool isDesjardins)
         {
             MdBank bank = Db.MdBank.FirstOrDefault(x => x.Name == oldMdItemName);
 
@@ -86,6 +87,7 @@ namespace DataAccess.Providers.Entity
 
             bank.Name = newMdItemName;
             bank.Active = isActive;
+            bank.IsDesjardins= isDesjardins;
 
             Db.SaveChanges();
 

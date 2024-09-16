@@ -2,6 +2,8 @@
 {
     public class RepartitionViewModel
     {
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public List<ReferenceDistributionViewModel> ReferenceDistribution { get; set; }
         public List<DesjardinsDetailViewModel> DesjardinsDetails { get; set; }
         public List<ClientByBankViewModel> ClientsByBank { get; set; }

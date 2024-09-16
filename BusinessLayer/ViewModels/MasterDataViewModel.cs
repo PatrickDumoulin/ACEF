@@ -13,5 +13,6 @@ namespace BusinessLayer.ViewModels
         public bool? IsActive { get; set; }
         public int ReferredCount { get; set; }
         public string FrenchDisplayName { get; set; }
+        public bool IsDesjardins { get; set; }
     }
 }

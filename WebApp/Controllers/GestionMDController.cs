@@ -97,7 +97,8 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                base.bll.CreateMasterDataItem(mdName, viewModel.Name, viewModel.Active);
+                bool isDesjardins = false;
+                base.bll.CreateMasterDataItem(mdName, viewModel.Name, viewModel.Active,viewModel.IsDesjardins);
                 TempData["success"] = "Donnée créée avec succès";
                 return RedirectToAction(nameof(Details), new { mdName = mdName });
             }
@@ -126,7 +127,8 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                base.bll.EditMasterDataItem(mdName, oldName, viewModel.Name, viewModel.Active);
+                bool isDesjardins = false;
+                base.bll.EditMasterDataItem(mdName, oldName, viewModel.Name, viewModel.Active, viewModel.IsDesjardins);
                 TempData["success"] = "Donnée modifiée avec succès";
                 return RedirectToAction("Details", new { mdName = mdName });
             }
@@ -146,8 +148,9 @@ namespace WebApp.Controllers
             }
 
             bool? newActiveState = !item.IsActive;
+            bool isDesjardins = false;
 
-            base.bll.EditMasterDataItem(mdName, mdItemName, mdItemName, newActiveState);
+            base.bll.EditMasterDataItem(mdName, mdItemName, mdItemName, newActiveState, isDesjardins);
             TempData["success"] = "Statut changé avec succès";
 
             return RedirectToAction("Details", new { mdName = mdName });

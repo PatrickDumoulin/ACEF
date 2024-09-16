@@ -72,6 +72,7 @@ namespace BusinessLayer.Logic
                     Id = b.Id,
                     Name = b.Name,
                     IsActive = b.Active,
+                    IsDesjardins = b.IsDesjardins,
                     FrenchDisplayName = "Banque",
                     ReferredCount = GetReferenceCountForMdBank(b.Id) // Compter les références pour chaque banque
                 })},
@@ -197,30 +198,29 @@ namespace BusinessLayer.Logic
             return masterDataDictionary;
         }
 
-        public void CreateMasterDataItem(string name, string mdItemName, bool? isActive)
+        public void CreateMasterDataItem(string name, string mdItemName, bool? isActive, bool isDesjardins)
         {
-            var mappings = new Dictionary<string, Action<string, bool?>>
-            {
-                { "Banque", (itemName, active) => CreateBank(itemName, active) },
-                { "Situation d'emploi", (itemName, active) => CreateMdEmploymentSituation(itemName, active) },
-                { "Genre", (itemName, active) => CreateMdGenderDenomination(itemName, active) },
-                { "État civil", (itemName, active) => CreateMdMaritalStatus(itemName, active) },
-                { "Situation familiale", (itemName, active) => CreateMdFamilySituation(itemName, active) },
-                { "Type d'habitation", (itemName, active) => CreateMdHabitationType(itemName, active) },
-                { "Type de revenu", (itemName, active) => CreateMdIncomeType(itemName, active) },
-                { "Solution d'intervention", (itemName, active) => CreateMdInterventionSolution(itemName, active) },
-                { "Type d'intervention", (itemName, active) => CreateMdInterventionType(itemName, active) },
-                { "Type de statut d'intervention", (itemName, active) => CreateMdInterventionStatusType(itemName, active) },
-                { "Raison de prêt", (itemName, active) => CreateMdLoanReason(itemName, active) },
-                { "Source de référence", (itemName, active) => CreateMdReferenceSource(itemName, active) },
-                { "Type de bourse", (itemName, active) => CreateMdScholarshipType(itemName, active) },
-                { "Thème de séminaire", (itemName, active) => CreateMdSeminarTheme(itemName, active) },
-
-            };
+            var mappings = new Dictionary<string, Action<string, bool?, bool>>
+    {
+        { "Banque", (itemName, active, isDesjardinsFlag) => CreateBank(itemName, active, isDesjardinsFlag) },
+        { "Situation d'emploi", (itemName, active, _) => CreateMdEmploymentSituation(itemName, active) },
+        { "Genre", (itemName, active, _) => CreateMdGenderDenomination(itemName, active) },
+        { "État civil", (itemName, active, _) => CreateMdMaritalStatus(itemName, active) },
+        { "Situation familiale", (itemName, active, _) => CreateMdFamilySituation(itemName, active) },
+        { "Type d'habitation", (itemName, active, _) => CreateMdHabitationType(itemName, active) },
+        { "Type de revenu", (itemName, active, _) => CreateMdIncomeType(itemName, active) },
+        { "Solution d'intervention", (itemName, active, _) => CreateMdInterventionSolution(itemName, active) },
+        { "Type d'intervention", (itemName, active, _) => CreateMdInterventionType(itemName, active) },
+        { "Type de statut d'intervention", (itemName, active, _) => CreateMdInterventionStatusType(itemName, active) },
+        { "Raison de prêt", (itemName, active, _) => CreateMdLoanReason(itemName, active) },
+        { "Source de référence", (itemName, active, _) => CreateMdReferenceSource(itemName, active) },
+        { "Type de bourse", (itemName, active, _) => CreateMdScholarshipType(itemName, active) },
+        { "Thème de séminaire", (itemName, active, _) => CreateMdSeminarTheme(itemName, active) },
+    };
 
             if (mappings.ContainsKey(name))
             {
-                mappings[name](mdItemName, isActive);
+                mappings[name](mdItemName, isActive, isDesjardins);
             }
             else
             {
@@ -228,36 +228,36 @@ namespace BusinessLayer.Logic
             }
         }
 
-        public void EditMasterDataItem(string mdName, string oldMdItemName, string newMdItemName, bool? isActive)
+        public void EditMasterDataItem(string mdName, string oldMdItemName, string newMdItemName, bool? isActive, bool isDesjardins)
         {
-            var mappings = new Dictionary<string, Action<string, bool?>>
-            {
-                { "Banque", (itemName, active) => EditMdBank(oldMdItemName, newMdItemName, isActive ) },
-                { "Situation d'emploi", (itemName, active) => EditMdEmploymentSituation(oldMdItemName, newMdItemName, active) },
-                { "Genre", (itemName, active) => EditMdGenderDenomination(oldMdItemName, newMdItemName, active) },
-                { "État civil", (itemName, active) => EditMdMaritalStatus(oldMdItemName, newMdItemName, active) },
-                { "Situation familiale", (itemName, active) => EditMdFamilySituation(oldMdItemName, newMdItemName, active) },
-                { "Type d'habitation", (itemName, active) => EditMdHabitationType(oldMdItemName, newMdItemName, active) },
-                { "Type de revenu", (itemName, active) => EditMdIncomeType(oldMdItemName, newMdItemName, active) },
-                { "Solution d'intervention", (itemName, active) => EditMdInterventionSolution(oldMdItemName, newMdItemName, active) },
-                { "Type d'intervention", (itemName, active) => EditMdInterventionType(oldMdItemName, newMdItemName, active) },
-                { "Type de statut d'intervention", (itemName, active) => EditMdInterventionStatusType(oldMdItemName, newMdItemName, active) },
-                { "Raison de prêt", (itemName, active) => EditMdLoanReason(oldMdItemName, newMdItemName, active) },
-                { "Source de référence", (itemName, active) => EditMdReferenceSource(oldMdItemName, newMdItemName, active) },
-                { "Type de bourse", (itemName, active) => EditMdScholarshipType(oldMdItemName, newMdItemName, active) },
-                { "Thème de séminaire", (itemName, active) => EditMdSeminarTheme(oldMdItemName, newMdItemName, active) },
-
-            };
+            var mappings = new Dictionary<string, Action<string, string, bool?, bool>>
+    {
+        { "Banque", (oldItemName, newItemName, active, isDesjardinsFlag) => EditMdBank(oldItemName, newItemName, active, isDesjardinsFlag) },
+        { "Situation d'emploi", (oldItemName, newItemName, active, _) => EditMdEmploymentSituation(oldItemName, newItemName, active) },
+        { "Genre", (oldItemName, newItemName, active, _) => EditMdGenderDenomination(oldItemName, newItemName, active) },
+        { "État civil", (oldItemName, newItemName, active, _) => EditMdMaritalStatus(oldItemName, newItemName, active) },
+        { "Situation familiale", (oldItemName, newItemName, active, _) => EditMdFamilySituation(oldItemName, newItemName, active) },
+        { "Type d'habitation", (oldItemName, newItemName, active, _) => EditMdHabitationType(oldItemName, newItemName, active) },
+        { "Type de revenu", (oldItemName, newItemName, active, _) => EditMdIncomeType(oldItemName, newItemName, active) },
+        { "Solution d'intervention", (oldItemName, newItemName, active, _) => EditMdInterventionSolution(oldItemName, newItemName, active) },
+        { "Type d'intervention", (oldItemName, newItemName, active, _) => EditMdInterventionType(oldItemName, newItemName, active) },
+        { "Type de statut d'intervention", (oldItemName, newItemName, active, _) => EditMdInterventionStatusType(oldItemName, newItemName, active) },
+        { "Raison de prêt", (oldItemName, newItemName, active, _) => EditMdLoanReason(oldItemName, newItemName, active) },
+        { "Source de référence", (oldItemName, newItemName, active, _) => EditMdReferenceSource(oldItemName, newItemName, active) },
+        { "Type de bourse", (oldItemName, newItemName, active, _) => EditMdScholarshipType(oldItemName, newItemName, active) },
+        { "Thème de séminaire", (oldItemName, newItemName, active, _) => EditMdSeminarTheme(oldItemName, newItemName, active) },
+    };
 
             if (mappings.ContainsKey(mdName))
             {
-                mappings[mdName](newMdItemName, isActive);
+                mappings[mdName](oldMdItemName, newMdItemName, isActive, isDesjardins);
             }
             else
             {
                 throw new Exception("Type de MasterData inconnu.");
             }
         }
+
 
         public void DeleteMasterDataItem(string mdName, string itemName)
         {
@@ -306,14 +306,14 @@ namespace BusinessLayer.Logic
             return new GetListResponse<IMdBankBOL>(mdBanksBOL);
         }
 
-        public IMdBankBOL CreateBank(string name, bool? isActive)
+        public IMdBankBOL CreateBank(string name, bool? isActive, bool isDesjardins)
         {
-            return base.dal.CreateMdBank(name, isActive);
+            return base.dal.CreateMdBank(name, isActive,isDesjardins);
         }
 
-        public IMdBankBOL EditMdBank(string oldBankName, string newBankName, bool? isActive)
+        public IMdBankBOL EditMdBank(string oldBankName, string newBankName, bool? isActive, bool isDesjardins)
         {
-            return base.dal.EditMdBank(oldBankName, newBankName, isActive);
+            return base.dal.EditMdBank(oldBankName, newBankName, isActive, isDesjardins);
         }
 
         public int GetReferenceCountForMdBank(int bankId)

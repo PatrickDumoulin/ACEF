@@ -26,8 +26,8 @@ namespace DataAccess.Providers.Interfaces
         #region MdBank
         IMdBankBOL GetMdBank(int id);
         List<IMdBankBOL> GetAllMdBanks();
-        public IMdBankBOL CreateMdBank(string bankName, bool? isActive);
-        public IMdBankBOL EditMdBank(string oldMdItemName, string newMdItemName, bool? isActive);
+        public IMdBankBOL CreateMdBank(string bankName, bool? isActive, bool isDesjardins);
+        public IMdBankBOL EditMdBank(string oldMdItemName, string newMdItemName, bool? isActive, bool isDesjardins);
         public int GetReferenceCountForMdBank(int bankId);
         public void DeleteMdBank(string itemName);
         #endregion

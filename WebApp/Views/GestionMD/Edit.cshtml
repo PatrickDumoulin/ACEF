@@ -16,6 +16,15 @@
             <input asp-for="Name" value="@ViewData["OldName"]" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
+        @* Afficher la case à cocher uniquement pour les banques *@
+        @if (ViewData["MdName"].ToString() == "Banque")
+        {
+            <div class="form-group">
+                <label asp-for="IsDesjardins" class="attachmentsCreate-label">Est Desjardins</label>
+                <input asp-for="IsDesjardins" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="IsDesjardins" class="text-danger"></span>
+            </div>
+        }
 
 
     <input type="hidden" name="mdName" value="@ViewData["MdName"]" />

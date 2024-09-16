@@ -46,26 +46,16 @@ namespace WebApp.Controllers
 
                 // Provenance par Référence
                 var referenceSources = _mdBLL.GetAllMdReferenceSources().ElementList;
-                var referenceGroup = interventionsInRange
-                    .GroupBy(i => i.IdReferenceType ?? 0)
-                    .Select(group => new ReferenceDistributionViewModel
-                    {
-                        ReferenceName = referenceSources.FirstOrDefault(r => r.Id == group.Key)?.Name ?? "Inconnu",
-                        Count = group.Count()
-                    }).ToList();
-
-                // Récupérer la liste des banques
                 var banks = _mdBLL.GetAllMdBanks().ElementList;
 
-                // Extraire les banques pour "Desjardins"
-                var desjardinsInterventions = interventionsInRange
-                    .Where(i => i.IdReferenceType.HasValue && referenceSources.Any(r => r.Id == i.IdReferenceType.Value && r.Name.Contains("Desjardins")))
-                    .ToList();
+                // Liste pour les détails Desjardins
+                var desjardinsDetails = new List<DesjardinsDetailViewModel>();
 
-                // Filtrer les banques Desjardins
-                var desjardinsDetails = desjardinsInterventions
+                // Extraire les banques Desjardins spécifiques
+                var desjardinsInterventions = interventionsInRange
                     .Where(i => i.IdClient.HasValue)
-                    .GroupBy(i => {
+                    .GroupBy(i =>
+                    {
                         var client = _clientBLL.GetClient(i.IdClient.Value).Element;
                         if (client != null && client.IdBank.HasValue)
                         {
@@ -74,11 +64,24 @@ namespace WebApp.Controllers
                         }
                         return "Inconnu";
                     })
+                    .Where(g => g.Key != "Inconnu")
                     .Select(group => new DesjardinsDetailViewModel
                     {
                         BankName = group.Key,
                         Count = group.Count()
-                    }).Where(d => d.BankName != "Inconnu").ToList();
+                    })
+                    .ToList();
+
+                desjardinsDetails.AddRange(desjardinsInterventions);
+
+                // Provenance par Référence (modification pour ne pas inclure Desjardins ici)
+                var referenceGroup = interventionsInRange
+                    .GroupBy(i => i.IdReferenceType ?? 0)
+                    .Select(group => new ReferenceDistributionViewModel
+                    {
+                        ReferenceName = referenceSources.FirstOrDefault(r => r.Id == group.Key)?.Name ?? "Inconnu",
+                        Count = group.Count()
+                    }).ToList();
 
                 // Usager par Caisse
                 var clientsWithInterventions = interventionsInRange

@@ -5,28 +5,34 @@
 }
 
 <div class="interventionAttachmentCreateContainer mt-5">
+    <h2 class="attachments-card-header">@ViewData["Title"]</h2>
 
-<h2 class="attachments-card-header">@ViewData["Title"]</h2>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
-    <div class="form-group">
+        <div class="form-group">
             <label asp-for="Name" class="attachmentsCreate-label"> Nom</label>
-        <input asp-for="Name" value="" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
 
+        @* Afficher la case à cocher uniquement pour les banques *@
+        @if (ViewData["MdName"].ToString() == "Banque")
+        {
+            <div class="form-group">
+                <label asp-for="IsDesjardins" class="attachmentsCreate-label">Est Desjardins</label>
+                <input asp-for="IsDesjardins" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="IsDesjardins" class="text-danger"></span>
+            </div>
+        }
 
-    <input type="hidden" name="mdName" value="@ViewData["MdName"]" />
+        <input type="hidden" name="mdName" value="@ViewData["MdName"]" />
 
-    <div class="form-group">
+        <div class="form-group">
             <button type="submit" class="btn btn-primary mt-3">Créer</button>
             <a asp-action="Details" asp-route-mdName="@ViewData["MdName"]" class="btn btn-secondary mt-3"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
-    </div>
-</form>
-
+        </div>
+    </form>
 </div>
 
 @section Scripts {
@@ -34,4 +40,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

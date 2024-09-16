@@ -30,9 +30,9 @@ namespace BusinessLayer.Logic.Interfaces
 
         public Dictionary<string, IEnumerable<MasterDataViewModel>> GetAllMasterDataItems();
 
-        public void CreateMasterDataItem(string name, string mdItemName, bool? isActive);
+        public void CreateMasterDataItem(string name, string mdItemName, bool? isActive,bool isDesjardins );
 
-        public void EditMasterDataItem(string mdName, string oldMdItemName, string newMdItemName, bool? isActive);
+        public void EditMasterDataItem(string mdName, string oldMdItemName, string newMdItemName, bool? isActive,bool isDesjardins);
         public void DeleteMasterDataItem(string mdName, string itemName);
         #endregion
 
@@ -40,8 +40,8 @@ namespace BusinessLayer.Logic.Interfaces
         #region MdBank
         GetItemResponse<IMdBankBOL> GetMdBank(int id);
         GetListResponse<IMdBankBOL> GetAllMdBanks();
-        public IMdBankBOL CreateBank(string name, bool? isActive);
-        public IMdBankBOL EditMdBank(string originalBankName, string newBankName, bool? isActive);
+        public IMdBankBOL CreateBank(string name, bool? isActive, bool isDesjardins);
+        public IMdBankBOL EditMdBank(string originalBankName, string newBankName, bool? isActive, bool isDesjardins);
         public int GetReferenceCountForMdBank(int bankId);
         public void DeleteMdBank(string itemName);
 

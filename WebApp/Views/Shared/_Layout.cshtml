@@ -122,10 +122,10 @@
                         <button id="themeToggleBtn" class="btn btn-secondary me-3">Thème</button>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            @* var user = await UserManager.GetUserAsync(User); // Récupère l'utilisateur connecté
-                            <li class="nav-item">
+                             var user = await UserManager.GetUserAsync(User); // Récupère l'utilisateur connecté
+                           @*  <li class="nav-item">
                                 <span class="nav-link text-white">Bienvenue, @user.Email</span>
-                            </li> *@
+                            </li>  *@
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="form-inline">
                                     <button type="submit" class="nav-link btn btn-link text-white"><i class="bi bi-box-arrow-left"></i> Déconnexion</button>
@@ -151,7 +151,27 @@
 
     <footer class="text-white text-center">
         <div class="container">
-            Copyright <i class="bi bi-c-circle-fill"></i> 2024 ACEF. Tous droits réservés <a asp-area="" asp-controller="Home"></a>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                // Initialisation du rôle utilisateur
+                string userRole = "";
+                if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await UserManager.GetUserAsync(User);
+                    var roles = await UserManager.GetRolesAsync(user);
+                    userRole = roles.FirstOrDefault() ?? "Inconnu";
+                    <span class="nav-link text-white">Bienvenue, @user.Email (@userRole)</span>
+                }
+                 // Récupère l'utilisateur connecté
+                
+               
+             
+                
+            }
+
+            
+            
+            @* Copyright <i class="bi bi-c-circle-fill"></i> 2024 ACEF. Tous droits réservés <a asp-area="" asp-controller="Home"></a> *@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

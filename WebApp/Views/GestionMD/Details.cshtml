@@ -3,18 +3,18 @@
 <partial name="_Notification" />
 
 <div class="interventionAttachmentsIndexContainer mt-3">
-<div class="container mt-4">
-    <div class="row pt-2">
-        <div class="col-6">
-            <h1 class="titreInterventionIndex pb-2">@Model.MdName</h1>
-            <hr />
+    <div class="container mt-4">
+        <div class="row pt-2">
+            <div class="col-6">
+                <h1 class="titreInterventionIndex pb-2">@Model.MdName</h1>
+                <hr />
+            </div>
+            <div class="col-6 text-end">
+                <a asp-action="Create" asp-route-name="@Model.MdName" class="btn btn-primary">
+                    <i class="bi bi-file-earmark-plus-fill"></i> Créer une Nouvelle Donnée
+                </a>
+            </div>
         </div>
-        <div class="col-6 text-end">
-            <a asp-action="Create" asp-route-name="@Model.MdName" class="btn btn-primary">
-                <i class="bi bi-file-earmark-plus-fill"></i> Créer une Nouvelle Donnée
-            </a>
-        </div>
-    </div>
 
         <a asp-action="Index" class="btn btn-secondary mb-4 mt-2"><i class="bi bi-arrow-90deg-left"></i> Retour</a>
 
@@ -22,7 +22,7 @@
             <thead class="table-header">
                 <tr>
                     <th class="tableHeader">
-                        <a  href="@Url.Action("Details", new { mdName = Model.MdName, sortColumn = "Valeur", sortOrder = ViewBag.CurrentSortOrder == "asc" ? "desc" : "asc" })">
+                        <a href="@Url.Action("Details", new { mdName = Model.MdName, sortColumn = "Valeur", sortOrder = ViewBag.CurrentSortOrder == "asc" ? "desc" : "asc" })">
                             Valeur
                             @if (ViewBag.CurrentSortColumn == "Valeur")
                             {
@@ -39,71 +39,75 @@
                     </th>
                     <th class="tableHeader">Référé par</th>
                     <th class="tableHeader">Statut</th>
+                    @if (Model.MdName == "Banque") 
+                    {
+                        <th class="tableHeader">Desjardins</th> <!-- Nouvelle colonne pour Banque -->
+                    }
                     <th class="tableHeader">Action</th>
                 </tr>
             </thead>
-        <tbody>
-            @if (Model.MdItems != null && Model.MdItems.Any())
-            {
-                @foreach (var item in Model.MdItems)
+            <tbody>
+                @if (Model.MdItems != null && Model.MdItems.Any())
                 {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>
-                            @if (item.ReferredCount <= 1)
-                            {
-                                @item.ReferredCount @:élément
-                            }
-                            else
-                            {
-                                @item.ReferredCount @:éléments
-                            }
-                        </td><!-- Afficher le nombre de références -->
-                        <td>@(item.IsActive.HasValue ? (item.IsActive.Value ? "Actif" : "Inactif") : "Indéterminé")</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <a asp-action="Edit" asp-route-oldName="@item.Name" asp-route-mdName="@Model.MdName" class="btn btn-primary me-3">
-                                    <i class="bi bi-pencil-square"></i> Modifier
-                                </a>
-                                @if(item.ReferredCount >= 1)
+                    @foreach (var item in Model.MdItems)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                @if (item.ReferredCount <= 1)
                                 {
-                                    if (item.IsActive == true)
-                                    {
-                                        <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
-                                            <i class="bi bi-toggle-off"></i> Désactiver
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
-                                            <i class="bi bi-toggle-on"></i> Activer
-                                        </a>
-                                    }
+                                    @item.ReferredCount @:élément
                                 }
                                 else
                                 {
+                                    @item.ReferredCount @:éléments
+                                }
+                            </td>
+                            <td>@(item.IsActive.HasValue ? (item.IsActive.Value ? "Actif" : "Inactif") : "Indéterminé")</td>
+                            @if (Model.MdName == "Banque")
+                            {
+                                <td>@(item.IsDesjardins ? "Oui" : "Non")</td>
+                            }
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-oldName="@item.Name" asp-route-mdName="@Model.MdName" class="btn btn-primary me-3">
+                                        <i class="bi bi-pencil-square"></i> Modifier
+                                    </a>
+                                    @if(item.ReferredCount >= 1)
+                                    {
+                                        if (item.IsActive == true)
+                                        {
+                                            <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                                <i class="bi bi-toggle-off"></i> Désactiver
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="ToggleActive" asp-route-mdName="@Model.MdName" asp-route-mdItemName="@item.Name" class="btn btn-primary">
+                                                <i class="bi bi-toggle-on"></i> Activer
+                                            </a>
+                                        }
+                                    }
+                                    else
+                                    {
                                         <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "GestionMD", new { mdName = Model.MdName, mdItemName = item.Name })')" class="btn btn-sm btn-danger custom-btn custom-btn-delete">
                                             <i class="bi bi-trash-fill"></i> Supprimer
                                         </a>
-                                }
-
-
-                            </div>
-                        </td>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Aucune donnée disponible pour cette MasterData.</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="3">Aucune donnée disponible pour cette MasterData.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    
-</div>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <link rel="stylesheet" href="~/css/global/SweetAlert.css">
@@ -137,7 +141,6 @@
                         'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                     },
                     success: function (data) {
-                        // Afficher un message de confirmation et recharger la page après la suppression
                         Swal.fire({
                             title: 'Supprimé!',
                             text: 'La donnée a été supprimée.',
@@ -172,4 +175,3 @@
         });
     }
 </script>
-
