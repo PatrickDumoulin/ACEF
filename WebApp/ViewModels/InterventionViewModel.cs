@@ -66,5 +66,7 @@ namespace WebApp.ViewModels
         }
         public decimal? Income { get; set; } // Revenu (dérivé de DebtAmount)
         public int? Age { get; set; } // Âge du client
+        public decimal? LoanAmount { get; set; }
+        public decimal? LoanAmountBalance { get; set; }
     }
 }

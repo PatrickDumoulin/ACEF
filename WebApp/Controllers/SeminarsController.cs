@@ -132,8 +132,6 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
-
-
         public IActionResult Create()
         {
             ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
@@ -153,6 +151,13 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(SeminarViewModel model)
         {
+            // Vérifier que la date est correcte
+            if (model.DateSeminar < DateTime.Now)
+            {
+                ModelState.AddModelError("DateSeminar", "La date et l'heure ne peuvent pas être antérieures à l'heure actuelle.");
+            }
+
+            // Si le modèle est valide, procéder à la création du séminaire
             if (ModelState.IsValid)
             {
                 var seminar = new SeminarBOL
@@ -163,22 +168,36 @@ namespace WebApp.Controllers
                     DateTime.Now
                 );
 
-                // Participants et Intervenants ajoutés au séminaire
+                // Ajouter les participants et les intervenants
                 seminar.Participants = model.SelectedParticipants.Select(id => new Clients { Id = id }).ToList();
                 seminar.Intervenants = model.SelectedIntervenants.Select(id => new Employees { Id = id }).ToList();
 
-                // Appel à la méthode BLL avec le séminaire, les intervenants ET les participants
+                // Appel au BLL pour créer le séminaire
                 bll.CreateSeminar(seminar, seminar.Intervenants);
 
+                // Rediriger vers la liste des séminaires
                 return RedirectToAction(nameof(Index));
             }
 
+            // S'il y a des erreurs, recharger les données de la vue
             ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
-            ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName");
+
+            // Pré-sélectionner l'intervenant connecté
+            var currentUserName = User.Identity.Name;
+            var currentEmployee = _employeeBLL.GetEmployeeByUsername(currentUserName);
+
+            // Accéder à l'élément dans GetItemResponse<Employees> avant de récupérer l'Id
+            if (currentEmployee.Succeeded && currentEmployee.Element != null)
+            {
+                model.SelectedIntervenants = new List<int> { currentEmployee.Element.Id };
+            }
+
+            ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName", currentEmployee?.Element?.Id);
             ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
 
             return View(model);
         }
+
 
         public IActionResult Edit(int id)
         {
@@ -320,29 +339,5 @@ namespace WebApp.Controllers
             }
             return new List<ClientViewModel>();
         }
-
-        [HttpPost]
-        public JsonResult AddParticipant(int clientId)
-        {
-            var newParticipant = _clientBLL.GetClient(clientId);
-            
-
-            return Json(new { id = newParticipant.Element.Id, name = newParticipant.Element.FirstName + newParticipant.Element.LastName });
-        }
-
-        [HttpPost]
-        public JsonResult AddIntervenant(string intervenantName)
-        {
-            // Remplacez ceci par la logique pour ajouter l'intervenant
-            // Exemple : var newIntervenantId = _intervenantService.Add(intervenantName);
-
-            // Ajoutez votre logique pour créer et sauvegarder un nouvel intervenant
-            // Pour l'exemple, nous allons juste simuler un nouvel ID
-            var newIntervenantId = 456; // Remplacez par votre logique pour obtenir un nouvel ID
-
-            // Retournez l'ID du nouvel intervenant et son nom au client
-            return Json(new { id = newIntervenantId, name = intervenantName });
-        }
-
     }
 }

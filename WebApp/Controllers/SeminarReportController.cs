@@ -46,30 +46,16 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Ajout de logs pour vérifier les dates reçues
-                Console.WriteLine($"Date de début: {model.StartDate}, Date de fin: {model.EndDate}");
-
                 // Récupérer la liste des ateliers
-                var seminarResponse = _seminarBLL.GetAllSeminars();
-                var seminars = seminarResponse.ElementList;
 
-                // Filtrer par date
-                var filteredSeminars = seminars
-                    .Where(s => s.DateSeminar >= model.StartDate && s.DateSeminar <= model.EndDate)
-                    .ToList();
-
-                // Filtrer aussi par thème si sélectionné
-                if (model.IdSeminarTheme != 0)
-                {
-                    filteredSeminars = filteredSeminars
-                        .Where(s => s.IdSeminarTheme == model.IdSeminarTheme)
-                        .ToList();
-                }
+                var seminars = _seminarBLL.GetAllSeminars().ElementList;
 
                 // Préparer les données pour le rapport
                 var seminarThemes = _mdBLL.GetAllMdSeminarThemes().ElementList;
 
-                var reportData = filteredSeminars
+                //liste a afficher
+                var reportData = seminars
+                    .Where(s => s.DateSeminar >= model.StartDate && s.DateSeminar <= model.EndDate)
                     .GroupBy(s => s.IdSeminarTheme)
                     .Select(group => new SeminarReportRow
                     {
@@ -79,6 +65,16 @@ namespace WebApp.Controllers
                     })
                     .ToList();
 
+                //somme des participants
+                ViewBag.Participanttotal = seminars
+                    .Where(s => s.DateSeminar >= model.StartDate && s.DateSeminar <= model.EndDate)
+                    .SelectMany(s => s.Participants) // Combine toutes les listes de participants
+                    .Count();
+
+                //somme des ateliers
+                ViewBag.Ateliertotal = seminars
+                    .Where(s => s.DateSeminar >= model.StartDate && s.DateSeminar <= model.EndDate)
+                    .Count();
                 model.ReportRows = reportData;
 
                 return View("ReportResults", model);

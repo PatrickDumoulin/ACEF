@@ -1,13 +1,17 @@
-﻿using DataAccess.BOL.InterventionsInterventionSolutions;
+﻿using CoreLib.Injection;
+using DataAccess.BOL.InterventionsInterventionSolutions;
 using DataAccess.Core.Definitions;
 using DataAccess.Models;
 using DataModels.BOL.Intervention;
 using DataModels.BOL.InterventionsInterventionSolutions;
+using DataModels.BOL.MdLoanReason;
 using System.Collections.Generic;
 using System.Linq;
 
 public class InterventionBOL : AbstractBOL<Interventions>, IInterventionBOL
 {
+
+
     public InterventionBOL() { }
     public InterventionBOL(Interventions record) : base(record) { }
 
@@ -33,13 +37,100 @@ public class InterventionBOL : AbstractBOL<Interventions>, IInterventionBOL
 
     public bool? IsLoanPaid { get { return base.Record.IsLoanPaid; } set { base.Record.IsLoanPaid = value; } }
 
+    // Propriété pour le montant du prêt
+    public decimal LoanAmount
+    {
+        get
+        {
+            if (base.Record.LoanAmount != null && base.Record.LoanAmount.Length > 0)
+            {
+                try
+                {
+                    return DecryptDebtAmount(base.Record.LoanAmount);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erreur lors de la lecture de LoanAmount: {ex.Message}");
+                    return 0m;
+                }
+            }
+            return 0m;
+        }
+        set
+        {
+            try
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("LoanAmount ne peut pas être négatif.");
+                }
+
+                base.Record.LoanAmount = EncryptDebtAmount(value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de l'écriture de LoanAmount: {ex.Message}");
+            }
+        }
+    }
+
+    public decimal LoanAmountBalance
+    {
+        get
+        {
+            if (base.Record.LoanAmountBalance != null && base.Record.LoanAmountBalance.Length > 0)
+            {
+                try
+                {
+                    return DecryptDebtAmount(base.Record.LoanAmountBalance);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erreur lors de la lecture de LoanAmountBalance: {ex.Message}");
+                    return 0m;
+                }
+            }
+            return 0m;
+        }
+        set
+        {
+            try
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("LoanAmountBalance ne peut pas être négatif.");
+                }
+
+                base.Record.LoanAmountBalance = EncryptDebtAmount(value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de l'écriture de LoanAmountBalance: {ex.Message}");
+            }
+        }
+    }
+
+    private byte[] EncryptDebtAmount(decimal amount)
+    {
+        return BitConverter.GetBytes((double)amount);
+    }
+
+    private decimal DecryptDebtAmount(byte[] encryptedAmount)
+    {
+        return (decimal)BitConverter.ToDouble(encryptedAmount, 0);
+    }
+
+
+
+
+
     // Propriété pour les IDs des solutions d'intervention
     public IEnumerable<int> InterventionSolutionsIds
     {
         get
         {
             return base.Record.InterventionsInterventionSolutions
-            .Select(x => x.IdInterventionSolution );
+            .Select(x => x.IdInterventionSolution);
         }
     }
 
@@ -62,4 +153,5 @@ public class InterventionBOL : AbstractBOL<Interventions>, IInterventionBOL
             }).ToList();
         }
     }
+
 }

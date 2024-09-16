@@ -33,7 +33,7 @@ namespace DataAccess.Providers.Entity
 
         public List<InterventionBOL> GetInterventions()
         {
-            var records = Db.Interventions.Include(i=>i.InterventionsInterventionSolutions).ToList();
+            var records = Db.Interventions.Include(i => i.InterventionsInterventionSolutions).ToList();
             return records.Select(x => new InterventionBOL(x)).ToList();
         }
 
@@ -60,6 +60,9 @@ namespace DataAccess.Providers.Entity
                         DebtAmount = interventionBOL.DebtAmount,
                         IdLoanReason = interventionBOL.IdLoanReason,
                         IsLoanPaid = interventionBOL.IsLoanPaid,
+                        LoanAmount = BitConverter.GetBytes((double)interventionBOL.LoanAmount),
+                        LoanAmountBalance = BitConverter.GetBytes((double)interventionBOL.LoanAmountBalance)
+
                     };
 
                     Db.Interventions.Add(newIntervention);
@@ -118,6 +121,8 @@ namespace DataAccess.Providers.Entity
             existingIntervention.DebtAmount = interventionBOL.DebtAmount;
             existingIntervention.IdLoanReason = interventionBOL.IdLoanReason;
             existingIntervention.IsLoanPaid = interventionBOL.IsLoanPaid;
+            existingIntervention.LoanAmount = BitConverter.GetBytes((double)interventionBOL.LoanAmount);
+            existingIntervention.LoanAmountBalance = BitConverter.GetBytes((double)interventionBOL.LoanAmountBalance);
 
 
             // Sauvegarder les changements
@@ -125,7 +130,7 @@ namespace DataAccess.Providers.Entity
         }
         public void DeleteIntervention(int id)
         {
-            var intervention = Db.Interventions.FirstOrDefault(i=>i.Id == id);
+            var intervention = Db.Interventions.FirstOrDefault(i => i.Id == id);
             if (intervention != null)
             {
                 Db.Interventions.Remove(intervention);

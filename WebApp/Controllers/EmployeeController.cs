@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
-   [Authorize(Roles = "Superutilisateur")]
+    [Authorize(Roles = "Superutilisateur")]
     public class EmployeeController : AbstractBLLController<IEmployeeBLL>
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -58,18 +58,8 @@ namespace WebApp.Controllers
             return NotFound();
         }
 
-        
-
-        
-
-        public async Task<IActionResult> Details(int id, int? employeeId = null)
+        public async Task<IActionResult> Details(int id)
         {
-            if (employeeId.HasValue)
-            {
-                // Indique que l'utilisateur vient de la page de création du séminaire
-                ViewBag.ReturnToSeminarCreation = true;
-            }
-
             var response = bll.GetEmployeeById(id);
             if (response.Succeeded && response.Element != null)
             {
@@ -94,7 +84,10 @@ namespace WebApp.Controllers
 
         public IActionResult Create()
         {
-            var model = new EmployeeViewModel();
+            var model = new EmployeeViewModel
+            {
+                PasswordHash = GenerateSecurePassword() // Génération du mot de passe aléatoire
+            };
             return View(model);
         }
 
@@ -104,29 +97,28 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Utiliser le mot de passe fourni ou générer un mot de passe temporaire sécurisé
                 var tempPassword = model.PasswordHash ?? GenerateSecurePassword();
 
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName,
-                    Email = model.UserName,
+                    UserName = model.Email, // Utilise l'adresse e-mail pour remplir le champ UserName
+                    Email = model.Email,    // Stocke également l'e-mail dans le champ Email
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     LastLoginDate = DateTime.Now,
                     Active = model.Active ?? false,
-                    IsFirstLogin = true // Forcer le changement de mot de passe à la première connexion
+                    IsFirstLogin = true // L'utilisateur devra changer son mot de passe à la première connexion
                 };
 
                 var result = await _userManager.CreateAsync(user, tempPassword);
                 if (result.Succeeded)
                 {
-                    // Synchroniser avec la table Employees
+                    // Synchronisation avec la table Employees
                     var employee = new Employees
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
-                        UserName = user.UserName,
+                        UserName = user.UserName, // Le UserName contient maintenant l'adresse e-mail
                         PasswordHash = user.PasswordHash,
                         LastLoginDate = user.LastLoginDate.Value,
                         Active = user.Active
@@ -134,21 +126,15 @@ namespace WebApp.Controllers
 
                     bll.CreateEmployee(employee);
 
-                    // Ajouter l'utilisateur aux rôles 
+                    // Ajouter l'utilisateur aux rôles
                     if (model.IsSuperUser)
-                    {
                         await _userManager.AddToRoleAsync(user, "Superutilisateur");
-                    }
                     if (model.IsIntervenant)
-                    {
                         await _userManager.AddToRoleAsync(user, "Intervenant");
-                    }
                     if (model.IsAdministrateurCA)
-                    {
                         await _userManager.AddToRoleAsync(user, "AdministrateurCA");
-                    }
 
-                    TempData["success"] = "Employé crée avec succès";
+                    TempData["success"] = "Employé créé avec succès";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -159,6 +145,7 @@ namespace WebApp.Controllers
             }
             return View(model);
         }
+
 
 
         public IActionResult Edit(int id)
@@ -361,6 +348,6 @@ namespace WebApp.Controllers
             }
             return res.ToString();
         }
-       
+
     }
 }

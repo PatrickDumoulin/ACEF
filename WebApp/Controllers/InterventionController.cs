@@ -209,15 +209,15 @@ namespace WebApp.Controllers
             var response = bll.GetIntervention(id);
             if (response.Succeeded && response.Element != null)
             {
-                
+
                 var viewModel = MapToViewModel(response.Element);
-                
+
                 //assigner le LoanReasonName
                 if (viewModel.IdLoanReason.HasValue)
                 {
                     viewModel.LoanReasonName = _mdbBLL.GetMdLoanReasonName((int)viewModel.IdLoanReason);
                 }
-                
+
                 var noteCount = _interventionNotesBLL.GetInterventionNotesCount(id);
                 var attachmentCount = _interventionAttachmentsBLL.GetInterventionAttachmentCount(id);
                 ViewBag.NoteCount = noteCount;
@@ -225,7 +225,7 @@ namespace WebApp.Controllers
                 return View(viewModel);
             }
 
-            
+
             return NotFound();
         }
 
@@ -266,6 +266,9 @@ namespace WebApp.Controllers
                         DebtAmount = viewModel.DebtAmount.HasValue ? _interventionBLL.EncryptDebtAmount(viewModel.DebtAmount.Value) : null,
                         IdLoanReason = viewModel.IdLoanReason,
                         IsLoanPaid = viewModel.IsLoanPaid,
+                        LoanAmount = viewModel.LoanAmount ?? 0m,
+                        LoanAmountBalance = viewModel.LoanAmountBalance ?? 0m
+
                     };
 
                     _interventionBLL.CreateIntervention(newIntervention);
@@ -298,7 +301,6 @@ namespace WebApp.Controllers
 
             IMDBLL mdBLL = base.GetBLL<IMDBLL>();
             PopulateMdViewBags(mdBLL);
-            //ViewBag.Employees = GetEmployeesSelectList();
             viewModel.Solutions = ViewBag.Solutions ?? new SelectList(Enumerable.Empty<SelectListItem>());
             return View(viewModel);
         }
@@ -377,6 +379,8 @@ namespace WebApp.Controllers
                     existingIntervention.DebtAmount = viewModel.DebtAmount.HasValue ? _interventionBLL.EncryptDebtAmount(viewModel.DebtAmount.Value) : null;
                     existingIntervention.IdLoanReason = viewModel.IdLoanReason;
                     existingIntervention.IsLoanPaid = viewModel.IsLoanPaid;
+                    existingIntervention.LoanAmount = viewModel.LoanAmount ?? 0m;
+                    existingIntervention.LoanAmountBalance = viewModel.LoanAmountBalance ?? 0m;
 
                     base.bll.UpdateIntervention(existingIntervention);
                     TempData["success"] = "Intervention modifié avec succès";
@@ -421,7 +425,7 @@ namespace WebApp.Controllers
                         _solutionsBLL.DeleteInterventionsInterventionSolutions(solution.Id);
                     }
                 }
-                
+
                 //On delete toutes les notes et tous les attachments avant
                 _interventionNotesBLL.DeleteAllInterventionNotesByInterventionId(id);
                 _interventionAttachmentsBLL.DeleteAllInterventionAttachmentsByInterventionId(id);
@@ -430,7 +434,7 @@ namespace WebApp.Controllers
                 bll.DeleteIntervention(id);
 
                 TempData["success"] = "Intervention supprimée avec succès";
-                return Json(new {success = true, message = "Intervention supprimée avec succès" });
+                return Json(new { success = true, message = "Intervention supprimée avec succès" });
             }
             catch (Exception ex)
             {
@@ -470,6 +474,8 @@ namespace WebApp.Controllers
                 DebtAmount = bol.DebtAmount != null ? _interventionBLL.DecryptDebtAmount(bol.DebtAmount) : (decimal?)null,
                 IdLoanReason = bol.IdLoanReason,
                 IsLoanPaid = bol.IsLoanPaid,
+                LoanAmount = bol.LoanAmount,
+                LoanAmountBalance = bol.LoanAmountBalance,
                 SelectedSolutions = bol.InterventionsInterventionSolutions?.Select(s => s.IdInterventionSolution).ToList(),
                 SolutionNames = solutionNames,
 
@@ -595,6 +601,6 @@ namespace WebApp.Controllers
             return new List<ClientViewModel>();
         }
 
-        
+
     }
 }

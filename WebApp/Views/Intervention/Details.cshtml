@@ -59,6 +59,14 @@
             @if (Model.IdLoanReason.HasValue)
             {
                 <div>
+                    <div class="label">Montant du petit prêt :</div>
+                    <div class="value">@Model.LoanAmount?.ToString("C")</div>
+                </div>
+                <div>
+                    <div class="label">Solde restant du petit prêt :</div>
+                    <div class="value">@Model.LoanAmountBalance?.ToString("C")</div>
+                </div>
+                <div>
                     <div class="label">Petit prêt remboursé :</div>
                     <div class="value">@(Model.IsLoanPaid.HasValue ? (Model.IsLoanPaid.Value ? "Oui" : "Non") : "NULL")</div>
                 </div>

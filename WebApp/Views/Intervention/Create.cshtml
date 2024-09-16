@@ -68,6 +68,16 @@
                         <span asp-validation-for="IdLoanReason" class="text-danger"></span>
                     </div>
                     <div>
+                        <label asp-for="LoanAmount" class="form-label">Montant du petit prêt</label>
+                        <input asp-for="LoanAmount" class="form-control" />
+                        <span asp-validation-for="LoanAmount" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="LoanAmountBalance" class="form-label">Solde restant du petit prêt</label>
+                        <input asp-for="LoanAmountBalance" class="form-control" />
+                        <span asp-validation-for="LoanAmountBalance" class="text-danger"></span>
+                    </div>
+                    <div>
                         <label class="form-label pt-5">Petit prêt remboursé</label>
                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                             <button type="button" id="btnYes" class="btn btn-dark">Oui</button>
@@ -89,7 +99,7 @@
                     <span asp-validation-for="IdInterventionType" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="DebtAmount" class="form-label">Montant de la dette</label>
+                    <label asp-for="DebtAmount" class="form-label">Montant de la dette </label>
                     <input asp-for="DebtAmount" class="form-control" autocomplete="off" />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>

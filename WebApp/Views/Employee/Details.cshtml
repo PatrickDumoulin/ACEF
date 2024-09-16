@@ -6,7 +6,6 @@
 
 
 
-
 <div class="container">
     <div class="details-container">
         <div class="details-header">
@@ -42,23 +41,30 @@
                 <div class="label">Adresse Email</div>
                 <div class="value">@Model.Email</div>
             </div> *@
-            
+
             <div>
                 <div class="label">Type d'utilisateur</div>
                 <div>
                     @if (Model.IsSuperUser)
                     {
                         <span>Superutilisateur</span>
+
+                        <br />
                     }
-                    else if (Model.IsIntervenant)
+                    @if (Model.IsIntervenant)
                     {
                         <span>Intervenant</span>
+
+                        <br />
                     }
-                    else if (Model.IsAdministrateurCA)
+                    @if (Model.IsAdministrateurCA)
                     {
                         <span>Administrateur CA</span>
+
+                        <br />
                     }
-                    else
+
+                    @if (!Model.IsSuperUser && !Model.IsIntervenant && !Model.IsAdministrateurCA)
                     {
                         <span>Aucun Rôle</span> <!-- Valeur par défaut si aucun rôle n'est sélectionné -->
                     }
@@ -69,17 +75,7 @@
 
         <div class="btn-container text-center">
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier le client</a>
-            @if (ViewBag.ReturnToSeminarCreation != null && ViewBag.ReturnToSeminarCreation)
-            {
-                <a href="@Url.Action("Create", "Seminars")" class="btn btn-secondary">
-                    <i class="bi bi-arrow-90deg-left"></i> Retour à la Création du Séminaire
-                </a>
-            }
-            else
-            {
-                <a asp-action="Index" class="btn btn-secondary">Retour</a>
-            }
-            
+            <a asp-action="Index" class="btn btn-secondary">Retour</a>
         </div>
     </div>
 </div>

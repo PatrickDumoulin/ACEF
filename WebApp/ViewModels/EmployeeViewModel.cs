@@ -6,13 +6,12 @@ namespace WebApp.ViewModels
     public class EmployeeViewModel
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "First Name is required")]
-        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "Le prénom est requis.")]
+        [RegularExpression(@"^[A-Za-zÀ-ÖØ-öø-ÿ '-]+$", ErrorMessage = "Le prénom contient des caractères invalides.")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last Name is required")]
-        [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "Le nom est requis.")]
+        [RegularExpression(@"^[A-Za-zÀ-ÖØ-öø-ÿ '-]+$", ErrorMessage = "Le nom contient des caractères invalides.")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
@@ -44,8 +43,10 @@ namespace WebApp.ViewModels
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 
-        //[Required(ErrorMessage = "Email is required")]
-        //[Display(Name = "Email")]
-        //public string Email { get; set; }
+        // Propriété pour l'email
+        [Required(ErrorMessage = "Email is required")]
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")] // Validation de l'adresse email
+        public string Email { get; set; }
     }
 }

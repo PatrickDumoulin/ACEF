@@ -6,58 +6,76 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - ACEF</title>
-  
+
 </head>
 <body>
     <div class="form-container border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="form-title text-center text-wh">Créer un Nouvel Employé</h2>
+            <h2 class="form-title text-center">Créer un Nouvel Employé</h2>
             <hr />
         </div>
 
         <form asp-action="Create">
-
+            <!-- Champ Nom -->
             <div class="form-group mb-2">
                 <label asp-for="FirstName" class="control-label">Nom</label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
+
+            <!-- Champ Prénom -->
             <div class="form-group mb-2">
                 <label asp-for="LastName" class="control-label mb-2">Prénom</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            
+
+            <!-- Champ E-mail -->
+            <div class="form-group mb-2">
+                <label asp-for="Email" class="control-label">Adresse e-mail</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Champ Nom d'utilisateur -->
             <div class="form-group mb-2">
                 <label asp-for="UserName" class="control-label">Nom d'utilisateur</label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <!-- Champ Mot de passe avec affichage/masquage -->
+            <div class="form-group mb-2">
                 <label asp-for="PasswordHash" class="control-label">Mot de passe</label>
-                <input asp-for="PasswordHash" class="form-control" >
+                <div class="input-group">
+                    <input asp-for="PasswordHash" class="form-control" id="passwordField" type="password" value="@Model.PasswordHash" />
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
                 <span asp-validation-for="PasswordHash" class="text-danger"></span>
             </div>
-                <div class="form-group mb-3">
-                    <label asp-for="Active" class="control-label">Actif</label>
-                    <select asp-for="Active" class="form-control">
-                        <option value="true">Oui</option>
-                        <option value="false">Non</option>
-                    </select>
-                    <span asp-validation-for="Active" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-2">
-                </div>
-                <hr />
 
-            <!-- Ajout des rôles -->
+            <!-- Champ Actif -->
+            <div class="form-group mb-3">
+                <label asp-for="Active" class="control-label">Actif</label>
+                <select asp-for="Active" class="form-control">
+                    <option value="true">Oui</option>
+                    <option value="false">Non</option>
+                </select>
+                <span asp-validation-for="Active" class="text-danger"></span>
+            </div>
+
+            <hr />
+
+            <!-- Section Rôles -->
             <div class="form-group mb-4">
-                <label class="mb-3">Role</label>
+                <label class="mb-3">Rôles</label>
                 <div class="form-check">
                     <input asp-for="IsSuperUser" class="form-check-input" type="checkbox" />
                     <label asp-for="IsSuperUser" class="form-check-label">Superutilisateur</label>
@@ -72,6 +90,7 @@
                 </div>
             </div>
 
+            <!-- Boutons de soumission -->
             <div class="row">
                 <div class="col-md-12 text-center">
                     <button type="submit" class="btn btn-primary" style="width:150px">Créer</button>
@@ -80,10 +99,19 @@
             </div>
 
         </form>
-            </div>
-        </div>
     </div>
 
-    
+    <!-- Script pour afficher/masquer le mot de passe -->
+    <script>
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordField = document.getElementById("passwordField");
+
+        togglePassword.addEventListener("click", function () {
+            const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+            passwordField.setAttribute("type", type);
+            this.querySelector("i").classList.toggle("fa-eye");
+            this.querySelector("i").classList.toggle("fa-eye-slash");
+        });
+    </script>
 </body>
 </html>

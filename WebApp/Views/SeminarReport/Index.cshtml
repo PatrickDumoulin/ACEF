@@ -16,12 +16,7 @@
         <input asp-for="EndDate" class="form-control" type="date" />
     </div>
 
-    <div class="form-group">
-        <label for="IdSeminarTheme">Thème du séminaire</label>
-        <select asp-for="IdSeminarTheme" class="form-control" asp-items="ViewBag.SeminarThemes">
-            <option value="">Sélectionner un thème</option>
-        </select>
-    </div>
+
 
     <button type="submit" class="btn btn-primary">Générer le rapport</button>
 </form>
