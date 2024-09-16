@@ -4,19 +4,34 @@
     ViewBag.Title = "Générer un rapport sur les Ateliers";
 }
 
-<h2>Générer un rapport sur les Ateliers</h2>
 
-<form asp-action="GenerateReport" method="post">
-    <div class="form-group">
-        <label for="StartDate">Date de début</label>
-        <input asp-for="StartDate" class="form-control" type="date" />
+<link href="~/css/global/SeminarReport.css" rel="stylesheet" />
+
+<div class="SeminarReport-container">
+    <h1 class="SeminarReport-title">Générer un rapport sur les Ateliers</h1>
+    <hr   />
+
+    <div class="SeminarReport-filter-container">
+        <form asp-action="GenerateReport" method="post" class="form-inline">
+            <div class="SeminarReport-row">
+                <div class="SeminarReport-col-md-4">
+                    <div class="form-group">
+                        <label class="seminarReport-datelabel" for="StartDate">Date de début</label>
+                        <input asp-for="StartDate" class="form-control" type="date" />
+                    </div>
+                </div>
+                <div class="SeminarReport-col-md-4">
+                    <div class="form-group">
+                        <label class="seminarReport-datelabel" for="EndDate">Date de fin</label>
+                        <input asp-for="EndDate" class="form-control" type="date" />
+                    </div>
+                </div>
+                <div class="SeminarReport-col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary SeminarReport-filter-button">
+                        <i class="bi bi-file-earmark-text"></i> Générer le rapport
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="EndDate">Date de fin</label>
-        <input asp-for="EndDate" class="form-control" type="date" />
-    </div>
-
-
-
-    <button type="submit" class="btn btn-primary">Générer le rapport</button>
-</form>
+</div>

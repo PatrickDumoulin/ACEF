@@ -18,6 +18,7 @@ namespace WebApp.ViewModels
     }
     public class SeminarReportRow
     {
+                  
         public string Theme { get; set; }
         public int ParticipantCount { get; set; }
         public int SeminarCount { get; set; }

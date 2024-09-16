@@ -67,6 +67,7 @@
 
             //Rapports et Statistiques
             document.write('<link id="loanStatisticsStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/loanStatistics.css" asp-append-version="true" />');
+            document.write('<link id="seminarReportStylesheet" rel="stylesheet" href="/css/' + currentTheme + '/seminarReport.css" asp-append-version="true" />');
 
         })();
     </script>
@@ -208,6 +209,7 @@
 
             //Rapports et Statistiques
             document.getElementById('loanStatisticsStylesheet')?.setAttribute('href', `/css/${newTheme}/loanStatistics.css`);
+            document.getElementById('seminarReportStylesheet')?.setAttribute('href', `/css/${newTheme}/seminarReport.css`);
 
 
             localStorage.setItem('theme', newTheme);

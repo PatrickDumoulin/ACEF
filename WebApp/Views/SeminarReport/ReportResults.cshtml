@@ -4,36 +4,52 @@
     ViewBag.Title = "Rapport des Ateliers";
 }
 
-<h2>Résultats du Rapport des Ateliers</h2>
+<div class="index container">
+    <div class="row pt-5">
+        <div class="col-6">
+            <h1 class="titreInterventionIndex pb-2">Rapport des Ateliers</h1>
+            <hr />
+        </div>
+    </div>
 
-@if (Model.ReportRows != null && Model.ReportRows.Any())
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Thème</th>
-                <th>Nombre de Participants</th>
-                <th>Nombre d'Ateliers</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var row in Model.ReportRows)
-            {
-                <tr>
-                    <td>@row.Theme</td>
-                    <td>@row.ParticipantCount</td>
-                    <td>@row.SeminarCount</td>
-                </tr>
-            }
-            <tr>
-                <td></td>
-                <td>@ViewBag.Participanttotal</td>
-                <td>@ViewBag.Ateliertotal</td>
-            </tr>
-        </tbody>
-    </table>
-}
-else
-{
-    <p>Aucun rapport disponible pour la période sélectionnée.</p>
-}
+    <!-- Table des résultats -->
+    @if (Model.ReportRows != null && Model.ReportRows.Any())
+    {
+        <div class="table-container mt-4">
+            <table class="table table-striped">
+                <thead class="table-header">
+                    <tr>
+                        <th>Thème</th>
+                        <th>Nombre de Participants</th>
+                        <th>Nombre d'Ateliers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.ReportRows)
+                    {
+                        <tr>
+                            <td>@row.Theme</td>
+                            <td>@row.ParticipantCount</td>
+                            <td>@row.SeminarCount</td>
+                        </tr>
+                    }
+                    <!-- Affichage des totaux -->
+                    <tr class="table-footer">
+                        <td><strong>Total</strong></td>
+                        <td><strong>@ViewBag.Participanttotal</strong></td>
+                        <td><strong>@ViewBag.Ateliertotal</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-center">Aucun rapport disponible pour la période sélectionnée.</p>
+    }
+
+    <!-- Bouton pour retourner au formulaire de rapport -->
+    <div class="pt-3">
+        <a href="@Url.Action("Index", "SeminarReport")" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Retour</a>
+    </div>
+</div>
