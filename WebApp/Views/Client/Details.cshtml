@@ -64,11 +64,29 @@
             </div>
             <div>
                 <div class="label">Téléphone</div>
-                <div class="value">@Model.PhoneNumber</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                    {
+                        @Model.PhoneNumber
+                    }
+                    else
+                    {
+                        <span>Non spécifié</span>
+                    }
+                </div>
             </div>
             <div>
                 <div class="label">Adresse Email</div>
-                <div class="value">@Model.Email</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        @Model.Email
+                    }
+                    else
+                    {
+                        <span>Non spécifié</span>
+                    }
+                </div>
             </div>
             <div>
                 <div class="label">Genre</div>
@@ -76,11 +94,29 @@
             </div>
             <div>
                 <div class="label">Adresse de Résidence</div>
-                <div class="value">@Model.Address</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.Address))
+                    {
+                        @Model.Address
+                    }
+                    else
+                    {
+                        <span>Non spécifié</span>
+                    }
+                </div>
             </div>
             <div>
                 <div class="label">Code Postal</div>
-                <div class="value">@Model.ZipCode</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.ZipCode))
+                    {
+                        @Model.ZipCode
+                    }
+                    else
+                    {
+                        <span>Non spécifié</span>
+                    }
+                </div>
             </div>
             <div>
                 <div class="label">Etat civil</div>

@@ -25,11 +25,11 @@ namespace DataAccess.BOL.Client
         public string LastName { get { return base.Record.LastName; } set { base.Record.LastName = value; } }
         public string FirstName { get { return base.Record.FirstName; } set { base.Record.FirstName = value; } }
         public DateTime? Birthdate { get { return base.Record.Birthdate; } set { base.Record.Birthdate = value; } }
-        public string PhoneNumber { get {  return base.Record.PhoneNumber ?? "Non spécifié"; } set { base.Record.PhoneNumber = value; } }
-        public string Email { get { return base.Record.Email ?? "Non spécifié"; } set { base.Record.Email = value; } }
+        public string PhoneNumber { get { return base.Record.PhoneNumber; } set { base.Record.PhoneNumber = value; } }
+        public string Email { get { return base.Record.Email; } set { base.Record.Email = value; } }
         public int? IdGenderDenomination { get { return base.Record.IdGenderDenomination; } set { base.Record.IdGenderDenomination = value; } }
-        public string Address { get { return base.Record.Address ?? "Non spécifié"; } set { base.Record.Address = value; } }
-        public string ZipCode { get { return base.Record.ZipCode ?? "Non spécifié"; } set { base.Record.ZipCode = value; } }
+        public string Address { get { return base.Record.Address; } set { base.Record.Address = value; } }
+        public string ZipCode { get { return base.Record.ZipCode; } set { base.Record.ZipCode = value; } }
         public int? IdMaritalStatus { get { return base.Record.IdMaritalStatus; } set { base.Record.IdMaritalStatus = value; } }
         public int? IdFamilySituation { get { return base.Record.IdFamilySituation; } set { base.Record.IdFamilySituation = value; } }
         public int? AdultsAtHome { get { return base.Record.AdultsAtHome; } set { base.Record.AdultsAtHome = value; } }
