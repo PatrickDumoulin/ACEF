@@ -19,7 +19,7 @@
         @* Afficher la case à cocher uniquement pour les banques *@
         @if (ViewData["MdName"].ToString() == "Banque")
         {
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="IsDesjardins" class="attachmentsCreate-label">Est Desjardins</label>
                 <input asp-for="IsDesjardins" type="checkbox" class="form-check-input" />
                 <span asp-validation-for="IsDesjardins" class="text-danger"></span>

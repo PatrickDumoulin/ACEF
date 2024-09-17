@@ -106,10 +106,19 @@ namespace WebApp.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Edit(string oldName, string mdName)
+        public IActionResult Edit(string oldName, string mdName, int id)
         {
+            var item = base.bll.GetAllMasterDataItems()[mdName].FirstOrDefault(x => x.Id == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
 
-            var viewModel = new MdItemViewModel();
+            var viewModel = new MdItemViewModel
+            {
+                Name = item.Name,
+                IsDesjardins = item.IsDesjardins
+            };
 
             ViewData["MdName"] = mdName;
             ViewData["OldName"] = oldName;
