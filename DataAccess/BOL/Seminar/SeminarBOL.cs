@@ -43,7 +43,7 @@ namespace DataAccess.BOL.Seminar
 
         public string Notes
         {
-            get { return base.Record.Notes ?? "Non spécifié"; }
+            get { return base.Record.Notes; }
             set { base.Record.Notes = value; }  // Ajout du setter
         }
 

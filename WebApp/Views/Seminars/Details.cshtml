@@ -59,7 +59,17 @@
             </div>
             <div>
                 <div class="label">Commentaires :</div>
-                <div class="value">@Model.Notes</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        @Model.Notes
+                    }
+                    else
+                    {
+                        <span>Non spécifié</span>
+                    }
+
+                </div>
             </div>
         </div>
 
