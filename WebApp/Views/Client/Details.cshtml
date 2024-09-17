@@ -92,11 +92,11 @@
             </div>
             <div>
                 <div class="label">Nombre d'adultes à la maison</div>
-                <div class="value">@Model.AdultsAtHome</div>
+                <div class="value">@((Model.AdultsAtHome.HasValue) ? Model.AdultsAtHome.ToString() : "Non spécifié")</div>
             </div>
             <div>
                 <div class="label">Nombre d'enfants à la maison</div>
-                <div class="value">@Model.ChildsAtHome</div>
+                <div class="value">@((Model.ChildsAtHome.HasValue) ? Model.ChildsAtHome.ToString() : "Non spécifié")</div>
             </div>
             <div>
                 <div class="label">Type de résidence</div>
@@ -116,7 +116,16 @@
             </div>
             <div>
                 <div class="label">Salaire</div>
-                <div class="value">@Model.Income</div>
+                <div class="value">
+                    @if (!string.IsNullOrEmpty(Model.Income) && int.TryParse(Model.Income, out int incomeValue) && incomeValue != 0)
+                    {
+                        @Model.Income
+                    }
+                    else
+                    {
+                        <span>Non spécifié</span>
+                    }
+                </div>
             </div>
             <div>
                 <div class="label">Prêt remboursé</div>

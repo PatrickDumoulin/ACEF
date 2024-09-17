@@ -29,25 +29,27 @@ namespace WebApp.ViewModels
         public DateTime? Birthdate { get; set; }
 
         [Display(Name = "Numéro de téléphone")]
-        [Required(ErrorMessage = "Le numéro de téléphone est obligatoire.")]
+        [RegularExpression(@"^(\(\d{3}\)\s|\d{3}[-\s])?\d{3}[-\s]?\d{4}$",
+            ErrorMessage = "Format du numéro de téléphone invalide. Utilisez le format (123) 456-7890 ou 123-456-7890.")]
         [Phone(ErrorMessage = "Format du numéro de téléphone invalide.")]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [Display(Name = "Email")]
-        [Required(ErrorMessage = "L'adresse email est obligatoire.")]
+        
         [EmailAddress(ErrorMessage = "Format de l'adresse email invalide.")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Display(Name = "Dénomination de genre")]
+        [Required(ErrorMessage = "Le Dénomination de genre est obligatoire.")]
         public int? IdGenderDenomination { get; set; }
 
         [Display(Name = "Adresse")]
-        [Required(ErrorMessage = "L'adresse est obligatoire.")]
-        public string Address { get; set; }
+       
+        public string? Address { get; set; }
 
         [Display(Name = "Code postal")]
-        [Required(ErrorMessage = "Le code postal est obligatoire.")]
-        public string ZipCode { get; set; }
+        
+        public string? ZipCode { get; set; }
 
         [Display(Name = "État civil")]
         public int? IdMaritalStatus { get; set; }
@@ -74,8 +76,8 @@ namespace WebApp.ViewModels
         public int? IdScholarshipType { get; set; }
 
         [Display(Name = "Revenu")]
-        [Required(ErrorMessage = "Le revenu est obligatoire.")]
-        public string Income { get; set; }
+        //[Required(ErrorMessage = "Le revenu est obligatoire.")]
+        public string? Income { get; set; }
 
         public bool? IsLoanPaid { get; set; }
 

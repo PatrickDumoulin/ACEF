@@ -208,7 +208,7 @@ namespace WebApp.Controllers
                     IdBank = viewModel.IdBank,
                     IdEmploymentSituation = viewModel.IdEmploymentSituation,
                     IdScholarshipType = viewModel.IdScholarshipType,
-                    Income = BitConverter.GetBytes(int.Parse(viewModel.Income))
+                    Income = BitConverter.GetBytes(!string.IsNullOrEmpty(viewModel.Income) ? int.Parse(viewModel.Income) : 0)
                 };
 
                 base.bll.CreateClient(newClient);
