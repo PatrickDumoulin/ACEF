@@ -50,11 +50,11 @@ namespace WebApp.Controllers
             }
             if (!string.IsNullOrEmpty(searchModel.LastName))
             {
-                clients = clients.Where(c => c.LastName.Contains(searchModel.LastName)).ToList();
+                clients = clients.Where(c => c.LastName.Contains(searchModel.LastName, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (!string.IsNullOrEmpty(searchModel.FirstName))
             {
-                clients = clients.Where(c => c.FirstName.Contains(searchModel.FirstName)).ToList();
+                clients = clients.Where(c => c.FirstName.Contains(searchModel.FirstName, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (!string.IsNullOrEmpty(searchModel.PhoneNumber))
             {
@@ -62,7 +62,7 @@ namespace WebApp.Controllers
             }
             if (!string.IsNullOrEmpty(searchModel.Email))
             {
-                clients = clients.Where(c => c.Email.Contains(searchModel.Email)).ToList();
+                clients = clients.Where(c => c.Email.Contains(searchModel.Email, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (searchModel.isLoanPaid.HasValue)
             {
