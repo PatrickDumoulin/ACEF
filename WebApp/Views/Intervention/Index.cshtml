@@ -246,7 +246,7 @@
                                 }
                                 
                             </a>
-                        </th>
+                        </th>                       
                         <th class="tableHeader">
                             <a asp-action="Index" asp-route-sortOrder="@ViewBag.LoanPaidSortParm">
                                 
@@ -265,6 +265,7 @@
                                 Prêt remboursé
                             </a>
                         </th>
+                      
                         <th class="tableHeader">
                             Actions
                         </th>
@@ -278,7 +279,7 @@
                             <td>@intervention.DateIntervention?.ToString("dd/MM/yyyy")</td>
                             <td>@intervention.EmployeeName</td>
                             <td>@intervention.InterventionTypeName</td>
-                            <td>@intervention.IdClient</td>
+                            <td># @intervention.IdClient - @intervention.ClientName</td>                            
                             <td>
                                 @(intervention.IsLoanPaid.HasValue
                                     ? (intervention.IsLoanPaid.Value ? "Oui" : "Non")

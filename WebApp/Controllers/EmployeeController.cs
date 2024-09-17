@@ -172,6 +172,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EmployeeViewModel model)
         {
+            // Retirer l'erreur de validation pour NewPassword
+            ModelState.Remove("NewPassword");
+
             if (ModelState.IsValid)
             {
                 var response = bll.GetEmployeeById(id);
@@ -186,16 +189,15 @@ namespace WebApp.Controllers
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     user.UserName = model.UserName;
-                    user.Email = model.UserName;
+                    user.Email = model.Email;
                     user.Active = model.Active ?? false;
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
-                        // Si un nouveau mot de passe est spécifié dans le modèle, nous devons le mettre à jour
-                        if (!string.IsNullOrEmpty(model.PasswordHash))
+                        // Si un nouveau mot de passe est spécifié, le mettre à jour
+                        if (!string.IsNullOrEmpty(model.NewPassword))
                         {
-                            // Supprimez l'ancien mot de passe et ajoutez le nouveau
                             var removePasswordResult = await _userManager.RemovePasswordAsync(user);
                             if (!removePasswordResult.Succeeded)
                             {
@@ -206,7 +208,7 @@ namespace WebApp.Controllers
                                 return View(model);
                             }
 
-                            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.PasswordHash);
+                            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
                             if (!addPasswordResult.Succeeded)
                             {
                                 foreach (var error in addPasswordResult.Errors)
@@ -215,9 +217,12 @@ namespace WebApp.Controllers
                                 }
                                 return View(model);
                             }
+
+                            // Marquer l'utilisateur comme ayant besoin de changer le mot de passe à la prochaine connexion
+                            user.IsFirstLogin = true;
+                            await _userManager.UpdateAsync(user);
                         }
 
-                        // Mettre à jour l'employé dans la table Employees
                         var employee = new Employees
                         {
                             Id = id,
@@ -231,7 +236,6 @@ namespace WebApp.Controllers
 
                         bll.UpdateEmployee(employee);
 
-                        // Mettre à jour les rôles
                         await UpdateRoles(user, model);
 
                         TempData["success"] = "Employé modifié avec succès";
@@ -243,9 +247,15 @@ namespace WebApp.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Employé introuvable.");
+                }
             }
             return View(model);
         }
+
+
 
 
         private async Task UpdateRoles(ApplicationUser user, EmployeeViewModel model)

@@ -234,16 +234,34 @@ namespace WebApp.Controllers
         {
             IMDBLL mdBLL = base.GetBLL<IMDBLL>();
             PopulateMdViewBags(mdBLL);
-            //ViewBag.Employees = GetEmployeesSelectList();
+
+            // Récupérer le nom d'utilisateur actuel
+            var currentUser = User.Identity.Name;
+
+            // Récupérer la réponse de l'employé basé sur le nom d'utilisateur
+            var employeeResponse = _employeeBLL.GetEmployeeByUsername(currentUser);
+
+            // Déclarer une variable pour stocker l'ID de l'employé
+            int? employeeId = null;
+
+            // Vérifier si la réponse est réussie et si l'élément n'est pas nul
+            if (employeeResponse.Succeeded && employeeResponse.Element != null)
+            {
+                // Extraire l'ID de l'employé
+                employeeId = employeeResponse.Element.Id;
+            }
+
             var model = new InterventionViewModel
             {
+                IdEmployee = employeeId, // Assigner l'ID de l'employé par défaut
                 Solutions = ViewBag.MdInterventionSolutions != null
-                ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
-                : new SelectList(Enumerable.Empty<SelectListItem>()),
+                    ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
+                    : new SelectList(Enumerable.Empty<SelectListItem>()),
                 SelectedSolutions = new List<int>()
             };
             return View(model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -315,9 +333,14 @@ namespace WebApp.Controllers
                 IMDBLL mdBLL = base.GetBLL<IMDBLL>();
                 PopulateMdViewBags(mdBLL);
 
+
+
                 viewModel.Solutions = ViewBag.MdInterventionSolutions != null
                     ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
                     : new SelectList(Enumerable.Empty<SelectListItem>());
+
+                ViewBag.MdLoanReasons = new SelectList(mdBLL.GetAllMdLoanReasons().ElementList, "Id", "Name", viewModel.IdLoanReason);
+
                 return View(viewModel);
             }
             return NotFound();
@@ -389,7 +412,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             IMDBLL mdBLL = base.GetBLL<IMDBLL>();
-            PopulateMdViewBags(mdBLL);
+            PopulateMdViewBags(mdBLL);            
+
+            ViewBag.MdLoanReasons = new SelectList(mdBLL.GetAllMdLoanReasons().ElementList, "Id", "Name", viewModel.IdLoanReason);
             ViewBag.Employees = _employeeBLL.GetEmployeesSelectList();
             viewModel.Solutions = new SelectList(ViewBag.Solutions, "Value", "Text");
             return View(viewModel);

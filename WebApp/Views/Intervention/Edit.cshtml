@@ -5,8 +5,6 @@
     Layout = "_Layout";
 }
 
-
-
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger">
@@ -19,7 +17,7 @@
     <div class="form-containerEdit border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="form-title text-center">Modifier une Intervention</h2>
-            <h4 class="sousTitreInterventionDetails text-center"># @Model.Id - @Model.ClientName</h4><br />
+            <h4 class="sousTitreInterventionDetails text-center"># @Model.IdClient - @Model.ClientName</h4><br />
             <hr />
         </div>
         <div class="row">
@@ -98,7 +96,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="DebtAmount" class="form-label">Montant de la dette</label>
-                    <input asp-for="DebtAmount" class="form-control" />
+                    <input asp-for="DebtAmount" class="form-control" type="number"  />
                     <span asp-validation-for="DebtAmount" class="text-danger"></span>
                 </div>
                 <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
@@ -107,14 +105,13 @@
         </div>
 
         <!-- HIDDEN FIELDS -->
-        <div class="hidden" id="loanFields">
-            <div>
-                <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
-                <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
-                    <option value="">--Sélectionnez le but d'emprunt--</option>
-                </select>
-                <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-            </div>
+        <div>
+            <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
+            <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
+                <option value="">--Sélectionnez le but d'emprunt--</option>
+            </select>
+            <span asp-validation-for="IdLoanReason" class="text-danger"></span>
+        </div>
             <div>
                 <label class="form-label pt-4">Petit prêt remboursé</label>
                 <div class="form-check form-check-inline">
@@ -155,10 +152,6 @@
                     </ul>
                     <span asp-validation-for="SelectedSolutions" class="text-danger"></span>
                 </div>
-
-
-
-
             </div>
         </div>
 
@@ -170,7 +163,6 @@
         </div>
     </div>
 </form>
-
 
 <!-- Modal pour la recherche de clients -->
 <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true">
@@ -193,7 +185,6 @@
     </div>
 </div>
 
-
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -201,11 +192,21 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/Intervention.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            // Affiche les champs de prêt si une raison de prêt est sélectionnée
+            if ($("#IdLoanReason").val() !== "") {
+                $("#loanFields").removeClass("hidden");
+            }
 
+            // Logique pour afficher les champs lorsque "Petit prêt" est sélectionné
+            $("#IdInterventionType").change(function () {
+                if ($(this).find("option:selected").text() === "Petit prêt") {
+                    $("#loanFields").removeClass("hidden");
+                } else {
+                    $("#loanFields").addClass("hidden");
+                }
+            });
+        });
+    </script>
 }
-
-
-
-
-
-
