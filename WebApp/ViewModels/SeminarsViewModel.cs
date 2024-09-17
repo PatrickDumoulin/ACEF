@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebApp.Models;
 
 namespace WebApp.ViewModels
 {
@@ -11,6 +12,7 @@ namespace WebApp.ViewModels
         [Required]
         [Display(Name = "Date de l'atelier")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DateWithinLastCentury] // Ajout de l'attribut personnalisé
         public DateTime DateSeminar { get; set; }
 
         public SeminarViewModel()

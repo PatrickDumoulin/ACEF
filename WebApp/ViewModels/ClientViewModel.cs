@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using WebApp.Models;
 
 namespace WebApp.ViewModels
 {
@@ -24,6 +25,7 @@ namespace WebApp.ViewModels
 
         [Display(Name = "Date de naissance")]
         [Required(ErrorMessage = "La date de naissance est obligatoire.")]
+        [DateWithinLastCentury]
         public DateTime? Birthdate { get; set; }
 
         [Display(Name = "Numéro de téléphone")]

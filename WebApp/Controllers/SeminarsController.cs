@@ -23,12 +23,17 @@ namespace WebApp.Controllers
             _employeeBLL = Injector.ImplementBll<IEmployeeBLL>();
         }
 
-        public IActionResult Index(SeminarSearchViewModel searchModel)
+        public IActionResult Index(SeminarSearchViewModel searchModel, int? clientId = null)
         {
             var response = bll.GetAllSeminars();
             if (response.Succeeded)
             {
                 var seminars = response.ElementList.AsQueryable();
+
+                if (clientId.HasValue)
+                {
+                    ViewBag.ClientId = clientId;
+                }
 
                 // Filtrage par date
                 if (!string.IsNullOrEmpty(searchModel.DateFilter))
@@ -134,6 +139,9 @@ namespace WebApp.Controllers
 
         public IActionResult Create()
         {
+            var currentUserName = User.Identity.Name;
+            var currentEmployee = _employeeBLL.GetEmployeeByUsername(currentUserName);
+
             ViewBag.SeminarThemes = new SelectList(GetSeminarThemes(), "Id", "Name");
             ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName");
             ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
@@ -144,6 +152,11 @@ namespace WebApp.Controllers
                 SelectedIntervenants = new List<int>()
             };
 
+            if (currentEmployee.Succeeded && currentEmployee.Element != null)
+            {
+                model.SelectedIntervenants.Add(currentEmployee.Element.Id);
+            }
+
             return View(model);
         }
 
@@ -151,11 +164,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(SeminarViewModel model)
         {
-            // Vérifier que la date est correcte
-            if (model.DateSeminar < DateTime.Now)
-            {
-                ModelState.AddModelError("DateSeminar", "La date et l'heure ne peuvent pas être antérieures à l'heure actuelle.");
-            }
+            
 
             // Si le modèle est valide, procéder à la création du séminaire
             if (ModelState.IsValid)
@@ -172,6 +181,7 @@ namespace WebApp.Controllers
                 seminar.Participants = model.SelectedParticipants.Select(id => new Clients { Id = id }).ToList();
                 seminar.Intervenants = model.SelectedIntervenants.Select(id => new Employees { Id = id }).ToList();
 
+                TempData["success"] = "Atelier créé avec succès";
                 // Appel au BLL pour créer le séminaire
                 bll.CreateSeminar(seminar, seminar.Intervenants);
 
@@ -243,6 +253,7 @@ namespace WebApp.Controllers
                 };
 
                 // Appel au BLL pour mettre à jour le séminaire
+                TempData["success"] = "Atelier modifié avec succès";
                 bll.UpdateSeminar(seminar);
 
                 return RedirectToAction(nameof(Index));

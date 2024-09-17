@@ -272,7 +272,18 @@
                         __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                     },
                     success: function (response) {
-                        Swal.fire('Supprimé!', 'L\'atelier a été supprimé avec succès.', 'success').then(() => {
+                        Swal.fire({
+                            title: 'Supprimé!',
+                            text: 'L\'atelier a été supprimé avec succès.',
+                            icon: 'success',
+                            background: 'linear-gradient(135deg, #1b263b, #14578e)',
+                            customClass: {
+                                popup: 'custom-swal-popup',
+                                title: 'custom-swal-title',
+                                content: 'custom-swal-content',
+                                confirmButton: 'custom-swal-confirm-button2'
+                            }
+                        }).then(() => {
                             // Recharge la page après suppression réussie
                             location.reload();
                         });

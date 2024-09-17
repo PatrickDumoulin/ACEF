@@ -15,7 +15,7 @@
             <div class="text-center">
                 <div class="btn-group" role="group" aria-label="Client Actions">
                     <a asp-controller="Intervention" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-activity"> </i>Interventions</a>
-                    <a asp-controller="Seminars" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-hammer"></i> Atelier</a>
+                    <a asp-controller="Seminars" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-hammer"></i> Atelier</a>
                     <a asp-controller="Note" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-journal-text"> </i> Notes (@ViewBag.NoteCount)</a>
                     <a asp-controller="ClientsAttachments" asp-action="Index" asp-route-clientId="@Model.Id" class="btn btn-primary me-2"><i class="bi bi-paperclip"></i>  Pièces jointes (@ViewBag.AttachmentCount)</a>
                     @if (ViewBag.ReturnToSeminarCreation != null && ViewBag.ReturnToSeminarCreation)
