@@ -9,7 +9,7 @@ namespace WebApp.ViewModels
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "La date de l'atelier est obligatoire.")]
         [Display(Name = "Date de l'atelier")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DateWithinLastCentury] // Ajout de l'attribut personnalisé
@@ -31,6 +31,6 @@ namespace WebApp.ViewModels
         public List<int> SelectedParticipants { get; set; } = new List<int>();
 
         [Display(Name = "Commentaire")]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
     }
 }
