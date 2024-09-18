@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using WebApp.Models;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLayer.Communication.Responses.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -37,6 +38,7 @@ namespace WebApp.Controllers
                     PasswordHash = e.PasswordHash,
                     LastLoginDate = e.LastLoginDate,
                     Active = e.Active,
+                    
 
                 }).ToList();
 
@@ -95,6 +97,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EmployeeViewModel model)
         {
+            ModelState.Remove("NewPassword");
             if (ModelState.IsValid)
             {
                 var tempPassword = model.PasswordHash ?? GenerateSecurePassword();
@@ -357,6 +360,35 @@ namespace WebApp.Controllers
                 res.Append(valid[rnd.Next(valid.Length)]);
             }
             return res.ToString();
+        }
+
+        public async Task<IActionResult> ToggleActive (int employeeId)
+        {
+            var employee = bll.GetEmployeeById(employeeId);
+            var user = await _userManager.FindByNameAsync(employee.Element.UserName);
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            // Vérifier si l'utilisateur est Superutilisateur
+            bool isSuperUser = userRoles.Contains("Superutilisateur");
+
+            // Passer l'information au ViewData
+            ViewData["IsSuperUser"] = isSuperUser;
+
+            if (employee.Succeeded && employee.Element != null)
+            {
+                employee.Element.Active = !employee.Element.Active;
+                user.Active = !user.Active;
+
+                base.bll.UpdateEmployee(employee.Element);
+                await _userManager.UpdateAsync(user);
+                TempData["success"] = "Statut changé avec succès";
+
+                return RedirectToAction("Index");
+            }
+
+
+            return NotFound();
         }
 
     }

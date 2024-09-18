@@ -166,6 +166,7 @@ namespace WebApp.Controllers
 
 
         }
+
         [HttpDelete]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(string mdName, string mdItemName)

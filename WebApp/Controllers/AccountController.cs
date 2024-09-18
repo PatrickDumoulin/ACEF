@@ -40,6 +40,13 @@ namespace WebApp.Controllers
                 return View(model);
             }
 
+            // Vérifier si l'utilisateur est actif
+            if (!user.Active)
+            {
+                ModelState.AddModelError(string.Empty, "Votre compte est inactif. Veuillez contacter l'administrateur.");
+                return View(model);
+            }
+
             // Appeler la méthode RateLimiter
             if (RateLimiter(user))
             {

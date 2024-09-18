@@ -40,11 +40,22 @@
                         <td>
                             <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-list-ul"></i> Détails</a>
                             <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modifier</a>
-
-                            <!-- IL N'Y A PAS BESOIN DAVOIR DE DELETE POUR EMPLOYEE-->
+                            @if (employee.Active == true)
+                            {
+                                <a asp-action="ToggleActive" asp-route-employeeId="@employee.Id" class="btn btn-primary">
+                                <i class="bi bi-toggle-off"></i> Désactiver
+                            </a>
+                            }
+                            else
+                            {
+                                <a asp-action="ToggleActive" asp-route-employeeId="@employee.Id" class="btn btn-primary">
+                                <i class="bi bi-toggle-on"></i> Activer
+                            </a>
+                            }
+                            @* <!-- IL N'Y A PAS BESOIN DAVOIR DE DELETE POUR EMPLOYEE-->
                             <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Employee", new { id = employee.Id })')" class="btn btn-danger ">
                             <i class="bi bi-trash-fill"></i> Supprimer
-                            </a> 
+                            </a>  *@
                         </td>
                     </tr>
                 }
@@ -167,4 +178,5 @@
 
 
 </script>
+
 
