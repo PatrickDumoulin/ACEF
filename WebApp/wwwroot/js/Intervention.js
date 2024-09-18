@@ -108,7 +108,7 @@
     // Recherche et sélection d'un client
     $('#searchClientInput').on('input', function () {
         var searchTerm = $(this).val().toLowerCase();
-        if (searchTerm.length > 2) {
+        if (searchTerm.length > 0) {
             $.ajax({
                 url: '/Intervention/SearchClients',
                 data: { searchTerm: searchTerm },

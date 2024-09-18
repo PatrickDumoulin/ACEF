@@ -23,12 +23,26 @@
 
 
 
+
+
 .search-form {
     background-color: white;
     border-radius: 8px;
     padding: 30px;
     border: none; /* Ajoutez cette ligne pour supprimer toute bordure */
     outline: none; /* Supprime tout contour */
+}
+
+
+/* GLOBAL */
+
+
+input {
+    font-weight: bold !important;
+}
+
+select{
+    font-weight: bold !important;
 }
 
 
