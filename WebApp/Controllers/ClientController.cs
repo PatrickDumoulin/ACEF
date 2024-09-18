@@ -196,7 +196,7 @@ namespace WebApp.Controllers
         {
             viewModel.FullName = viewModel.FirstName + " " + viewModel.LastName;
             ModelState.Remove("FullName"); // Ignore la validation du FullName
-
+            ModelState.Remove("StatutName");
             if (ModelState.IsValid)
             {
                 var newClient = new ClientBOL
@@ -274,7 +274,7 @@ namespace WebApp.Controllers
             {
                 return BadRequest();
             }
-
+            ModelState.Remove("StatutName");
             if (ModelState.IsValid)
             {
                 var response = base.bll.GetClient(id);
