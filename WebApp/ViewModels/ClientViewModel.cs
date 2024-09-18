@@ -48,7 +48,7 @@ namespace WebApp.ViewModels
         public string? Address { get; set; }
 
         [Display(Name = "Code postal")]
-        
+        [RegularExpression(@"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$", ErrorMessage = "Le code postal n'est pas valide. Le format attendu est A1A 1A1.")]
         public string? ZipCode { get; set; }
 
         [Display(Name = "État civil")]
