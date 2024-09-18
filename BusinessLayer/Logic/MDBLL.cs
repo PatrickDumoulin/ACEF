@@ -624,6 +624,8 @@ namespace BusinessLayer.Logic
         {
             base.dal.DeleteMdInterventionStatusType(itemName);
         }
+
+        
         #endregion
 
         #region MdLoanReason

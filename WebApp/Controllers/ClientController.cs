@@ -75,6 +75,16 @@ namespace WebApp.Controllers
                 clients = clients.Where(c => clientIdsWithLoanStatus.Contains(c.Id)).ToList();
             }
 
+            // Créer les ViewModels
+            var clientViewModels = clients.Select(client =>
+            {
+                var intervention = interventions.FirstOrDefault(i => i.IdClient == client.Id);
+                var viewModel = MapToViewModel(client);
+                viewModel.StatutName = intervention != null ? _mdbBLL.GetMdInterventionStatusTypeName((int)intervention.IdStatusType) : "N/A";
+                return viewModel;
+            }).ToList();
+
+
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "Id";
             ViewBag.LastNameSortParm = sortOrder == "LastName" ? "lastName_desc" : "LastName";
             ViewBag.FirstNameSortParm = sortOrder == "FirstName" ? "firstName_desc" : "FirstName";
@@ -441,6 +451,7 @@ namespace WebApp.Controllers
                 IsLoanPaid = intervention?.IsLoanPaid, // Null si aucune intervention trouvée
                 SelectedIncomeType = client.ClientIncomeTypes?.Select(s => s.IdIncomeType).ToList(),
                 IncomeTypeNames = incomeTypeNames,
+                StatutName = intervention != null ? _mdbBLL.GetMdInterventionStatusTypeName((int)intervention.IdStatusType) : "N/A" // Set StatutName here
             };
         }
 

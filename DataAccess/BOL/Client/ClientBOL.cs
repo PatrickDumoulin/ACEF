@@ -44,6 +44,7 @@ namespace DataAccess.BOL.Client
 
         public string FullName => $"{FirstName} {LastName}";
 
+
         // Propriété pour les IDs des solutions d'intervention
         public IEnumerable<int> ClientIncomeTypesIds
         {

@@ -20,6 +20,7 @@ namespace WebApp.ViewModels
         [Display(Name = "Courriel")]
         public string Email { get; set; }
 
+
         public bool? isLoanPaid { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }

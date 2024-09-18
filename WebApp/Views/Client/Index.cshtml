@@ -158,6 +158,9 @@
                                 }
                             </a>
                         </th>
+                        <th>
+                            Statut
+                        </th>
                         <th>Prêt Payé</th>
                         <th>Actions</th>
                     </tr>
@@ -174,6 +177,7 @@
                             <td>@client.FirstName</td>
                             <td>@client.PhoneNumber</td>
                             <td>@client.Email</td>
+                            <td>@client.StatutName</td>
                             @* <td>@client.Birthdate?.ToString("dd/MM/yyyy")</td> *@
                             <td>@(client.IsLoanPaid.HasValue ? (client.IsLoanPaid.Value ? "Oui" : "Non") : "N/A")</td>
 

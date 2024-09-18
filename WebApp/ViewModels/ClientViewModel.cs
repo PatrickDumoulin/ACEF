@@ -81,6 +81,9 @@ namespace WebApp.ViewModels
 
         public bool? IsLoanPaid { get; set; }
 
+        [Display(Name = "Statut")]
+        public string StatutName { get; set; }
+
         // Source de revenus
         public IEnumerable<SelectListItem> IncomeType { get; set; } = new List<SelectListItem>();
 
