@@ -193,7 +193,7 @@ namespace WebApp.Controllers
                     user.LastName = model.LastName;
                     user.UserName = model.UserName;
                     user.Email = model.Email;
-                    user.Active = model.Active ?? false;
+                    user.Active = model.Active ?? true;
 
 
                     var result = await _userManager.UpdateAsync(user);
