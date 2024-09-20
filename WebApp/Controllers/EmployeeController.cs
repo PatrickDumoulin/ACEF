@@ -176,7 +176,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Edit(int id, EmployeeViewModel model)
         {
             // Retirer l'erreur de validation pour NewPassword
-            ModelState.Remove("NewPassword");
+            ModelState.Remove("PasswordHash");
 
             if (ModelState.IsValid)
             {
@@ -194,6 +194,7 @@ namespace WebApp.Controllers
                     user.UserName = model.UserName;
                     user.Email = model.Email;
                     user.Active = model.Active ?? false;
+
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
