@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using WebApp.Models;
 
 namespace WebApp.ViewModels
 {
+    
     public class EmployeeViewModel
     {
         public int Id { get; set; }
@@ -54,5 +56,8 @@ namespace WebApp.ViewModels
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")] // Validation de l'adresse email
         public string Email { get; set; }
+
+        public bool HasRoleSelected => IsSuperUser || IsIntervenant || IsAdministrateurCA;
+
     }
 }

@@ -2,6 +2,11 @@
 
 <partial name="_Notification" />
 
+<style>
+    .custom-btn-width {
+        width: 150px; /* Ajuste cette valeur selon la largeur désirée */
+    }
+</style>
 <div class="clientIndex Container">
     <div class="row pt-5">
         <div class="col-6">
@@ -37,20 +42,20 @@
                         <td>@employee.UserName</td>
 
                         <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-list-ul"></i> Détails</a>
-                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Modifier</a>
+                        <td class="d-flex flex-column">
+                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-primary custom-btn-width mb-2"><i class="bi bi-list-ul"></i> Détails</a>
+                            <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary custom-btn-width mb-2"><i class="bi bi-pencil-square"></i> Modifier</a>
                             @if (employee.Active == true)
                             {
-                                <a asp-action="ToggleActive" asp-route-employeeId="@employee.Id" class="btn btn-primary">
-                                <i class="bi bi-toggle-off"></i> Désactiver
-                            </a>
+                                <a asp-action="ToggleActive" asp-route-employeeId="@employee.Id" class="btn btn-primary custom-btn-width mb-2">
+                                    <i class="bi bi-toggle-off"></i> Désactiver
+                                </a>
                             }
                             else
                             {
-                                <a asp-action="ToggleActive" asp-route-employeeId="@employee.Id" class="btn btn-primary">
-                                <i class="bi bi-toggle-on"></i> Activer
-                            </a>
+                                <a asp-action="ToggleActive" asp-route-employeeId="@employee.Id" class="btn btn-primary custom-btn-width mb-2">
+                                    <i class="bi bi-toggle-on"></i> Activer
+                                </a>
                             }
                             @* <!-- IL N'Y A PAS BESOIN DAVOIR DE DELETE POUR EMPLOYEE-->
                             <a href="javascript:void(0);" onclick="Delete('@Url.Action("DeleteConfirmed", "Employee", new { id = employee.Id })')" class="btn btn-danger ">

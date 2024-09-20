@@ -97,6 +97,11 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EmployeeViewModel model)
         {
+            if (!model.HasRoleSelected)
+            {
+                ModelState.AddModelError(string.Empty, "Veuillez sélectionner au moins un rôle.");
+            }
+
             ModelState.Remove("NewPassword");
             if (ModelState.IsValid)
             {
@@ -116,6 +121,7 @@ namespace WebApp.Controllers
                 var result = await _userManager.CreateAsync(user, tempPassword);
                 if (result.Succeeded)
                 {
+
                     // Synchronisation avec la table Employees
                     var employee = new Employees
                     {
@@ -151,21 +157,30 @@ namespace WebApp.Controllers
 
 
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var response = bll.GetEmployeeById(id);
             if (response.Succeeded && response.Element != null)
             {
+                var user = await _userManager.FindByNameAsync(response.Element.UserName);
+
                 var model = new EmployeeViewModel
                 {
                     Id = response.Element.Id,
                     FirstName = response.Element.FirstName,
                     LastName = response.Element.LastName,
                     UserName = response.Element.UserName,
-                    PasswordHash = response.Element.PasswordHash,
+                    NewPassword = "",
+                    //PasswordHash = response.Element.PasswordHash,
                     LastLoginDate = response.Element.LastLoginDate,
-                    Active = response.Element.Active
+                    Active = response.Element.Active,
+                    Email = user.Email,
+                    IsSuperUser = await _userManager.IsInRoleAsync(user, "Superutilisateur"),
+                    IsIntervenant = await _userManager.IsInRoleAsync(user, "Intervenant"),
+                    IsAdministrateurCA = await _userManager.IsInRoleAsync(user, "AdministrateurCA")
                 };
+
+                
                 return View(model);
             }
             return NotFound();
@@ -175,8 +190,13 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EmployeeViewModel model)
         {
+            if (!model.HasRoleSelected)
+            {
+                ModelState.AddModelError(string.Empty, "Veuillez sélectionner au moins un rôle.");
+            }
             // Retirer l'erreur de validation pour NewPassword
             ModelState.Remove("PasswordHash");
+            ModelState.Remove("NewPassword");
 
             if (ModelState.IsValid)
             {
@@ -223,9 +243,12 @@ namespace WebApp.Controllers
                             }
 
                             // Marquer l'utilisateur comme ayant besoin de changer le mot de passe à la prochaine connexion
-                            user.IsFirstLogin = true;
+                            //user.IsFirstLogin = true;
                             await _userManager.UpdateAsync(user);
                         }
+
+                        // Mise à jour des rôles
+                        await UpdateRoles(user, model);
 
                         var employee = new Employees
                         {
@@ -256,6 +279,75 @@ namespace WebApp.Controllers
                     ModelState.AddModelError("", "Employé introuvable.");
                 }
             }
+            return View(model);
+        }
+
+
+        // GET: ChangePassword
+        public async Task<IActionResult> ChangePassword(int id)
+        {
+            ViewData["IdEmployeeRetour"] = id;
+            var response = bll.GetEmployeeById(id);
+            if (response.Succeeded && response.Element != null)
+            {
+                var model = new ChangePasswordEmployeeViewModel
+                {
+                    // Aucune valeur à pré-remplir, car nous ne demandons que le nouveau mot de passe
+                };
+                return View(model);
+            }
+            return NotFound();
+        }
+
+        // POST: ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(int id, ChangePasswordEmployeeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = bll.GetEmployeeById(id);
+                if (response.Succeeded && response.Element != null)
+                {
+                    var user = await _userManager.FindByNameAsync(response.Element.UserName);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Supprimer l'ancien mot de passe et définir le nouveau mot de passe
+                    var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+                    if (!removePasswordResult.Succeeded)
+                    {
+                        foreach (var error in removePasswordResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return View(model);
+                    }
+
+                    // Ajouter le nouveau mot de passe
+                    var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
+                    // Marquer l'utilisateur comme nayant PAS besoin de changer le mot de passe à la prochaine connexion
+                    
+                    if (addPasswordResult.Succeeded)
+                    {
+                        user.IsFirstLogin = false;
+                        TempData["success"] = "Mot de passe modifié avec succès.";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    foreach (var error in addPasswordResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Utilisateur introuvable.");
+                }
+            }
+
             return View(model);
         }
 
@@ -391,6 +483,8 @@ namespace WebApp.Controllers
 
             return NotFound();
         }
+
+
 
     }
 }

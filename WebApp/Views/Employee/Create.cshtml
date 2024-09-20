@@ -20,6 +20,8 @@
             <hr />
         </div>
 
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
         <form asp-action="Create">
             <!-- Champ Nom -->
             <div class="form-group mb-2">
@@ -77,18 +79,19 @@
             <div class="form-group mb-4">
                 <label class="mb-3">Rôles</label>
                 <div class="form-check">
-                    <input asp-for="IsSuperUser" class="form-check-input" type="checkbox" />
+                    <input asp-for="IsSuperUser" class="form-check-input" type="checkbox" id="roleSuperUser" />
                     <label asp-for="IsSuperUser" class="form-check-label">Superutilisateur</label>
                 </div>
                 <div class="form-check">
-                    <input asp-for="IsIntervenant" class="form-check-input" type="checkbox" />
+                    <input asp-for="IsIntervenant" class="form-check-input" type="checkbox" id="roleIntervenant" />
                     <label asp-for="IsIntervenant" class="form-check-label">Intervenant</label>
                 </div>
                 <div class="form-check">
-                    <input asp-for="IsAdministrateurCA" class="form-check-input" type="checkbox" />
+                    <input asp-for="IsAdministrateurCA" class="form-check-input" type="checkbox" id="roleAdministrateurCA" />
                     <label asp-for="IsAdministrateurCA" class="form-check-label">Administrateur CA</label>
                 </div>
             </div>
+
 
             <!-- Boutons de soumission -->
             <div class="row">
@@ -103,14 +106,15 @@
 
     <!-- Script pour afficher/masquer le mot de passe -->
     <script>
-        const togglePassword = document.getElementById("togglePassword");
-        const passwordField = document.getElementById("passwordField");
+        document.querySelector('form').addEventListener('submit', function (e) {
+            var isSuperUser = document.getElementById("roleSuperUser").checked;
+            var isIntervenant = document.getElementById("roleIntervenant").checked;
+            var isAdministrateurCA = document.getElementById("roleAdministrateurCA").checked;
 
-        togglePassword.addEventListener("click", function () {
-            const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
-            passwordField.setAttribute("type", type);
-            this.querySelector("i").classList.toggle("fa-eye");
-            this.querySelector("i").classList.toggle("fa-eye-slash");
+            if (!isSuperUser && !isIntervenant && !isAdministrateurCA) {
+                e.preventDefault(); // Empêche la soumission du formulaire
+                alert("Veuillez sélectionner au moins un rôle.");
+            }
         });
     </script>
 </body>
