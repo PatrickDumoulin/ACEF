@@ -218,7 +218,7 @@ namespace WebApp.Controllers
                     IdBank = viewModel.IdBank,
                     IdEmploymentSituation = viewModel.IdEmploymentSituation,
                     IdScholarshipType = viewModel.IdScholarshipType,
-                    Income = !string.IsNullOrEmpty(viewModel.Income) ? BitConverter.GetBytes(int.Parse(viewModel.Income)) : null
+                    Income = int.TryParse(viewModel.Income, out var incomeValue) ? BitConverter.GetBytes(incomeValue) : null
                 };
 
                 base.bll.CreateClient(newClient);
@@ -327,7 +327,7 @@ namespace WebApp.Controllers
                     existingClient.IdBank = viewModel.IdBank;
                     existingClient.IdEmploymentSituation = viewModel.IdEmploymentSituation;
                     existingClient.IdScholarshipType = viewModel.IdScholarshipType;
-                    existingClient.Income = BitConverter.GetBytes(int.Parse(viewModel.Income));
+                    existingClient.Income = int.TryParse(viewModel.Income, out var incomeValue) ? BitConverter.GetBytes(incomeValue) : null;
 
                     base.bll.UpdateClient(existingClient);
                     TempData["success"] = "Client modifié avec succès";
@@ -447,7 +447,7 @@ namespace WebApp.Controllers
                 IdBank = client.IdBank,
                 IdEmploymentSituation = client.IdEmploymentSituation,
                 IdScholarshipType = client.IdScholarshipType,
-                Income = BitConverter.ToInt32(client.Income, 0).ToString(),
+                Income = client.Income != null && client.Income.Length >= 4 ? BitConverter.ToInt32(client.Income, 0).ToString() : null,
                 IsLoanPaid = intervention?.IsLoanPaid, // Null si aucune intervention trouvée
                 SelectedIncomeType = client.ClientIncomeTypes?.Select(s => s.IdIncomeType).ToList(),
                 IncomeTypeNames = incomeTypeNames,
