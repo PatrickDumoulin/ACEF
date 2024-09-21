@@ -37,12 +37,12 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
 
-            <!-- Champ E-mail -->
+            @* <!-- Champ E-mail -->
             <div class="form-group mb-2">
                 <label asp-for="Email" class="control-label">Adresse e-mail</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+            </div> *@
 
             <!-- Champ Nom d'utilisateur -->
             <div class="form-group mb-2">
@@ -56,20 +56,20 @@
                 <label asp-for="NewPassword" class="control-label">Mot de passe</label>
                 <div class="input-group">
                     <input asp-for="NewPassword" class="form-control" id="passwordField" type="password" />
-                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    <button type="button" class="btn btn-secondary" id="togglePassword1">
+                        <i class="bi bi-eye-fill"></i>
                     </button>
                 </div>
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
 
-            <!-- Champ Mot de passe avec affichage/masquage -->
+            <!-- Champ Confirmer Mot de passe avec affichage/masquage -->
             <div class="form-group mb-2">
                 <label asp-for="ConfirmPassword" class="control-label">Confirmer Mot de passe</label>
                 <div class="input-group">
-                    <input asp-for="ConfirmPassword" class="form-control" id="passwordField" type="password" />
-                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    <input asp-for="ConfirmPassword" class="form-control" id="confirmPasswordField" type="password" />
+                    <button type="button" class="btn btn-secondary" id="togglePassword2">
+                        <i class="bi bi-eye-fill"></i>
                     </button>
                 </div>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -118,15 +118,20 @@
 
     <!-- Script pour afficher/masquer le mot de passe -->
     <script>
-        document.querySelector('form').addEventListener('submit', function (e) {
-            var isSuperUser = document.getElementById("roleSuperUser").checked;
-            var isIntervenant = document.getElementById("roleIntervenant").checked;
-            var isAdministrateurCA = document.getElementById("roleAdministrateurCA").checked;
+        // Fonction pour afficher/masquer le champ de mot de passe
+        document.getElementById("togglePassword1").addEventListener("click", function () {
+            var passwordField = document.getElementById("passwordField");
+            var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+            passwordField.setAttribute("type", type);
+            this.querySelector("i").classList.toggle("fa-eye-slash");
+        });
 
-            if (!isSuperUser && !isIntervenant && !isAdministrateurCA) {
-                e.preventDefault(); // Empêche la soumission du formulaire
-                alert("Veuillez sélectionner au moins un rôle.");
-            }
+        // Fonction pour afficher/masquer le champ de confirmation de mot de passe
+        document.getElementById("togglePassword2").addEventListener("click", function () {
+            var confirmPasswordField = document.getElementById("confirmPasswordField");
+            var type = confirmPasswordField.getAttribute("type") === "password" ? "text" : "password";
+            confirmPasswordField.setAttribute("type", type);
+            this.querySelector("i").classList.toggle("fa-eye-slash");
         });
     </script>
 </body>

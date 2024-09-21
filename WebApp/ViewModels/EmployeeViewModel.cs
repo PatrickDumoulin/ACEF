@@ -58,11 +58,11 @@ namespace WebApp.ViewModels
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 
-        // Propriété pour l'email
-        [Required(ErrorMessage = "Email is required")]
-        [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")] // Validation de l'adresse email
-        public string Email { get; set; }
+        //// Propriété pour l'email
+        //[Required(ErrorMessage = "Email is required")]
+        //[Display(Name = "Email")]
+        //[EmailAddress(ErrorMessage = "Invalid Email Address")] // Validation de l'adresse email
+        //public string Email { get; set; }
 
         public bool HasRoleSelected => IsSuperUser || IsIntervenant || IsAdministrateurCA;
 

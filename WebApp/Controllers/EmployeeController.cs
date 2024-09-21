@@ -39,6 +39,7 @@ namespace WebApp.Controllers
                     LastLoginDate = e.LastLoginDate,
                     Active = e.Active,
                     
+                    
 
                 }).ToList();
 
@@ -144,8 +145,8 @@ namespace WebApp.Controllers
 
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email, // Utilise l'adresse e-mail pour remplir le champ UserName
-                    Email = model.Email,    // Stocke également l'e-mail dans le champ Email
+                    UserName = model.UserName, // Utilise l'adresse e-mail pour remplir le champ UserName
+                    Email = model.UserName,    // Stocke également l'e-mail dans le champ Email
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     LastLoginDate = DateTime.Now,
@@ -184,7 +185,18 @@ namespace WebApp.Controllers
 
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError("", error.Description);
+                    
+
+                    // Vérifie si l'erreur concerne le nom d'utilisateur déjà pris
+                    if (error.Code == "DuplicateUserName")
+                    {
+                        ModelState.AddModelError("", $"Le nom d'utilisateur '{model.UserName}' est déjà utilisé.");
+                    }
+                    else
+                    {
+                        // Ajoute l'erreur originale (ou tu peux choisir de traduire d'autres erreurs)
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
             }
             return View(model);
@@ -209,7 +221,7 @@ namespace WebApp.Controllers
                     //PasswordHash = response.Element.PasswordHash,
                     LastLoginDate = response.Element.LastLoginDate,
                     Active = response.Element.Active,
-                    Email = user.Email,
+                    //Email = user.Email,
                     IsSuperUser = await _userManager.IsInRoleAsync(user, "Superutilisateur"),
                     IsIntervenant = await _userManager.IsInRoleAsync(user, "Intervenant"),
                     IsAdministrateurCA = await _userManager.IsInRoleAsync(user, "AdministrateurCA")
@@ -232,6 +244,7 @@ namespace WebApp.Controllers
             // Retirer l'erreur de validation pour NewPassword
             ModelState.Remove("PasswordHash");
             ModelState.Remove("NewPassword");
+            ModelState.Remove("ConfirmPassword");
 
             if (ModelState.IsValid)
             {
@@ -247,13 +260,14 @@ namespace WebApp.Controllers
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
                     user.UserName = model.UserName;
-                    user.Email = model.Email;
+                    user.Email = model.UserName;
                     user.Active = model.Active ?? true;
 
 
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
+
                         // Si un nouveau mot de passe est spécifié, le mettre à jour
                         if (!string.IsNullOrEmpty(model.NewPassword))
                         {
@@ -306,7 +320,18 @@ namespace WebApp.Controllers
 
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        
+
+                        // Vérifie si l'erreur concerne le nom d'utilisateur déjà pris
+                        if (error.Code == "DuplicateUserName")
+                        {
+                            ModelState.AddModelError("", $"Le nom d'utilisateur '{model.UserName}' est déjà utilisé.");
+                        }
+                        else
+                        {
+                            // Ajoute l'erreur originale (ou tu peux choisir de traduire d'autres erreurs)
+                            ModelState.AddModelError("", error.Description);
+                        }
                     }
                 }
                 else
