@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.BOL.Note
 {
+    //[MB] - Il y a une raison pourquoi ce BOL est détaché de la BD? 
     public class NoteBOL
     {
         public int Id { get; set; }

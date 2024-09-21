@@ -12,6 +12,27 @@ using System.Linq;
 
 namespace BusinessLayer.Logic
 {
+    /*[MB!] - Ce que je réalise c'est que vous semblez faire un BLL (ou presque) par entité de BD. 
+        L'idée d'un BLL est de regroupé plusieurs fonctionnalités/méthodes qui sont sous la même thématique. Ainsi dans le projet, on devrait avoir
+            ClientBLL
+            EmployeeBLL
+            InterventionBLL
+            AttachmentBLL (Qui gère les deux types de pièces jointes)
+            NoteBLL (Qui gère les deux types de notes)
+            SeminarBLL
+            MDBLL
+            EmployeePermissionsBLL
+    */
+
+    /*[MB!] - Les séminaires sont un bel exemple d'entités que l'on appel dissociable. Par exemple une facture est composée d'une entête et de lignes. Dans la BD ce sont deux tables différentes,
+              mais au niveau logiciel on ne permet pas d'obtenir juste l'entête ou juste les lignes puisque l'information ne fait pas vraiment de sens si elle est dissociée. C'est pareil ici.
+              SeminarBOL devrait contenir une liste de SeminarParticipantBOL et une liste de SeminarEmployeeBOL et la gestion de ces listes est faite par le DAL.
+                -> Le get va les populer en fonction des différentes valeurs en BD
+                -> Le Create va premièrement faire la création du Seminar, ensuite pour toutes les entrées dans vos listes, populer les sous-tables.
+                -> Le update n'est pas vraiment applicable pour les sous-tables
+                -> Le delete est la seule opération que l'on voudrait permettre directement pour une sous-table (exemple: DeleteSeminarEmployee(int id)) parce qu'il y a la possiblité de retirer un élément de la sous-table sans affecter la table Seminar en tant que tel.
+                -> Le delete d'un Seminar serait à l'inverse du Create. On delete les sous-tables et ensuite le Seminar
+    */
     public class SeminarBLL : AbstractBLL<ISeminarDAL>, ISeminarBLL
     {
         public SeminarBLL() { }
@@ -20,6 +41,7 @@ namespace BusinessLayer.Logic
 
         public SeminarBLL(IDAL externalDAL) : base(externalDAL) { }
 
+        //[MB] - GetSiminars()
         // Récupérer tous les séminaires
         public GetListResponse<SeminarBOL> GetAllSeminars()
         {

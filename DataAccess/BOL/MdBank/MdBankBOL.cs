@@ -16,6 +16,7 @@ namespace DataAccess.BOL.MdBank
 
         public int Id { get { return base.Record.Id; } }
 
+        //[MB!] - Pourquoi les validations de Null? Ça me semble superflu. Ça semble être dans plusieurs MD, mais ils ont tous un name dans la BD
         public string Name
         {
             get { return base.Record?.Name ?? "Non spécifié"; }

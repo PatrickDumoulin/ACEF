@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Logic
 {
+    /*[MB] - Ce BLL et les méthodes ne sont pas nécessaires. */
     public class SeminarEmployeeBLL : AbstractBLL<ISeminarEmployeeDAL>, ISeminarEmployeeBLL
     {
         public SeminarEmployeeBLL() { }

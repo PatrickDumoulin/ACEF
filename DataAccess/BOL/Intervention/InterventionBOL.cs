@@ -101,6 +101,9 @@ public class InterventionBOL : AbstractBOL<Interventions>, IInterventionBOL
                     throw new ArgumentException("LoanAmountBalance ne peut pas être négatif.");
                 }
 
+                //[MB!!] - C'est extrêmement grave ce que vous faites là. Le champ n'est pas encrypté, il est simplement converti en byte[]. Il s'agit de données réelles et sensibles
+                //le client pourrait se faire poursuivre si des montants financiers sont non protégés dans la base de données. Vous avez une méthode qui est fournie qui permet de gérer l'encyrption/décryption
+                //voir CowMilkIngredientPriceListMonthBOL et la propriété Amount. S'il vous plait, repasser partout où vous êtiez supposé faire de l'encryption et assurez-vous que ce soit conforme.
                 base.Record.LoanAmountBalance = EncryptDebtAmount(value);
             }
             catch (Exception ex)
@@ -110,11 +113,13 @@ public class InterventionBOL : AbstractBOL<Interventions>, IInterventionBOL
         }
     }
 
+    //[MB] - À enlever.
     private byte[] EncryptDebtAmount(decimal amount)
     {
         return BitConverter.GetBytes((double)amount);
     }
 
+    //[MB] - À enlever.
     private decimal DecryptDebtAmount(byte[] encryptedAmount)
     {
         return (decimal)BitConverter.ToDouble(encryptedAmount, 0);

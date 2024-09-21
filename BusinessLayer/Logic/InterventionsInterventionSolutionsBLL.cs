@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Logic
 {
+    //[MB] - Les méthodes devraient être dans InterventionBLL 
     public class InterventionsInterventionSolutionsBLL : AbstractBLL<IInterventionsInterventionSolutionsDAL>, IInterventionsInterventionSolutionsBLL
     {
         public InterventionsInterventionSolutionsBLL() { }
@@ -35,11 +36,13 @@ namespace BusinessLayer.Logic
 
         public void CreateInterventionsInterventionSolutions(InterventionsInterventionSolutionsBOL interventionsInterventionSolutionsBOL)
         {
+            //[MB] - Validations?
             base.dal.CreateInterventionsInterventionSolutions(interventionsInterventionSolutionsBOL);
         }
 
         public void UpdateInterventionsInterventionSolutions(InterventionsInterventionSolutionsBOL interventionsInterventionSolutionsBOL)
         {
+            //[MB] - Validations?
             base.dal.UpdateInterventionsInterventionSolutions(interventionsInterventionSolutionsBOL);
         }
 

@@ -30,6 +30,8 @@ namespace DataAccess.Providers.Entity
 
         public void CreateClientAttachment(ClientAttachmentBOL attachment)
         {
+            //[MB] - Pas besoin de faire ça, vous pouvez directement faire
+            //Db.ClientsAttachments.Add(attachment.Record);
             var entity = new ClientsAttachments
             {
                 IdClient = attachment.IdClient,

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Logic
 {
+    /*[MB] - Les méthodes devraient être dans ClientBLL*/
     public class ClientIncomeTypeBLL : AbstractBLL<IClientIncomeTypeDAL>, IClientIncomeTypeBLL
     {
         public ClientIncomeTypeBLL() { }

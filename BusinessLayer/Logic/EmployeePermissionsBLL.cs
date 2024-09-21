@@ -18,12 +18,14 @@ namespace BusinessLayer.Logic
         public EmployeePermissionsBLL(ProviderDALTypes dalType) : base(dalType) { }
         public EmployeePermissionsBLL(IDAL externalDAL) : base(externalDAL) { }
 
+        //[MB] - Pour suivre votre nomenclature, le All n'est pas nécessaire. On s'en doute avec une méthode n'offrant pas de paramètres.
         public GetListResponse<EmployeePermissions> GetAllPermissions()
         {
             var permissions = base.dal.GetAllPermissions();
             return new GetListResponse<EmployeePermissions>(permissions.ToList());
         }
 
+        //[MB] - Modifier pour GetPermission(int id)
         public GetItemResponse<EmployeePermissions> GetPermissionById(int id)
         {
             var permission = base.dal.GetPermissionById(id);
@@ -32,11 +34,13 @@ namespace BusinessLayer.Logic
 
         public void CreatePermission(EmployeePermissions permission)
         {
+            //[MB] - Validations?
             base.dal.CreatePermission(permission);
         }
 
         public void UpdatePermission(EmployeePermissions permission)
         {
+            //[MB] - Validations?
             base.dal.UpdatePermission(permission);
         }
 

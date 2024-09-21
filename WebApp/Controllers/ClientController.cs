@@ -419,6 +419,8 @@ namespace WebApp.Controllers
             });
         }
 
+        //[MB] - Faire une classe à part pour faire ce genre d'opérations (Une factory)
+        //      Sinon, mettre un constructeur de ClientViewModel qui reçoit un IClientBOL
         private ClientViewModel MapToViewModel(IClientBOL client)
         {
             var intervention = _interventionBLL.GetInterventions().ElementList.FirstOrDefault(i => i.IdClient == client.Id);
@@ -455,6 +457,7 @@ namespace WebApp.Controllers
             };
         }
 
+        //[MB] - Pas certain que les deux méthodes ici bas sont nécessaires (trop simplistes)
         private int GetNoteCount(int clientId)
         {
             var noteBLL = GetBLL<INoteBLL>();

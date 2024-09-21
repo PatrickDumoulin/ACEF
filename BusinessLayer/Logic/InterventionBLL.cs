@@ -11,7 +11,7 @@ namespace BusinessLayer.Logic
 {
     public class InterventionBLL : AbstractBLL<IInterventionDAL>, IInterventionBLL
     {
-        
+        //[MB] - Variables non utilisées, de plus on ne garde pas les BLL comme membre public. On s'en sert et on jette ensuite. 
         public readonly IMDBLL _mdbBLL;
         public readonly IClientBLL _clientBLL;
         public readonly IEmployeeBLL _employeeBLL;
@@ -36,11 +36,13 @@ namespace BusinessLayer.Logic
 
         public void CreateIntervention(InterventionBOL interventionBOL)
         {
+            //[MB] - Validations?
             base.dal.CreateIntervention(interventionBOL);
         }
 
         public void UpdateIntervention(InterventionBOL interventionBOL)
         {
+            //[MB] - Validations?
             base.dal.UpdateIntervention(interventionBOL);
         }
 
@@ -49,6 +51,7 @@ namespace BusinessLayer.Logic
             base.dal.DeleteIntervention(id);
         }
 
+        //[MB] - Devrait être dans une classe à part, à l'oeil c'est une méthode d'extension que je vois là
         public DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
         {
             int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
@@ -56,11 +59,13 @@ namespace BusinessLayer.Logic
 
         }
 
+        //[MB] - Devrait être dans le BOL, pas dans le BLL. Il y a déjà une mécanique d'encryption de disponible pour vous. À enlever.
         public byte[] EncryptDebtAmount(decimal amount)
         {
             return BitConverter.GetBytes((double)amount);
         }
 
+        //[MB] - Devrait être dans le BOL, pas dans le BLL. Il y a déjà une mécanique decryption de disponible pour vous. À enlever.
         public decimal DecryptDebtAmount(byte[] encryptedAmount)
         {
             return (decimal)BitConverter.ToDouble(encryptedAmount, 0);

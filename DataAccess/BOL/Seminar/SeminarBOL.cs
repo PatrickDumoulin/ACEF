@@ -11,6 +11,8 @@ namespace DataAccess.BOL.Seminar
 
         public SeminarBOL(Seminars record) : base(record) { }
 
+        //[MB] - Je ne pense pas que cela fonctionne? Votre record que vous créer va avoir un ID à 0. Quand on veut créer un nouveau BOL on passe par le constructeur sans paramètre parce que
+        //celui-ci s'occupe de fetcher le prochain ID de la BD et l'assigne automatiquement à votre record. Ici vous faites un shortcut qui est dangereux.
         public SeminarBOL(DateTime? dateSeminar, int? idSeminarTheme, string notes, DateTime? createdDate)
             : base(new Seminars
             {

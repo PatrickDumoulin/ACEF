@@ -47,6 +47,15 @@ namespace DataAccess.Providers.Entity
             {
                 try
                 {
+                    //[MB!] - Pas besoin de faire ça, vous pouvez directement faire
+                    //base.SaveEntity(clientBOL); 
+                    //Revoir CowMilkEntityDAL
+
+                    //[MB!] - De plus, vous avez déjà l'identifiant de votre objet, pas besoin de faire ça
+                    //clientBOL.Id = newClient.Id
+                    //Quand vous faites un new BOL(), si celui-ci est ISequenced, il va gérer tout seul dans l'abstractBOL d'obtenir le prochain ID de la séquence et l'assigner à votre record.
+                    //Je pense que vous aurez à revoir tous vos DAL en conséquence
+
                     var newClient = new Clients
                     {
                         IsMember = clientBOL.IsMember,
@@ -115,6 +124,10 @@ namespace DataAccess.Providers.Entity
             {
                 throw new KeyNotFoundException($"Client with ID {clientBOL.Id} not found.");
             }
+
+           //[MB!] - Pas besoin de faire ça, vous pouvez directement faire
+                    //base.SaveEntity(clientBOL); 
+                    //Revoir CowMilkEntityDAL
 
             existingClient.IsMember = clientBOL.IsMember;
             existingClient.LastName = clientBOL.LastName;

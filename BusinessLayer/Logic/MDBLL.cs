@@ -30,18 +30,23 @@ using System.Web.Mvc;
 
 namespace BusinessLayer.Logic
 {
-    
+    /*[MB] - Vous vous êtes compliqués la vie pas mal je pense pour les MD. À 90% du temps, c'est toujours le même scénario (Id, Name, Active).
+        Vous auriez pu faire une interface avec ces trois propriétés ainsi qu'un champ MDType. De là soit que
+            1) Vous faites autant de classes concrêtes qu'il y a de MD et vous harcoder le MDType pour la valeur qu'elle représente ("Bank", "MaritalStatus" et etc). 
+            2) Vous faites qu'une seule classe générique et MDType est remplis par l'appelant à votre méthdoe.
+        Vous auriez ainsi les méthodes (add, update, delete) qui recevrait cette interface générique et c'est au niveau du DAL que vous pourriez faire un switch pour savoir dans quelle table faire l'opération.
+     */
     public class MDBLL: AbstractBLL<IMDDAL>, IMDBLL
     {
+        //[MB] - Variables non utilisées, de plus on ne garde pas les BLL comme membre public. On s'en sert et on jette ensuite. 
         public readonly IEmployeeBLL _employeeBLL;
+
         public MDBLL() { }
         public MDBLL(ProviderDALTypes dalType) : base(dalType) { }
         public MDBLL(IDAL externalDAL) : base(externalDAL) { }
 
-
-
-
         #region MDGESTION
+        //[MB] - Je ne comprends pas ce que vous faites dans cette section de code? Chose sur, il ne devrait pas y avoir de notion de ViewModel dans la couche d'affaire.
         public Dictionary<string, string> GetAllMDNames()
         {
             return new Dictionary<string, string>

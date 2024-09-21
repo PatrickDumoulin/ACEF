@@ -110,6 +110,7 @@ namespace WebApp.Controllers
         }
 
         // Méthode utilitaire pour obtenir la catégorie d'âge
+       //[MB!!] - Selon les spécifications, les catégories d'âge sont dynamiques en fonction des paramètres de l'écran
         private string GetAgeCategory(DateTime? birthdate)
         {
             if (birthdate == null) return "Inconnu";
@@ -125,6 +126,7 @@ namespace WebApp.Controllers
         }
 
         // Méthode utilitaire pour obtenir la catégorie de revenu
+        //[MB!!] - Selon les spécifications, la catégorie de revenus sont dynamiques en fonction des paramètres de l'écran
         private string GetIncomeCategory(byte[] income)
         {
             if (income == null) return "Inconnu";

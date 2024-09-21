@@ -14,6 +14,17 @@ namespace BusinessLayer.Logic
         public ClientAttachmentBLL(ProviderDALTypes dalType) : base(dalType) { }
         public ClientAttachmentBLL(IDAL externalDAL) : base(externalDAL) { }
 
+        /*[MB!] - Généralement on préfère faire utilisation de surcharge de méthodes plutôt que spécifier dans le nom de méthode c'est par quoi on recherche.
+            Ainsi on a l'un pour un élément au singulier et l'autre pour une liste. 
+                       GetAttachment(int id)
+                       GetAttachments(int clientId) 
+
+                        Si on veut en ajouter un nouveau, par exemple
+                        GetAttachment(string FileName)  
+
+           On utilise le By dans le nom lorsqu'il y a conflit et que le paramètre est déjà utilisé
+                      GetAttachmentsByIdEmployee(int idEmployee)
+         */
         public GetItemResponse<ClientAttachmentBOL> GetAttachmentById(int id)
         {
             var attachment = base.dal.GetClientAttachmentById(id);
@@ -30,6 +41,12 @@ namespace BusinessLayer.Logic
 
         public void CreateAttachment(ClientAttachmentBOL attachment)
         {
+            /*[MB] - Aucunes validations? 
+                FileName != String.IsNullEmpty, 
+                FileContent != null et > 0 bytes,
+                etc
+            */
+
             base.dal.CreateClientAttachment(attachment);
         }
 

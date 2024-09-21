@@ -34,14 +34,21 @@ namespace BusinessLayer.Logic
 
         public void CreateClient(ClientBOL clientBOL)
         {
+            //[MB] - Aucunes validations?
             base.dal.CreateClient(clientBOL);
         }
 
+        //[MB] - Pourquoi ici vous utilisez une interface? L'idée est bonne, mais on devrait le voir partout alors et non partiellement. 
         public void UpdateClient(IClientBOL clientBOL)
         {
+            //[MB] - Aucunes validations?
             base.dal.UpdateClient(clientBOL);
         }
 
+        /*[MB!] - Cette méthode ne sert pas à grand chose sinon maintenir du code supplémentaire pour rien. Puisque vous fetcher l'objet au complet, il n'y pas de gains de performance
+                 et on préfère plutôt que l'appel soit fait directement sur GetClient(). 
+                 À voir aussi qu'on récupère qu'un seul row, il n'y a pas besoin d'essayer de gagner dans la performance pour une opération simple. 
+         */
         public string GetClientName(int clientId)
         {
             var clientResponse = GetClient(clientId);
@@ -49,6 +56,10 @@ namespace BusinessLayer.Logic
                 ? $"{clientResponse.Element.FirstName} {clientResponse.Element.LastName}"
                 : "Inconnu";
         }
+
+        /*[MB] - Idem que plus haut. Ceci dit, on devrait voir cette méthode à même une instance de ClientBOL. C'est-à-dire qu'il devrait y avoir une méthode GetClientAge qui calcule l'âge
+            en fonction des données de l'instance.
+        */
         public int GetClientAge(int clientId)
         {
             var clientResponse = GetClient(clientId);

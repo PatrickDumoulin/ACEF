@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataModels.BOL.Client
 {
+    /*[MB!] - Je constate que vous avez fait des interfaces pour chacun de vos BOLs, ce qui est très bien. Ceci dit, pourquoi ne vous en servez-vous pas dans les BLL? 
+              Vous utilisez les classes concrètes dans le BLL alors qu'on devrait voir juste les interfaces.
+     */
 	public interface IClientBOL : IBOL
 	{
 		public int Id { get; set; }
