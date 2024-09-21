@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Models;
@@ -24,6 +25,7 @@ namespace WebApp.ViewModels
         [Display(Name = "Thème de l'atelier")]
         public int IdSeminarTheme { get; set; }
 
+        
         [Display(Name = "Întervenants")]
         public List<int> SelectedIntervenants { get; set; } = new List<int>();
 

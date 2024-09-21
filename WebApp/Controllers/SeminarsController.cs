@@ -167,7 +167,18 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(SeminarViewModel model)
         {
-            
+
+            // Vérifier si au moins un participant est sélectionné
+            if (model.SelectedParticipants == null || !model.SelectedParticipants.Any())
+            {
+                ModelState.AddModelError("SelectedParticipants", "Veuillez sélectionner au moins un participant.");
+            }
+
+            // Vérifier si au moins un intervenant est sélectionné
+            if (model.SelectedIntervenants == null || !model.SelectedIntervenants.Any())
+            {
+                ModelState.AddModelError("SelectedIntervenants", "Veuillez sélectionner au moins un intervenant.");
+            }
 
             // Si le modèle est valide, procéder à la création du séminaire
             if (ModelState.IsValid)
@@ -208,6 +219,8 @@ namespace WebApp.Controllers
             ViewBag.Intervenants = new SelectList(GetIntervenants(), "Id", "FullName", currentEmployee?.Element?.Id);
             ViewBag.Participants = new SelectList(GetParticipants(), "Id", "FullName");
 
+
+
             return View(model);
         }
 
@@ -243,6 +256,18 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(SeminarViewModel model)
         {
+            // Vérifier si au moins un participant est sélectionné
+            if (model.SelectedParticipants == null || !model.SelectedParticipants.Any())
+            {
+                ModelState.AddModelError("SelectedParticipants", "Veuillez sélectionner au moins un participant.");
+            }
+
+            // Vérifier si au moins un intervenant est sélectionné
+            if (model.SelectedIntervenants == null || !model.SelectedIntervenants.Any())
+            {
+                ModelState.AddModelError("SelectedIntervenants", "Veuillez sélectionner au moins un intervenant.");
+            }
+
             if (ModelState.IsValid)
             {
                 var seminar = new SeminarBOL
