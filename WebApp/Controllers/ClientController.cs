@@ -38,7 +38,7 @@ namespace WebApp.Controllers
         // GET: ClientController
         public IActionResult Index(ClientSearchViewModel searchModel, string sortOrder, int page = 1, int pageSize = 6)
         {
-            sortOrder = String.IsNullOrEmpty(sortOrder) ? "Id" : sortOrder;
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "id_desc" : sortOrder;
 
             var clients = base.bll.GetClients().ElementList;
             var interventions = _interventionBLL.GetInterventions().ElementList;

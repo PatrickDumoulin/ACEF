@@ -76,6 +76,9 @@ namespace WebApp.Controllers
                     seminars = seminars.Where(s => s.Intervenants.Any(i => (i.FirstName + " " + i.LastName).Contains(searchModel.IntervenantFilter, StringComparison.OrdinalIgnoreCase)));
                 }
 
+                // Tri par date décroissante
+                seminars = seminars.OrderByDescending(s => s.DateSeminar);
+
                 // Récupération des thèmes pour la liste déroulante
                 var themesResponse = bll.GetSeminarThemes();
                 if (themesResponse.Succeeded)

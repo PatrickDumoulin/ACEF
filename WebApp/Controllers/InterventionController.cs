@@ -168,7 +168,7 @@ namespace WebApp.Controllers
                     interventions = interventions.OrderByDescending(c => c.IsLoanPaid).ToList();
                     break;
                 default:
-                    interventions = interventions.OrderBy(c => c.Id).ToList();
+                    interventions = interventions.OrderByDescending(c => c.DateIntervention).ToList(); // Trier par date décroissante par défaut
                     break;
 
             }

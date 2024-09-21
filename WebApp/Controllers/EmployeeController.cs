@@ -42,6 +42,41 @@ namespace WebApp.Controllers
 
                 }).ToList();
 
+                // Options de tri
+                ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+                ViewBag.FirstNameSortParm = sortOrder == "FirstName" ? "firstName_desc" : "FirstName";
+                ViewBag.LastNameSortParm = sortOrder == "LastName" ? "lastName_desc" : "LastName";
+                ViewBag.LastLoginDateSortParm = sortOrder == "LastLoginDate" ? "lastLoginDate_desc" : "LastLoginDate";
+
+                // Appliquer le tri selon l'option choisie
+                switch (sortOrder)
+                {
+                    case "id_desc":
+                        employeeList = employeeList.OrderByDescending(e => e.Id).ToList(); // Trier par ID décroissant
+                        break;
+                    case "FirstName":
+                        employeeList = employeeList.OrderBy(e => e.FirstName).ToList();
+                        break;
+                    case "firstName_desc":
+                        employeeList = employeeList.OrderByDescending(e => e.FirstName).ToList();
+                        break;
+                    case "LastName":
+                        employeeList = employeeList.OrderBy(e => e.LastName).ToList();
+                        break;
+                    case "lastName_desc":
+                        employeeList = employeeList.OrderByDescending(e => e.LastName).ToList();
+                        break;
+                    case "LastLoginDate":
+                        employeeList = employeeList.OrderBy(e => e.LastLoginDate).ToList();
+                        break;
+                    case "lastLoginDate_desc":
+                        employeeList = employeeList.OrderByDescending(e => e.LastLoginDate).ToList();
+                        break;
+                    default:
+                        employeeList = employeeList.OrderByDescending(e => e.Id).ToList(); // Trier par ID décroissant par défaut (les plus récents)
+                        break;
+                }
+
                 // Calculer le nombre total d'employés
                 var totalCount = employeeList.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
@@ -102,10 +137,10 @@ namespace WebApp.Controllers
                 ModelState.AddModelError(string.Empty, "Veuillez sélectionner au moins un rôle.");
             }
 
-            ModelState.Remove("NewPassword");
+            ModelState.Remove("PasswordHash");
             if (ModelState.IsValid)
             {
-                var tempPassword = model.PasswordHash ?? GenerateSecurePassword();
+                var tempPassword = model.NewPassword ?? GenerateSecurePassword();
 
                 var user = new ApplicationUser
                 {
