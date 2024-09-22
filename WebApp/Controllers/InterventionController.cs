@@ -330,6 +330,8 @@ namespace WebApp.Controllers
             if (response.Succeeded && response.Element != null)
             {
                 var viewModel = MapToViewModel(response.Element);
+
+                Console.WriteLine($"IdLoanReason: {viewModel.IdLoanReason}, IsLoanPaid: {viewModel.IsLoanPaid}");
                 IMDBLL mdBLL = base.GetBLL<IMDBLL>();
                 PopulateMdViewBags(mdBLL);
 
@@ -339,7 +341,7 @@ namespace WebApp.Controllers
                     ? new SelectList(ViewBag.MdInterventionSolutions, "Value", "Text")
                     : new SelectList(Enumerable.Empty<SelectListItem>());
 
-                ViewBag.MdLoanReasons = new SelectList(mdBLL.GetAllMdLoanReasons().ElementList, "Id", "Name", viewModel.IdLoanReason);
+                //ViewBag.MdLoanReasons = new SelectList(mdBLL.GetAllMdLoanReasons().ElementList, "Id", "Name", viewModel.IdLoanReason);
 
                 return View(viewModel);
             }

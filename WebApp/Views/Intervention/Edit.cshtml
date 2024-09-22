@@ -105,26 +105,39 @@
         </div>
 
         <!-- HIDDEN FIELDS -->
-        <div>
-            <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
-            <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
-                <option value="">--Sélectionnez le but d'emprunt--</option>
-            </select>
-            <span asp-validation-for="IdLoanReason" class="text-danger"></span>
-        </div>
+        <div class="hidden" id="loanFields">
             <div>
-                <label class="form-label pt-4">Petit prêt remboursé</label>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="true" id="isLoanPaidYes">
-                    <label class="form-check-label" for="isLoanPaidYes">Oui</label>
+                <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
+                <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">
+                    <option value="">--Sélectionnez le but d'emprunt--</option>
+                </select>
+                <span asp-validation-for="IdLoanReason" class="text-danger"></span>
+            </div>
+
+            
+
+            <div>
+                <label asp-for="LoanAmount" class="form-label">Montant du petit prêt</label>
+                <input asp-for="LoanAmount" class="form-control" />
+                <span asp-validation-for="LoanAmount" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="LoanAmountBalance" class="form-label">Solde restant du petit prêt</label>
+                <input asp-for="LoanAmountBalance" class="form-control" />
+                <span asp-validation-for="LoanAmountBalance" class="text-danger"></span>
+            </div>
+            <div>
+                <label class="form-label pt-5">Petit prêt remboursé</label>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" id="btnYes" class="btn btn-dark @(Model.IsLoanPaid == true ? "active" : "")">Oui</button>
+                    <button type="button" id="btnNo" class="btn btn-dark @(Model.IsLoanPaid == false ? "active" : "")">Non</button>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" asp-for="IsLoanPaid" value="false" id="isLoanPaidNo">
-                    <label class="form-check-label" for="isLoanPaidNo">Non</label>
-                </div>
+                <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" value="@Model.IsLoanPaid" />
                 <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
             </div>
         </div>
+
+    </div>
         <div class="row">
             <div class="col-md-12 pt-3">
                 <!-- Solutions proposées -->
@@ -197,6 +210,7 @@
             // Affiche les champs de prêt si une raison de prêt est sélectionnée
             if ($("#IdLoanReason").val() !== "") {
                 $("#loanFields").removeClass("hidden");
+                console.log("hidden removed!")
             }
 
             // Logique pour afficher les champs lorsque "Petit prêt" est sélectionné
@@ -207,6 +221,20 @@
                     $("#loanFields").addClass("hidden");
                 }
             });
+
+
         });
     </script>
 }
+
+
+    <script>
+        $(document).ready(function () {
+            if ($("#IdLoanReason").length > 0) {
+                console.log("IdLoanReason exists");
+                console.log($("#IdLoanReason").val());
+            } else {
+                console.log("IdLoanReason does not exist in the DOM");
+            }
+        });
+</script>
