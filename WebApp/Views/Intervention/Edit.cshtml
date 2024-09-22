@@ -128,13 +128,29 @@
             </div>
             <div>
                 <label class="form-label pt-5">Petit prêt remboursé</label>
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" id="btnYes" class="btn btn-dark @(Model.IsLoanPaid == true ? "active" : "")">Oui</button>
-                    <button type="button" id="btnNo" class="btn btn-dark @(Model.IsLoanPaid == false ? "active" : "")">Non</button>
+                <div class="form-check">
+                    <input type="checkbox" id="IsLoanPaid" class="form-check-input"
+                           onchange="toggleLoanPaid(this)"
+                    @(Model.IsLoanPaid == true ? "checked" : "") />
+                    <label class="form-check-label" for="IsLoanPaid">Remboursé</label>
                 </div>
-                <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaid" value="@Model.IsLoanPaid" />
+                <div class="form-check">
+                    <input type="checkbox" id="IsLoanNotPaid" class="form-check-input"
+                           onchange="toggleLoanPaid(this)"
+                    @(Model.IsLoanPaid == false ? "checked" : "") />
+                    <label class="form-check-label" for="IsLoanNotPaid">Non remboursé</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="LoanPaidNotApplicable" class="form-check-input"
+                           onchange="toggleLoanPaid(this)"
+                    @(Model.IsLoanPaid == null ? "checked" : "") />
+                    <label class="form-check-label" for="LoanPaidNotApplicable">Non applicable</label>
+                </div>
+
+                <input type="hidden" asp-for="IsLoanPaid" id="IsLoanPaidHidden" value="@Model.IsLoanPaid" />
                 <span asp-validation-for="IsLoanPaid" class="text-danger"></span>
             </div>
+
         </div>
 
     </div>
@@ -238,3 +254,26 @@
             }
         });
 </script>
+
+<script>
+    function toggleLoanPaid(checkbox) {
+        // Décoche toutes les autres cases lorsque l'une est cochée
+        $("#IsLoanPaid").prop('checked', false);
+        $("#IsLoanNotPaid").prop('checked', false);
+        $("#LoanPaidNotApplicable").prop('checked', false);
+
+        // Coche la case active
+        $(checkbox).prop('checked', true);
+
+        // Met à jour la valeur de IsLoanPaidHidden en fonction de la case cochée
+        if (checkbox.id === "IsLoanPaid") {
+            $("#IsLoanPaidHidden").val(true);  // Remboursé
+        } else if (checkbox.id === "IsLoanNotPaid") {
+            $("#IsLoanPaidHidden").val(false); // Non remboursé
+        } else if (checkbox.id === "LoanPaidNotApplicable") {
+            $("#IsLoanPaidHidden").val("");    // Non applicable (null)
+        }
+    }
+</script>
+
+
