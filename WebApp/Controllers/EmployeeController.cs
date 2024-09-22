@@ -26,6 +26,7 @@ namespace WebApp.Controllers
 
         public IActionResult Index(string sortOrder, int page = 1, int pageSize = 6)
         {
+
             var response = bll.GetAllEmployees();
             if (response.Succeeded)
             {
@@ -42,6 +43,13 @@ namespace WebApp.Controllers
                     
 
                 }).ToList();
+
+                foreach (var employee in employeeList)
+                {
+                    var user = _userManager.FindByNameAsync(employee.UserName).Result;
+                    var roles = _userManager.GetRolesAsync(user).Result;
+                    employee.Role = string.Join(", ", roles); // Combiner les rôles en une seule chaîne
+                }
 
                 // Options de tri
                 ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";

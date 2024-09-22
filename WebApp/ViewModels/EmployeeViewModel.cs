@@ -36,6 +36,8 @@ namespace WebApp.ViewModels
         [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et la confirmation du mot de passe ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
 
+        public string Role {  get; set; }
+
 
 
         [Display(Name = "Last Login Date")]

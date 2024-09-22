@@ -28,7 +28,7 @@
                     <th>Prénom</th>
                     <th>Nom</th>
                     <th>Nom d'utilisateur</th>
-                    @* <th>Email</th> *@
+                    <th>Role</th> 
 
                     <th>Actif</th>
                     <th>Actions</th>
@@ -41,7 +41,7 @@
                         <td>@employee.FirstName</td>
                         <td>@employee.LastName</td>
                         <td>@employee.UserName</td>
-                        @* <td>@employee.Email</td> *@
+                        <td>@employee.Role</td>
 
                         <td>@(employee.Active ?? false ? "Oui" : "Non")</td>
                         <td class="d-flex flex-column">
