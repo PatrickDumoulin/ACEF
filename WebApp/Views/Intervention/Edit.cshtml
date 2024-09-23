@@ -105,7 +105,7 @@
         </div>
 
         <!-- HIDDEN FIELDS -->
-        <div class="hidden" id="loanFields">
+        <div class="@(Model.IdLoanReason.HasValue ? "" : "hidden")" id="loanFields">
             <div>
                 <label asp-for="IdLoanReason" class="form-label">But d'emprunt petit prêt</label>
                 <select asp-for="IdLoanReason" class="form-control" asp-items="@(ViewBag.MdLoanReasons)">

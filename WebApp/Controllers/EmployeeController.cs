@@ -147,6 +147,7 @@ namespace WebApp.Controllers
             }
 
             ModelState.Remove("PasswordHash");
+            ModelState.Remove("Role");
             if (ModelState.IsValid)
             {
                 var tempPassword = model.NewPassword ?? GenerateSecurePassword();
@@ -253,7 +254,7 @@ namespace WebApp.Controllers
             ModelState.Remove("PasswordHash");
             ModelState.Remove("NewPassword");
             ModelState.Remove("ConfirmPassword");
-
+            ModelState.Remove("Role");
             if (ModelState.IsValid)
             {
                 var response = bll.GetEmployeeById(id);
