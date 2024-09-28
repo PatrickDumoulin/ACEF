@@ -9,25 +9,16 @@ jobs:
     runs-on: self-hosted
     
     steps:
-    # Clone le projet depuis le dépôt GitHub (si nécessaire)
-    - uses: actions/checkout@v3
+  
 
-    # Installe le SDK .NET Core 6.0
+    # Installe le SDK .NET Core 6.0 (si nécessaire pour d'autres étapes futures)
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
 
-    # Build le projet depuis le chemin réseau distant
-    - name: Build with dotnet
-      run: dotnet build --configuration Release "\\tsclient\F\EcoleTemporaire\AcefFinal\ACEF\WebApp\WebApp.csproj"
-
-    # Publie le projet dans un dossier de publication
-    - name: dotnet publish 
-      run: |
-        dotnet publish -c Release -o dotnetcorewebapp "\\tsclient\F\EcoleTemporaire\AcefFinal\ACEF\WebApp\WebApp.csproj"
-
-    # Redémarre IIS pour s'assurer que les nouveaux fichiers sont pris en compte
+    # Si les fichiers sont déjà publiés manuellement, on saute la publication
+    # Redémarre IIS pour appliquer les modifications
     - name: Restart IIS
       run: |
         iisreset /stop
