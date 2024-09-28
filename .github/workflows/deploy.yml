@@ -1,9 +1,6 @@
 name: .NET Core Deploy to IIS
 
 on: 
-  # push:
-    # branches:
-    #   - "self-hosted"
   workflow_dispatch:
 
 jobs:
@@ -19,14 +16,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    
     # dotnet build and publish
     - name: Build with dotnet
-      run: dotnet build --configuration Release .\dotnet-core-webapp
+      run: dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.csproj"
 
     - name: dotnet publish 
       run: |
-        dotnet publish -c Release -o dotnetcorewebapp .\dotnet-core-webapp
+        dotnet publish -c Release -o dotnetcorewebapp "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.csproj"
 
     - name: Deploy to IIS
       run: |
@@ -39,6 +35,6 @@ jobs:
 
     - name: Run Web Test
       run: |
-        dotnet build --configuration Release .\dotnet-core-webapp.webtest
-        cd .\dotnet-core-webapp.webtests
+        dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.webtest"
+        cd "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.webtests"
         dotnet test
