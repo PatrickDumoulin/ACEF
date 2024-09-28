@@ -8,20 +8,33 @@
 
 <div class="StatisticsUsers-container">
     <h1 class="StatisticsUsers-title">Statistiques des usagers</h1>
-    <hr class="mb-5"/>
+    <hr class="mb-5" />
+
+    <!-- Formulaire pour filtrer par date -->
+    <form method="get" action="/UserStatistics/Index">
+        <div class="form-group">
+            <label for="startDate">Date de début :</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="form-group">
+            <label for="endDate">Date de fin :</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+    </form>
 
     <div class="StatisticsUsers-table-container">
         <div class="StatisticsUsers-row">
             <!-- Répartition par Sexe -->
             <div class="StatisticsUsers-col-md-6">
-                <h3 class="StatisticsUsers-subtitle">Répartition par Sexe</h3>
+                <h3 class="StatisticsUsers-subtitle">Répartition par Genre</h3>
                 <div class="StatisticsUsers-table-responsive">
                     @if (Model.GenderStatistics != null && Model.GenderStatistics.Any())
                     {
                         <table class="StatisticsUsers-table StatisticsUsers-table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="StatisticsUsers-th">Sexe</th>
+                                    <th class="StatisticsUsers-th">Genre</th>
                                     <th class="StatisticsUsers-th">Total</th>
                                 </tr>
                             </thead>
@@ -53,9 +66,10 @@
             </div>
         </div>
 
-        <!-- Répéter la structure pour chaque catégorie avec ajout du Total -->
+        <!-- Répéter la structure pour chaque catégorie -->
+        <!-- Age, Family Situation, Income Source, Net Income, Participation -->
+        <!-- Répartition par Âge -->
         <div class="StatisticsUsers-row">
-            <!-- Répartition par Âge -->
             <div class="StatisticsUsers-col-md-6">
                 <h3 class="StatisticsUsers-subtitle">Répartition par Âge</h3>
                 <div class="StatisticsUsers-table-responsive">
@@ -96,9 +110,8 @@
             </div>
         </div>
 
-        <!-- Répéter la structure pour chaque catégorie avec ajout du Total -->
+        <!-- Répartition par Situation familiale -->
         <div class="StatisticsUsers-row">
-            <!-- Répartition par Situation familiale -->
             <div class="StatisticsUsers-col-md-6">
                 <h3 class="StatisticsUsers-subtitle">Répartition par Situation familiale</h3>
                 <div class="StatisticsUsers-table-responsive">
@@ -139,8 +152,8 @@
             </div>
         </div>
 
+        <!-- Répartition par Source de revenu -->
         <div class="StatisticsUsers-row">
-            <!-- Répartition par Source de revenu -->
             <div class="StatisticsUsers-col-md-6">
                 <h3 class="StatisticsUsers-subtitle">Répartition par Source de revenu</h3>
                 <div class="StatisticsUsers-table-responsive">
@@ -181,8 +194,8 @@
             </div>
         </div>
 
+        <!-- Répartition par Revenu net -->
         <div class="StatisticsUsers-row">
-            <!-- Répartition par Revenu net -->
             <div class="StatisticsUsers-col-md-6">
                 <h3 class="StatisticsUsers-subtitle">Répartition par Revenu net</h3>
                 <div class="StatisticsUsers-table-responsive">
@@ -223,8 +236,8 @@
             </div>
         </div>
 
+        <!-- Répartition par Motif de participation -->
         <div class="StatisticsUsers-row">
-            <!-- Répartition par Motif de participation -->
             <div class="StatisticsUsers-col-md-6">
                 <h3 class="StatisticsUsers-subtitle">Répartition par Motif de participation</h3>
                 <div class="StatisticsUsers-table-responsive">

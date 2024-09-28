@@ -4,9 +4,11 @@ using WebApp.ViewModels;
 using System;
 using System.Linq;
 using CoreLib.Injection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, AdministrateurCA")]
     public class InterventionReportController : Controller
     {
         private readonly IInterventionBLL _interventionBLL;

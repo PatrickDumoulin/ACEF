@@ -24,7 +24,10 @@ namespace BusinessLayer.Logic.Interfaces
 
         public decimal DecryptDebtAmount(byte[] encryptedAmount);
 
-        
+        public List<InterventionBOL> GetInterventionsByDateRange(DateTime startDate, DateTime endDate);
+
+
+
 
 
 

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Controllers
 {
-    
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
     public class NoteController : AbstractBLLController<INoteBLL>
     {
         private readonly IEmployeeBLL _employeeBLL;

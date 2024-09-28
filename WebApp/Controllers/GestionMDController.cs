@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Logic;
 using BusinessLayer.Logic.Interfaces;
 using DataAccess.BOL.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApp.Core.Controllers;
@@ -8,6 +9,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
     public class GestionMDController : AbstractBLLController<IMDBLL>
     {
         public IActionResult Index(string sortColumn, string sortOrder)

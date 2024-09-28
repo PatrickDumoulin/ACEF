@@ -8,9 +8,11 @@ using WebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using CoreLib.Injection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
     public class InterventionNotesController : AbstractBLLController<IInterventionNoteBLL>
     {
         

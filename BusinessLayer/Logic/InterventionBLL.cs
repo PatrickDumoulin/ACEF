@@ -71,6 +71,16 @@ namespace BusinessLayer.Logic
             return (decimal)BitConverter.ToDouble(encryptedAmount, 0);
         }
 
+        public List<InterventionBOL> GetInterventionsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            // Accéder à la liste des interventions via la propriété ElementList (ou similaire)
+            var interventions = GetInterventions().ElementList;  // Assurez-vous que c'est la bonne propriété
+
+            // Appliquer le filtre sur la liste
+            return interventions.Where(i => i.DateIntervention >= startDate && i.DateIntervention <= endDate).ToList();
+        }
+
+
 
 
 

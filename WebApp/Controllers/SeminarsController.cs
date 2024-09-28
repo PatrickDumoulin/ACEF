@@ -9,9 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DataAccess.Models;
 using CoreLib.Injection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
     public class SeminarsController : AbstractBLLController<ISeminarBLL>
     {
         private readonly IClientBLL _clientBLL;
@@ -32,6 +34,7 @@ namespace WebApp.Controllers
 
                 if (clientId.HasValue)
                 {
+                    seminars = seminars.Where(i => i.Participants.Any(p => p.Id == clientId.Value));
                     ViewBag.ClientId = clientId;
                 }
 

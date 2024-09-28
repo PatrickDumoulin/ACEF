@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Logic.Interfaces;
 using CoreLib.Injection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -7,6 +8,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, AdministrateurCA")]
     public class RepartitionController : Controller
     {
         private readonly IInterventionBLL _interventionBLL;

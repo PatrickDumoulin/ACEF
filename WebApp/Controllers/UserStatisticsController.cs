@@ -7,9 +7,11 @@ using BusinessLayer.Logic.Interfaces;
 using CoreLib.Injection;
 using DataModels.BOL.Client;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, AdministrateurCA")]
     public class UserStatisticsController : Controller
     {
         private readonly IClientBLL _clientBLL;
@@ -25,17 +27,25 @@ namespace WebApp.Controllers
             _interventionBLL = Injector.ImplementBll<IInterventionBLL>();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(DateTime? startDate, DateTime? endDate)
         {
-            var clients = _clientBLL.GetClients().ElementList;
-            var interventions = _interventionBLL.GetInterventions().ElementList;
-            var interventionTypes = _mdBLL.GetAllMdInterventionTypes().ElementList;
+            // Par défaut, si aucune date n'est fournie, on prend les 30 derniers jours
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+                startDate = DateTime.Today.AddDays(-30);
+                endDate = DateTime.Today;
+            }
+
+            // Pas besoin d'utiliser ElementList ici
+            var interventions = _interventionBLL.GetInterventionsByDateRange(startDate.Value, endDate.Value);
+            var distinctClientIds = interventions.Select(i => i.IdClient).Distinct().ToList();
+            var clients = _clientBLL.GetClients().ElementList.Where(c => distinctClientIds.Contains(c.Id)).ToList();
             var clientIncomeTypes = clients.SelectMany(c => _clientIncomeTypeBLL.GetClientIncomeTypesByClientId(c.Id).ElementList).ToList();
+            var interventionTypes = _mdBLL.GetAllMdInterventionTypes().ElementList;
 
-
-            // Agrégation des données pour chaque catégorie
-            var genderStats = clients.Where(c => c.IdGenderDenomination.HasValue) // Vérifie que la valeur n'est pas null
-                          .GroupBy(c => c.IdGenderDenomination.Value) // Utilise la valeur de l'int après la vérification
+            // Calcul des statistiques
+            var genderStats = clients.Where(c => c.IdGenderDenomination.HasValue)
+                          .GroupBy(c => c.IdGenderDenomination.Value)
                           .Select(g => new StatisticViewModel
                           {
                               Label = _mdBLL.GetMdGenderDenomination(g.Key)?.Element?.Name ?? "Inconnu",
@@ -43,29 +53,14 @@ namespace WebApp.Controllers
                           }).ToList();
 
             var ageStats = clients.GroupBy(c => GetAgeCategory(c.Birthdate))
-                       .OrderBy(g =>
-                       {
-                           switch (g.Key)
-                           {
-                               case "Moins de 18 ans": return 1;
-                               case "18 - 27 ans": return 2;
-                               case "28 - 37 ans": return 3;
-                               case "38 - 47 ans": return 4;
-                               case "48 - 57 ans": return 5;
-                               case "58 - 67 ans": return 6;
-                               case "68 - 74 ans": return 7;
-                               case "75 ans et plus": return 8;
-                               default: return 9;
-                           }
-                       })
                        .Select(g => new StatisticViewModel
                        {
                            Label = g.Key,
                            Total = g.Count()
                        }).ToList();
 
-            var familySituationStats = clients.Where(c => c.IdFamilySituation.HasValue) // Vérifie que la valeur n'est pas null
-                                   .GroupBy(c => c.IdFamilySituation.Value) // Utilise la valeur de l'int après la vérification
+            var familySituationStats = clients.Where(c => c.IdFamilySituation.HasValue)
+                                   .GroupBy(c => c.IdFamilySituation.Value)
                                    .Select(g => new StatisticViewModel
                                    {
                                        Label = _mdBLL.GetMdFamilySituation(g.Key)?.Element?.Name ?? "Inconnu",
@@ -73,7 +68,7 @@ namespace WebApp.Controllers
                                    }).ToList();
 
             var incomeSourceStats = clientIncomeTypes
-                                    .GroupBy(c => c.IdIncomeType)  // Utilise directement l'int
+                                    .GroupBy(c => c.IdIncomeType)
                                     .Select(g => new StatisticViewModel
                                     {
                                         Label = _mdBLL.GetMdIncomeType(g.Key)?.Element?.Name ?? "Inconnu",
@@ -87,17 +82,18 @@ namespace WebApp.Controllers
                                             Total = g.Count()
                                         }).ToList();
 
-            var participationStats = interventions.Where(i => i.IdInterventionType.HasValue) // Vérifie que l'intervention a un type
-                                    .GroupBy(i => i.IdInterventionType.Value) // Grouper par le type d'intervention
+            var participationStats = interventions.Where(i => i.IdInterventionType.HasValue)
+                                    .GroupBy(i => i.IdInterventionType.Value)
                                     .Select(g => new StatisticViewModel
                                     {
-                                        Label = interventionTypes.FirstOrDefault(it => it.Id == g.Key)?.Name ?? "Inconnu", // Récupère le nom du type
-                                        Total = g.Count() // Calculer le nombre d'interventions pour chaque type
+                                        Label = interventionTypes.FirstOrDefault(it => it.Id == g.Key)?.Name ?? "Inconnu",
+                                        Total = g.Count()
                                     }).ToList();
 
-            // Passer toutes les statistiques à la vue
             var model = new UserStatisticsViewModel
             {
+                StartDate = startDate.Value,
+                EndDate = endDate.Value,
                 GenderStatistics = genderStats,
                 AgeStatistics = ageStats,
                 FamilySituationStatistics = familySituationStats,
@@ -109,8 +105,7 @@ namespace WebApp.Controllers
             return View("/Views/Statistics/Index.cshtml", model);
         }
 
-        // Méthode utilitaire pour obtenir la catégorie d'âge
-       //[MB!!] - Selon les spécifications, les catégories d'âge sont dynamiques en fonction des paramètres de l'écran
+
         private string GetAgeCategory(DateTime? birthdate)
         {
             if (birthdate == null) return "Inconnu";
@@ -125,8 +120,6 @@ namespace WebApp.Controllers
             return "75 ans et plus";
         }
 
-        // Méthode utilitaire pour obtenir la catégorie de revenu
-        //[MB!!] - Selon les spécifications, la catégorie de revenus sont dynamiques en fonction des paramètres de l'écran
         private string GetIncomeCategory(byte[] income)
         {
             if (income == null) return "Inconnu";
@@ -146,4 +139,3 @@ namespace WebApp.Controllers
         }
     }
 }
-

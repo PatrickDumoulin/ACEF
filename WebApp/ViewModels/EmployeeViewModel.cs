@@ -16,21 +16,22 @@ namespace WebApp.ViewModels
         [RegularExpression(@"^[A-Za-zÀ-ÖØ-öø-ÿ '-]+$", ErrorMessage = "Le Nom de famille ne peut contenir que des lettres, des espaces, des apostrophes et des tirets.")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Username is required")]
+        [Required(ErrorMessage = "Le nom d'utilisateur est requis")]
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
-       
+        
         [Display(Name = "Password")]
         [DataType(DataType.Password)] // Indication que c'est un mot de passe
         public string PasswordHash { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Le Mot de passe est requis")]
         [StringLength(100, ErrorMessage = "Le {0} doit comporter au moins {2} caractères.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nouveau mot de passe")]
         public string NewPassword { get; set; }
 
+        [Required(ErrorMessage = "La confirmation du Mot de passe est requise")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmer le nouveau mot de passe")]
         [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et la confirmation du mot de passe ne correspondent pas.")]

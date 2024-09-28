@@ -4,10 +4,9 @@ namespace WebApp.ViewModels
 {
     public class LoginViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Adresse e-mail")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "Le nom d'utilisateur est requis.")]
+        [Display(Name = "Nom d'utilisateur")]
+        public string UserName { get; set; }
 
 
         [Required(ErrorMessage = "Le mot de passe est requis.")]

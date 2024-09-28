@@ -5,9 +5,11 @@ using WebApp.ViewModels;
 using System;
 using System.Linq;
 using CoreLib.Injection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, AdministrateurCA")]
     public class SeminarReportController : Controller
     {
         private readonly ISeminarBLL _seminarBLL;

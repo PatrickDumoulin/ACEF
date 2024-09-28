@@ -14,8 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Controllers
 {
-
-    //[Authorize(Roles = "Intervenant")]
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
     public class InterventionAttachmentsController : AbstractBLLController<IInterventionAttachmentBLL>
     {
         private readonly IEmployeeBLL _employeeBLL;

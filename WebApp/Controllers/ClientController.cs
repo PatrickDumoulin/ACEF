@@ -19,7 +19,9 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-   
+
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
+    
     public class ClientController : AbstractBLLController<IClientBLL>
     {
         private readonly IInterventionBLL _interventionBLL;

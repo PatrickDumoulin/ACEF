@@ -17,10 +17,12 @@ using System.Collections.Generic;
 using DataAccess.BOL.Client;
 using System.Net.Sockets;
 using DataAccess.BOL.MdInterventionSolution;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Superutilisateur, Intervenant")]
     public class InterventionController : AbstractBLLController<IInterventionBLL>
     {
         private readonly IEmployeeBLL _employeeBLL;

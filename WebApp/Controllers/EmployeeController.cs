@@ -373,6 +373,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(int id, ChangePasswordEmployeeViewModel model)
         {
+            ViewData["IdEmployeeRetour"] = id;
+
             if (ModelState.IsValid)
             {
                 var response = bll.GetEmployeeById(id);

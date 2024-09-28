@@ -33,7 +33,7 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.UserName);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Tentative de connexion invalide.");
