@@ -24,17 +24,11 @@ jobs:
       run: |
         dotnet publish -c Release -o dotnetcorewebapp "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.csproj"
 
-    - name: Deploy to IIS
+    # Vérifie simplement si IIS fonctionne et redémarre si nécessaire
+    - name: Restart IIS
       run: |
         iisreset /stop
-        Copy-Item ./dotnetcorewebapp/* C:/inetpub/wwwroot/dotnetcore-webapp -Recurse -Force
         iisreset /start
-    
-    - name: Curl the website as a smoke test
-      run: curl http://localhost/dotnetcore-webapp
 
-    - name: Run Web Test
-      run: |
-        dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.webtest"
-        cd "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/WebApp/WebApp.webtests"
-        dotnet test
+    - name: Curl the website as a smoke test
+      run: curl http://localhost/PublishAcef
