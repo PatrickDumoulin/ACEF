@@ -24,7 +24,8 @@ jobs:
     # Publie le projet dans un dossier de publication
     - name: dotnet publish 
       run: |
-        dotnet publish -c Release -o dotnetcorewebapp "\\tsclient\F\EcoleTemporaire\AcefFinal\ACEF\WebApp\WebApp.csproj"
+        dotnet publish -c Release -o "C:/inetpub/wwwroot/PublishAcefOfficial" "\\tsclient\F\EcoleTemporaire\AcefFinal\ACEF\WebApp\WebApp.csproj"
+
 
     # Redémarre IIS pour s'assurer que les nouveaux fichiers sont pris en compte
     - name: Restart IIS
