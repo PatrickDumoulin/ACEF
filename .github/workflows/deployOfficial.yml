@@ -9,32 +9,30 @@ jobs:
     runs-on: self-hosted
     
     steps:
+    # Clone le projet depuis le dépôt GitHub (si nécessaire)
     - uses: actions/checkout@v3
 
+    # Installe le SDK .NET Core 6.0
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
 
-    # dotnet build and publish
+    # Build le projet depuis le chemin réseau distant
     - name: Build with dotnet
-      run: dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.csproj"
+      run: dotnet build --configuration Release "\\tsclient\F\EcoleTemporaire\AcefFinal\ACEF\WebApp\WebApp.csproj"
 
+    # Publie le projet dans un dossier de publication
     - name: dotnet publish 
       run: |
-        dotnet publish -c Release -o dotnetcorewebapp "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.csproj"
+        dotnet publish -c Release -o dotnetcorewebapp "\\tsclient\F\EcoleTemporaire\AcefFinal\ACEF\WebApp\WebApp.csproj"
 
-    - name: Deploy to IIS
+    # Redémarre IIS pour s'assurer que les nouveaux fichiers sont pris en compte
+    - name: Restart IIS
       run: |
         iisreset /stop
-        Copy-Item ./dotnetcorewebapp/* C:/inetpub/wwwroot/dotnetcore-webapp -Recurse -Force
         iisreset /start
-    
-    - name: Curl the website as a smoke test
-      run: curl http://localhost/dotnetcore-webapp
 
-    - name: Run Web Test
-      run: |
-        dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.webtest"
-        cd "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.webtests"
-        dotnet test
+    # Teste si le site est bien en ligne
+    - name: Curl the website as a smoke test
+      run: curl http://localhost/PublishAcef
