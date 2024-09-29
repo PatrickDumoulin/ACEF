@@ -1,0 +1,40 @@
+name: .NET Core Deploy to IIS
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+
+    runs-on: self-hosted
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    # dotnet build and publish
+    - name: Build with dotnet
+      run: dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.csproj"
+
+    - name: dotnet publish 
+      run: |
+        dotnet publish -c Release -o dotnetcorewebapp "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.csproj"
+
+    - name: Deploy to IIS
+      run: |
+        iisreset /stop
+        Copy-Item ./dotnetcorewebapp/* C:/inetpub/wwwroot/dotnetcore-webapp -Recurse -Force
+        iisreset /start
+    
+    - name: Curl the website as a smoke test
+      run: curl http://localhost/dotnetcore-webapp
+
+    - name: Run Web Test
+      run: |
+        dotnet build --configuration Release "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.webtest"
+        cd "E:/Ecole/AEC Programmation/Bloc 6/ACEF/ACEF_OFFICIALV6/ACEF/ACEF.webtests"
+        dotnet test
