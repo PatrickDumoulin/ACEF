@@ -9,8 +9,7 @@ jobs:
     runs-on: self-hosted
     
     steps:
-    # Clone le projet depuis le dépôt GitHub (si nécessaire)
-    - uses: actions/checkout@v3
+  
 
     # Installe le SDK .NET Core 6.0
     - name: Setup .NET Core
