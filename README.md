@@ -1,4 +1,4 @@
-**Project Details (DAS 4) 2024 for Resume**
+**Project Details**
 
 **Software Developer (Temporary Contract)**  
 The Cooperative Association of Family Economics of Quebec (ACEF of Quebec), Quebec  
